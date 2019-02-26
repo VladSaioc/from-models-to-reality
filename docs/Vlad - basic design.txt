@@ -1,0 +1,73 @@
+-- Operators:
+Arithmetic: +, -, *, /
+Boolean: && (and), || (or), == (equals), ^ (xor), ! (negation), != (not equals)
+Assignment: =
+Parantheses: ()
+
+-- Control statements:
+if, while, for
+
+-- Types:
+Int (float is probably unnecessary)
+Bool
+Cell
+Entity -> MobileEnt
+       -> StaticEnt
+
+-- Some construct: int literals, boolean literal
+
+-- Comments: // /**/ (just ripped off from Java/C#/JS)
+
+-- Declarations
+--- Single cell declaration
+init Cell [name] [number of sides]
+^(or some other keyword) ^(can default to 4 sides)
+
+--- Multiple cell Declarations
+init Cells [name]:[size1]:[size2]{:[sizen]...} [number of sides]
+
+-- Singular link from one cell to another
+link [cell1] [side number/identity]> [cell2] { [side number/indentity]> [celln]... }
+
+-- Double link from one cell to another
+link [cell1] <[side of cell1] [side of cell2]> [cell2] { <[side of cell n - 1] [side of cell n]> [celln]... }
+
+-- Declaration of map example in pdf
+
+init Cells c:5:5
+
+link c:1:1 <left right> c:1:2 <down up> c:2:2 <3 1> c:3:2 <4 2> c:3:1
+link c:3:2 <2 4> c:3:3 <2 4> c:3:4 <2 4> c:3:5
+link c:3:2 <3 1> c:4:2 <3 1> c:5:2
+link c:5:2 <4 2> c:5:1
+link c:5:2 <2 4> c:5:3 <2 4> c:5:4 <2 4> c:5:5
+
+Target c:3:5
+Start c:1:3
+
+-- Layout declaration
+Init Cells map @
+o-o-X
+  |
+  o
+  |
+o-o-o-o-T
+  |
+  o
+  |
+o-o-o-o-o
+;
+
+-- Simplified to blocks
+Init Cells map @
+oooxx
+xoxxx
+ooooo
+xoxxx
+ooooo
+;
+
+Start map:1:3
+Target map:3:5
+
+link map:3:5 <right left> map:3:1
