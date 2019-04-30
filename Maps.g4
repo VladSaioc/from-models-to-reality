@@ -69,7 +69,6 @@ variableDeclChain : variableDeclaration SEMI variableDeclChain
 	|
 	;
 
-
 boolExpression : boolTerm OR boolExpression
 	| boolTerm
 	;
@@ -79,8 +78,8 @@ boolTerm : boolFactor AND boolTerm
 negChain : NEG negChain
 	|
 	;
-boolFactor : negChain LPAREN boolExpression RPAREN
-  | negChain comparisonExpression
+boolFactor : comparisonExpression
+  | negChain LPAREN boolExpression RPAREN
   | negChain rAccessor
   | negChain BOOL_LITERAL
   ;
@@ -93,10 +92,13 @@ stringTerm : LPAREN stringExpression RPAREN
 	| STRING_LITERAL
 	;
 
-comparisonOperator :  GT | LT | LTE | GTE| EQ | NEQ ;
-comparisonExpression : arithmeticExpression comparisonOperator arithmeticExpression
-  | stringExpression comparisonOperator stringExpression
-	| rAccessor comparisonOperator rAccessor
+comparisonOperator :  GT | LT | LTE | GTE | EQ | NEQ ;
+comparisonExpression :  comparisonTerm comparisonOperator comparisonTerm ;
+comparisonTerm : negChain BOOL_LITERAL
+  | negChain rAccessor
+  | negChain LPAREN boolExpression RPAREN
+  | arithmeticExpression
+  | stringExpression
   ;
 
 arithmeticExpression : arithmeticTerm ADD arithmeticExpression
@@ -129,13 +131,13 @@ dropOperator : COLON DROP_X COLON arithmeticExpression
 	;
 insertOperator : COLON INSERT_X COLON arithmeticExpression
 	| COLON INSERT_Y COLON arithmeticExpression
-;
+  ;
 rotateOperator : COLON ROTATE_CW
-| COLON ROTATE_CCW
-;
+  | COLON ROTATE_CCW
+  ;
 mirrorOperator : COLON MIRROR_X
-| COLON MIRROR_Y
-;
+  | COLON MIRROR_Y
+  ;
 unaryMapOperator : dropOperator unaryMapOperator
 	| insertOperator unaryMapOperator
 	| rotateOperator unaryMapOperator
@@ -180,6 +182,7 @@ expression : arithmeticExpression
   | boolExpression 
   | mapExpression
   | comparisonExpression
+	| stringExpression
   ;
 
 assignment : nonRecordAssignment
@@ -242,8 +245,8 @@ EXPORT:		'export' ;
 FROM:			'from'   ;
 
 WS: 			[ \t\r\n]+ -> skip ;
-INT_LITERAL: 	'-'?[1-9][0-9]* ;
-DOUBLE_LITERAL:	'-'?[1-9][0-9]*'.'[0-9]* ;
+INT_LITERAL: 	'-'?[0-9]+ ;
+DOUBLE_LITERAL:	'-'?[0-9]+'.'[0-9]+ ;
 BOOL_LITERAL:	'true' | 'false' ;
 STRING_LITERAL:	 '"' [ a-zA-Z0-9/.]+ '"' ;
 NULL:			'null' ;

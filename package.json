@@ -1,0 +1,24 @@
+{
+  "name": "from-models-to-reality",
+  "version": "1.0.0",
+  "description": "Hellow! Enjoy!",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "clean": "rm -rf .antlr",
+    "build-java": "cd .antlr && javac *.java && cd..",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/vladek244/from-models-to-reality.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/vladek244/from-models-to-reality/issues"
+  },
+  "homepage": "https://gitlab.com/vladek244/from-models-to-reality#README"
+}
