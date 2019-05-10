@@ -7,18 +7,18 @@
     "doc": "docs"
   },
   "scripts": {
-    "clean": "rm -rf .antlr",
-    "build-java": "cd .antlr && javac *.java && cd..",
+    "clean": "rm -rf AST/.antlr/*.class",
+    "build-java": "cd AST/.antlr && javac *.java && cd ../..",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/vladek244/from-models-to-reality.git"
+    "url": "https://github.com/VladSaioc/from-models-to-reality.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/vladek244/from-models-to-reality/issues"
   },
-  "homepage": "https://gitlab.com/vladek244/from-models-to-reality#README"
+  "homepage": "https://github.com/VladSaioc/from-models-to-reality/blob/master/README.md"
 }
