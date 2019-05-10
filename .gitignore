@@ -1,3 +1,4 @@
 AST/.antlr/*.class
 .vscode
+AST/.antlr/dist
 AST/.antlr/.idea/*

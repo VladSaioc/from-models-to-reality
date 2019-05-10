@@ -160,7 +160,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitDataType(MapsParser.DataTypeContext ctx) {
     switch (ctx.type.getType()) {
       case MapsLexer.BOOLEAN:
-        return new TypeNode("bool");
+        return new TypeNode("boolean");
       case MapsLexer.DOUBLE:
         return new TypeNode("double");
       case MapsLexer.STRING:
@@ -168,7 +168,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       case MapsLexer.INT:
         return new TypeNode("int");
       default:
-        throw new Exception("Invalid data type " + ctx.type.getText());
+        throw new Error("Invalid data type " + ctx.type.getText());
     }
   }
 
@@ -305,23 +305,29 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     if(ctx.comparisonExpression() != null) {
       return visitComparisonExpression(ctx.comparisonExpression());
     }
-    AbstractNode node;
     AbstractNode negChain = visitNegChain(ctx.negChain());
     if(ctx.boolExpression() != null) {
-      node = visitBoolExpression(ctx.boolExpression());
+      return negChain == null
+      ? visitBoolExpression(ctx.boolExpression())
+      :  new BooleanNegateNode(
+        visitBoolExpression(ctx.boolExpression())
+      ).addOperation(negChain);
     }
     if(ctx.rAccessor() != null) {
-      node = visitRAccessor(ctx.rAccessor());
+      return negChain == null
+        ? visitRAccessor(ctx.rAccessor())
+        : new BooleanNegateNode(
+        visitRAccessor(ctx.rAccessor())
+      ).addOperation(negChain);
     }
     if(ctx.value != null) {
-      node = new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText())); 
-    }
-    if(node == null) throw new Error("Unrecognized boolean factor: " + ctx.getText());
-    return negChain == null
-    ? node
-    : new BooleanNegateNode(
-        node
+      return negChain == null
+        ? new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()))
+        : new BooleanNegateNode(
+        new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()))
       ).addOperation(negChain);
+    }
+    throw new Error("Unrecognized boolean factor: " + ctx.getText());
   }
 
   public AbstractNode visitComparisonExpression(MapsParser.ComparisonExpressionContext ctx) {
@@ -331,13 +337,11 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
           visitComparisonTerm(ctx.comparisonTerm(0)),
           visitComparisonTerm(ctx.comparisonTerm(1))
         );
-        break;
       case MapsLexer.GTE:
         return new ComparisonGteNode(
           visitComparisonTerm(ctx.comparisonTerm(0)),
           visitComparisonTerm(ctx.comparisonTerm(1))
         );
-        break;
       case MapsLexer.LT:
         return new ComparisonLtNode(
           visitComparisonTerm(ctx.comparisonTerm(0)),
@@ -353,12 +357,13 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
           visitComparisonTerm(ctx.comparisonTerm(0)),
           visitComparisonTerm(ctx.comparisonTerm(1))
         );
-        break;
       case MapsLexer.NEQ:
         return new ComparisonNeqNode(
           visitComparisonTerm(ctx.comparisonTerm(0)),
           visitComparisonTerm(ctx.comparisonTerm(1))
         );
+      default:
+        throw new Error("Unrecognized comparison operator: " + ctx.op.getText());
     }
   }
 
@@ -370,20 +375,27 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       return visitStringExpression(ctx.stringExpression());
     }
     AbstractNode negChain = visitNegChain(ctx.negChain());
-    AbstractNode node;
     if(ctx.value != null) {
-      node = new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()));
+      return negChain != null
+        ? new BooleanNegateNode(
+            new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()))
+          ).addOperation(negChain)
+        : new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()));
     }
     if(ctx.rAccessor() != null) {
-      node = visitRAccessor(ctx.rAccessor());
+      return negChain != null
+        ? new BooleanNegateNode(
+            visitRAccessor(ctx.rAccessor())
+          ).addOperation(negChain)
+        : visitRAccessor(ctx.rAccessor());
     }
     if(ctx.boolExpression() != null) {
-      node = visitBoolExpression(ctx.boolExpression());
+      return negChain != null
+        ? new BooleanNegateNode(visitBoolExpression(ctx.boolExpression()))
+        .addOperation(negChain)
+        : visitBoolExpression(ctx.boolExpression());
     }
-    return negChain != null 
-    ? new BooleanNegateNode(node)
-      .addOperation(negChain)
-    : node;
+    throw new Error("Unrecognized comparison term: " + ctx.getText());
   }
 
   public AbstractNode visitStringTerm(MapsParser.StringTermContext ctx) {
@@ -421,7 +433,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       if(ctx.value.getType() == MapsLexer.INT_LITERAL) {
         return new IntegerNode(Integer.parseInt(ctx.value.getText()));
       } else if (ctx.value.getType() == MapsLexer.DOUBLE_LITERAL) {
-        return new DoubleNode(Double.parseInt(ctx.value.getText()));
+        return new DoubleNode(Double.parseDouble(ctx.value.getText()));
       }
     }
     throw new Error("Unrecognized arithmetic factor: " + ctx.getText());
@@ -443,6 +455,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
         visitArithmeticExpression(ctx.arithmeticExpression())
       );
     }
+    throw new Error("Unrecognized arithmetic expression operator: " + ctx.op.getText());
   }
 
   public AbstractNode visitArithmeticTerm(MapsParser.ArithmeticTermContext ctx) {
@@ -549,19 +562,23 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitUnaryMapOperator(MapsParser.UnaryMapOperatorContext ctx) {
-    AbstractNode operator;
     if(ctx.mapUnaryIndexedOperator() != null) {
-      operator = visitMapUnaryIndexedOperator(ctx.mapUnaryIndexedOperator());
+      return visitMapUnaryIndexedOperator(ctx.mapUnaryIndexedOperator())
+        .makeSiblings(
+          ctx.unaryMapOperator() == null
+            ? null
+            : visitUnaryMapOperator(ctx.unaryMapOperator())
+        );
     }
     if(ctx.mapUnaryUnindexedOperator() != null) {
-      operator = visitMapUnaryUnindexedOperator(ctx.mapUnaryUnindexedOperator());
-    } else throw new Error("Unrecognized unary map operator: " + ctx.getText());
-    return operator
-    .makeSiblings(
-      ctx.unaryMapOperator() == null
-      ? null
-      : visitUnaryMapOperator(ctx.unaryMapOperator())
-    );
+      return visitMapUnaryUnindexedOperator(ctx.mapUnaryUnindexedOperator())
+      .makeSiblings(
+        ctx.unaryMapOperator() == null
+        ? null
+        : visitUnaryMapOperator(ctx.unaryMapOperator())
+      );
+    }
+    throw new Error("Unrecognized unary map operator: " + ctx.getText());
   }
 
   public AbstractNode visitMapUnaryUnindexedOperator(MapsParser.MapUnaryUnindexedOperatorContext ctx) {
@@ -590,6 +607,8 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
         return new MapInsertXNode(index);
       case (MapsLexer.INSERT_Y):
         return new MapInsertYNode(index);
+      default:
+        throw new Error("Unrecognized unary indexed map operator: " + ctx.op.getText());
     }
   }
 
@@ -668,21 +687,28 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx) {
-    AbstractNode node;
     if(ctx.assignment() != null) {
-      node = visitAssignment(ctx.assignment());
+      return visitAssignment(ctx.assignment()).makeSiblings(
+        ctx.recordAssignmentChain() == null
+          ? null
+          : visitRecordAssignmentChain(ctx.recordAssignmentChain())
+      );
     }
     if(ctx.variableDeclaration() != null) {
-      node = visitVariableDeclaration(ctx.variableDeclaration());
+      return visitVariableDeclaration(ctx.variableDeclaration()).makeSiblings(
+        ctx.recordAssignmentChain() == null
+          ? null
+          : visitRecordAssignmentChain(ctx.recordAssignmentChain())
+      );
     }
     if(ctx.DELETE() != null) {
-      node = new RecordDeleteNode(ctx.var.getText());
+      return new RecordDeleteNode(new IdentifierNode(ctx.var.getText())).makeSiblings(
+        ctx.recordAssignmentChain() == null
+          ? null
+          : visitRecordAssignmentChain(ctx.recordAssignmentChain())
+      );
     }
-    return node.makeSiblings(
-      ctx.recordAssignmentChain() == null
-      ? null
-      : visitRecordAssignmentChain(ctx.recordAssignmentChain())
-    );
+    throw new Error("Unrecognized record property operation: " + ctx.getText());
   }
 
   public AbstractNode visitExpression(MapsParser.ExpressionContext ctx) {
@@ -774,7 +800,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       case MapsLexer.INT:
         return new TypeNode("int");
       case MapsLexer.BOOLEAN:
-        return new TypeNode("map");
+        return new TypeNode("boolean");
       case MapsLexer.DOUBLE:
         return new TypeNode("double");
       case MapsLexer.MAP:
@@ -809,7 +835,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
 
   public AbstractNode visitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) {
     return new FunctionDeclNode(
-      ctx.name.getText(), 
+      new IdentifierNode(ctx.name.getText()),
       ctx.funcDataType() == null
       ? null
       : visitFuncDataType(ctx.funcDataType()), 
