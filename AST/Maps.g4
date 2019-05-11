@@ -74,7 +74,7 @@ recordDeclaration : RECORD var=IDENTIFIER ASSIGN recordDeclarationBody // ast do
 	| RECORD var=IDENTIFIER
 	;
 variableDeclChain : variableDeclaration SEMI variableDeclChain // ast done
-	| variableDeclaration
+	| variableDeclaration SEMI
 	;
 
 boolExpression : boolTerm OR boolExpression // ast done
