@@ -4,7 +4,6 @@ public class PrimitiveDeclarationNode extends AbstractNode {
   private AbstractNode type;
   private AbstractNode declarations;
 
-  public PrimitiveDeclarationNode() {}
   public PrimitiveDeclarationNode(AbstractNode type, AbstractNode declarations) {
     this.type = type;
     this.declarations = declarations;

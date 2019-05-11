@@ -15,23 +15,22 @@ import Nodes.StringNodes.*;
 import Nodes.TypeNodes.*;
 
 public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
-
   //
   // Program visit operations
   //
-  public AbstractNode visitProgram(MapsParser.ProgramContext ctx) {
+  public AbstractNode visitProgram(MapsParser.ProgramContext ctx) {    
     return new ProgramNode(
       visitImports(ctx.imports()),
       visitStatement(ctx.statement()),
       visitExports(ctx.exports())
     );
-  } 
+  }
 
   //
   // Import/Export visit operations
   //
 
-  public AbstractNode visitImports(MapsParser.ImportsContext ctx) {
+  public AbstractNode visitImports(MapsParser.ImportsContext ctx) {      
     return ctx.impexVarChain() == null
     ? null 
     : new ImportNode(
@@ -42,7 +41,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitExports(MapsParser.ExportsContext ctx) {
+  public AbstractNode visitExports(MapsParser.ExportsContext ctx) {      
     return ctx.impexVarChain() == null 
     ? null
     : new ExportNode(
@@ -50,7 +49,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitImpexVarChain(MapsParser.ImpexVarChainContext ctx) {
+  public AbstractNode visitImpexVarChain(MapsParser.ImpexVarChainContext ctx) {      
     return new IdentifierNode(ctx.var.getText())
     .makeSiblings(
       ctx.impexVarChain() == null
@@ -63,7 +62,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   // Accessor visitors.
   //
 
-  public AbstractNode visitIndexedProp(MapsParser.IndexedPropContext ctx) {
+  public AbstractNode visitIndexedProp(MapsParser.IndexedPropContext ctx) {      
     return new IndexNode(
       visitArithmeticExpression(ctx.arithmeticExpression())
     ).makeSiblings(
@@ -73,7 +72,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitPropChain(MapsParser.PropChainContext ctx) {
+  public AbstractNode visitPropChain(MapsParser.PropChainContext ctx) {      
     return ctx.indexedProp() == null
     ? new IdentifierNode(ctx.name.getText())
       .makeSiblings(
@@ -91,7 +90,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitLAccessor(MapsParser.LAccessorContext ctx) {
+  public AbstractNode visitLAccessor(MapsParser.LAccessorContext ctx) {      
     return new LAccessorNode(
       new IdentifierNode(ctx.name.getText()),
       ctx.propChain() == null
@@ -100,7 +99,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitRAccessor(MapsParser.RAccessorContext ctx) {
+  public AbstractNode visitRAccessor(MapsParser.RAccessorContext ctx) {      
     return new RAccessorNode(
       visitFunctionCall(ctx.functionCall()),
       ctx.propChain() == null
@@ -109,7 +108,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitFunctionCall(MapsParser.FunctionCallContext ctx) {
+  public AbstractNode visitFunctionCall(MapsParser.FunctionCallContext ctx) {      
     return ctx.functionParams() == null
     ? new IdentifierNode(ctx.name.getText())
     : new FunctionCallNode(
@@ -118,13 +117,13 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitFunctionParams(MapsParser.FunctionParamsContext ctx) {
+  public AbstractNode visitFunctionParams(MapsParser.FunctionParamsContext ctx) {      
     return ctx.functionExpressionChain() == null
     ? null
     : visitFunctionExpressionChain(ctx.functionExpressionChain());
   }
 
-  public AbstractNode visitFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx) {
+  public AbstractNode visitFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx) {      
     return visitExpression(ctx.expression())
     .makeSiblings(
       ctx.functionExpressionChain() == null
@@ -137,7 +136,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   // Declaration visitors.
   //
 
-  public AbstractNode visitDeclaration(MapsParser.DeclarationContext ctx) {
+  public AbstractNode visitDeclaration(MapsParser.DeclarationContext ctx) {      
     if (ctx.variableDeclaration() != null) {
       return visitVariableDeclaration(ctx.variableDeclaration());
     } if (ctx.arrayDeclaration() != null) {
@@ -150,14 +149,14 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized declaration type: " + ctx.getText());
   }
 
-  public AbstractNode visitVariableDeclaration(MapsParser.VariableDeclarationContext ctx) {
+  public AbstractNode visitVariableDeclaration(MapsParser.VariableDeclarationContext ctx) {      
     return new PrimitiveDeclarationNode(
       visitDataType(ctx.dataType()),
       visitVariableChain(ctx.variableChain())
     );
   }
 
-  public AbstractNode visitDataType(MapsParser.DataTypeContext ctx) {
+  public AbstractNode visitDataType(MapsParser.DataTypeContext ctx) {      
     switch (ctx.type.getType()) {
       case MapsLexer.BOOLEAN:
         return new TypeNode("boolean");
@@ -172,7 +171,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  public AbstractNode visitVariableChain(MapsParser.VariableChainContext ctx) {
+  public AbstractNode visitVariableChain(MapsParser.VariableChainContext ctx) {      
     return ctx.expression() == null
     ? new IdentifierNode(ctx.var.getText())
       .makeSiblings(
@@ -190,7 +189,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) {
+  public AbstractNode visitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) {      
     return new ArrayDeclNode(
       visitDataType(ctx.dataType()),
       visitArrayDeclBrackets(ctx.arrayDeclBrackets()),
@@ -198,7 +197,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx) {
+  public AbstractNode visitArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx) {      
     AbstractNode id = new IdentifierNode(ctx.var.getText()); 
     return ctx.expression() != null
     ? new AssignNode(
@@ -213,7 +212,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     : id;
   }
 
-  public AbstractNode visitArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx) {
+  public AbstractNode visitArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx) {      
     return new ArrayDeclBracketNode()
     .makeSiblings(
       ctx.arrayDeclBrackets() == null
@@ -222,7 +221,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitArrayLiteral(MapsParser.ArrayLiteralContext ctx) {
+  public AbstractNode visitArrayLiteral(MapsParser.ArrayLiteralContext ctx) {      
     return new ArrayLiteralNode(
       ctx.arrayLiteralChain() == null 
       ? null
@@ -230,7 +229,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx) {
+  public AbstractNode visitArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx) {      
     return visitExpression(ctx.expression())
     .makeSiblings(
       ctx.arrayLiteralChain() == null
@@ -250,13 +249,13 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx) {
+  public AbstractNode visitRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx) {      
     return new RecordDeclBodyNode(
       visitVariableDeclChain(ctx.variableDeclChain())
     );
   }
 
-  public AbstractNode visitVariableDeclChain(MapsParser.VariableDeclChainContext ctx) {
+  public AbstractNode visitVariableDeclChain(MapsParser.VariableDeclChainContext ctx) {      
     return visitVariableDeclaration(ctx.variableDeclaration())
     .makeSiblings(
       ctx.variableDeclChain() != null 
@@ -265,7 +264,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitRecordDeclaration(MapsParser.RecordDeclarationContext ctx) {
+  public AbstractNode visitRecordDeclaration(MapsParser.RecordDeclarationContext ctx) {      
     return new RecordDeclNode(
       new IdentifierNode(ctx.var.getText()),
       ctx.recordDeclarationBody() == null
@@ -274,7 +273,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitBoolExpression(MapsParser.BoolExpressionContext ctx) {
+  public AbstractNode visitBoolExpression(MapsParser.BoolExpressionContext ctx) {      
     return ctx.boolExpression() != null
     ? new BooleanOrNode(
         visitBoolTerm(ctx.boolTerm()),
@@ -283,7 +282,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     : visitBoolTerm(ctx.boolTerm());
   }
 
-  public AbstractNode visitBoolTerm(MapsParser.BoolTermContext ctx) {
+  public AbstractNode visitBoolTerm(MapsParser.BoolTermContext ctx) {      
     return ctx.boolTerm() != null
     ? new BooleanAndNode(
         visitBoolFactor(ctx.boolFactor()),
@@ -292,7 +291,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     : visitBoolFactor(ctx.boolFactor());
   }
 
-  public AbstractNode visitNegChain(MapsParser.NegChainContext ctx) {
+  public AbstractNode visitNegChain(MapsParser.NegChainContext ctx) {      
     return ctx.negChain() != null
     ? new BooleanNegationNode()
       .makeSiblings(
@@ -301,7 +300,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     : null;
   }
 
-  public AbstractNode visitBoolFactor(MapsParser.BoolFactorContext ctx) {
+  public AbstractNode visitBoolFactor(MapsParser.BoolFactorContext ctx) {      
     if(ctx.comparisonExpression() != null) {
       return visitComparisonExpression(ctx.comparisonExpression());
     }
@@ -330,7 +329,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized boolean factor: " + ctx.getText());
   }
 
-  public AbstractNode visitComparisonExpression(MapsParser.ComparisonExpressionContext ctx) {
+  public AbstractNode visitComparisonExpression(MapsParser.ComparisonExpressionContext ctx) {      
     switch (ctx.op.getType()) {
       case MapsLexer.GT: 
         return new ComparisonGtNode(
@@ -367,7 +366,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  public AbstractNode visitComparisonTerm(MapsParser.ComparisonTermContext ctx) {
+  public AbstractNode visitComparisonTerm(MapsParser.ComparisonTermContext ctx) {      
     if(ctx.arithmeticExpression() != null) {
       return visitArithmeticExpression(ctx.arithmeticExpression());
     }
@@ -398,7 +397,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized comparison term: " + ctx.getText());
   }
 
-  public AbstractNode visitStringTerm(MapsParser.StringTermContext ctx) {
+  public AbstractNode visitStringTerm(MapsParser.StringTermContext ctx) {      
     if(ctx.stringExpression() != null) {
       return visitStringExpression(ctx.stringExpression());
     }
@@ -411,7 +410,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized string term: " + ctx.getText());
   }
 
-  public AbstractNode visitStringExpression(MapsParser.StringExpressionContext ctx) {
+  public AbstractNode visitStringExpression(MapsParser.StringExpressionContext ctx) {      
     return ctx.stringExpression() != null
     ? new StringConcatNode(
         visitStringTerm(ctx.stringTerm()),
@@ -424,7 +423,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   // Arithmetic visitors.
   //
 
-  public AbstractNode visitArithmeticFactor(MapsParser.ArithmeticFactorContext ctx) {
+  public AbstractNode visitArithmeticFactor(MapsParser.ArithmeticFactorContext ctx) {      
     if(ctx.arithmeticExpression() != null) {
       return visitArithmeticExpression(ctx.arithmeticExpression());
     } if(ctx.rAccessor() != null) {
@@ -439,7 +438,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized arithmetic factor: " + ctx.getText());
   }
 
-  public AbstractNode visitArithmeticExpression(MapsParser.ArithmeticExpressionContext ctx) {
+  public AbstractNode visitArithmeticExpression(MapsParser.ArithmeticExpressionContext ctx) {      
     if (ctx.arithmeticExpression() == null) {
       return visitArithmeticTerm(ctx.arithmeticTerm());
     }
@@ -458,7 +457,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized arithmetic expression operator: " + ctx.op.getText());
   }
 
-  public AbstractNode visitArithmeticTerm(MapsParser.ArithmeticTermContext ctx) {
+  public AbstractNode visitArithmeticTerm(MapsParser.ArithmeticTermContext ctx) {      
     if (ctx.arithmeticFactor() == null) {
       return visitArithmeticFactor(ctx.arithmeticFactor());
     }
@@ -487,11 +486,11 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   // Map visitors.
   //
 
-  public AbstractNode visitMapExpression(MapsParser.MapExpressionContext ctx) {
+  public AbstractNode visitMapExpression(MapsParser.MapExpressionContext ctx) {      
     return visitJoinExpression(ctx.joinExpression());
   }
 
-  public AbstractNode visitJoinExpression(MapsParser.JoinExpressionContext ctx) {
+  public AbstractNode visitJoinExpression(MapsParser.JoinExpressionContext ctx) {      
     if(ctx.joinExpression() == null) {
       return visitMaskExpression(ctx.maskExpression());
     }
@@ -521,27 +520,24 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  public AbstractNode visitMaskExpression(MapsParser.MaskExpressionContext ctx) {
+  public AbstractNode visitMaskExpression(MapsParser.MaskExpressionContext ctx) {      
     if(ctx.maskExpression() == null) {
       return visitUnaryMapOperation(ctx.unaryMapOperation());
     }
     return new MapMaskNode(
       visitUnaryMapOperation(ctx.unaryMapOperation()),
       visitMaskExpression(ctx.maskExpression()),
-      visitArithmeticExpression(
-        ctx.maskOperator().arithmeticExpression(0) == null
+      ctx.maskOperator().arithmeticExpression(0) == null
         ? null
-        : ctx.maskOperator().arithmeticExpression(0)
-      ),
-      visitArithmeticExpression(
-        ctx.maskOperator().arithmeticExpression(1) == null
+        : visitArithmeticExpression(ctx.maskOperator().arithmeticExpression(0)),
+      ctx.maskOperator().arithmeticExpression(1) == null
         ? null
-        : ctx.maskOperator().arithmeticExpression(1)
+        : visitArithmeticExpression(ctx.maskOperator().arithmeticExpression(1)
       )
     );
   }
 
-  public AbstractNode visitUnaryMapOperation(MapsParser.UnaryMapOperationContext ctx) {
+  public AbstractNode visitUnaryMapOperation(MapsParser.UnaryMapOperationContext ctx) {      
     return ctx.unaryMapOperator() == null
     ? visitUnaryMapOperand(ctx.unaryMapOperand())
     : new MapUnaryOperationNode(
@@ -551,7 +547,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx) {
+  public AbstractNode visitUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx) {      
     if(ctx.joinExpression() != null) {
       return visitJoinExpression(ctx.joinExpression());
     }
@@ -561,7 +557,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized unary map operand: " + ctx.getText());
   }
 
-  public AbstractNode visitUnaryMapOperator(MapsParser.UnaryMapOperatorContext ctx) {
+  public AbstractNode visitUnaryMapOperator(MapsParser.UnaryMapOperatorContext ctx) {      
     if(ctx.mapUnaryIndexedOperator() != null) {
       return visitMapUnaryIndexedOperator(ctx.mapUnaryIndexedOperator())
         .makeSiblings(
@@ -581,7 +577,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized unary map operator: " + ctx.getText());
   }
 
-  public AbstractNode visitMapUnaryUnindexedOperator(MapsParser.MapUnaryUnindexedOperatorContext ctx) {
+  public AbstractNode visitMapUnaryUnindexedOperator(MapsParser.MapUnaryUnindexedOperatorContext ctx) {      
     switch (ctx.op.getType()) {
       case (MapsLexer.ROTATE_CCW):
         return new MapRotateCcwNode();
@@ -596,7 +592,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  public AbstractNode visitMapUnaryIndexedOperator(MapsParser.MapUnaryIndexedOperatorContext ctx) {
+  public AbstractNode visitMapUnaryIndexedOperator(MapsParser.MapUnaryIndexedOperatorContext ctx) {      
     AbstractNode index = visitArithmeticExpression(ctx.arithmeticExpression());
     switch (ctx.op.getType()) {
       case (MapsLexer.DROP_X):
@@ -616,13 +612,13 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   // Map query visitors.
   //
 
-  public AbstractNode visitMapQuery(MapsParser.MapQueryContext ctx) {
+  public AbstractNode visitMapQuery(MapsParser.MapQueryContext ctx) {      
     return ctx.mapQueryChain() == null
     ? null
     : visitMapQueryChain(ctx.mapQueryChain());
   }
 
-  public AbstractNode visitMapQueryChain(MapsParser.MapQueryChainContext ctx) {
+  public AbstractNode visitMapQueryChain(MapsParser.MapQueryChainContext ctx) {      
     return visitMapQueryPredicate(ctx.mapQueryPredicate())
     .makeSiblings(
       ctx.mapQueryChain() == null
@@ -631,28 +627,28 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx) {
+  public AbstractNode visitMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx) {      
     return new MapQueryPredicateNode(
       visitBoolExpression(ctx.boolExpression()), 
       visitCoordinateChain(ctx.coordinateChain())
     );
   }
 
-  public AbstractNode visitCoordinateChain(MapsParser.CoordinateChainContext ctx) {
+  public AbstractNode visitCoordinateChain(MapsParser.CoordinateChainContext ctx) {      
     return ctx.coordinateChain() == null
     ? visitCoordinates(ctx.coordinates())
     : visitCoordinates(ctx.coordinates())
       .makeSiblings(visitCoordinateChain(ctx.coordinateChain()));
   }
 
-  public AbstractNode visitCoordinates(MapsParser.CoordinatesContext ctx) {
+  public AbstractNode visitCoordinates(MapsParser.CoordinatesContext ctx) {      
     return new CoordinatesNode(
       visitArithmeticExpression(ctx.arithmeticExpression(0)),
       visitArithmeticExpression(ctx.arithmeticExpression(1))
     );
   }
 
-  public AbstractNode visitAssignment(MapsParser.AssignmentContext ctx) {
+  public AbstractNode visitAssignment(MapsParser.AssignmentContext ctx) {      
     if(ctx.mapQueryAssignment() != null) {
       return visitMapQueryAssignment(ctx.mapQueryAssignment());
     } if(ctx.recordAssignment() != null) {
@@ -663,7 +659,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized assignment: " + ctx.getText());
   }
 
-  public AbstractNode visitMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx) {
+  public AbstractNode visitMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx) {      
     return new MapQueryAssignmentNode(
       visitLAccessor(ctx.lAccessor()), 
       visitMapQuery(ctx.mapQuery()), 
@@ -671,14 +667,14 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitRecordAssignment(MapsParser.RecordAssignmentContext ctx) {
+  public AbstractNode visitRecordAssignment(MapsParser.RecordAssignmentContext ctx) {      
     return new RecordAssignNode(
       visitLAccessor(ctx.lAccessor()),
       visitRecordAssignmentBody(ctx.recordAssignmentBody())
     );
   }
 
-  public AbstractNode visitRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx) {
+  public AbstractNode visitRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx) {      
     return new RecordAssignBodyNode(
       ctx.recordAssignmentChain() == null
       ? null
@@ -686,7 +682,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx) {
+  public AbstractNode visitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx) {      
     if(ctx.assignment() != null) {
       return visitAssignment(ctx.assignment()).makeSiblings(
         ctx.recordAssignmentChain() == null
@@ -711,7 +707,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized record property operation: " + ctx.getText());
   }
 
-  public AbstractNode visitExpression(MapsParser.ExpressionContext ctx) {
+  public AbstractNode visitExpression(MapsParser.ExpressionContext ctx) {      
     if(ctx.arithmeticExpression() != null) {
       return visitArithmeticExpression(ctx.arithmeticExpression());
     } if(ctx.boolExpression() != null) {
@@ -725,14 +721,14 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     } throw new Error("Unrecognized expression: " + ctx.getText());
   }
 
-  public AbstractNode visitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx) {
+  public AbstractNode visitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx) {      
     return new AssignNode(
       visitLAccessor(ctx.lAccessor()), 
       visitExpression(ctx.expression())
     );
   }
 
-  public AbstractNode visitStatement(MapsParser.StatementContext ctx) {
+  public AbstractNode visitStatement(MapsParser.StatementContext ctx) {      
     if(ctx.declaration() != null) {
       return visitDeclaration(ctx.declaration())
         .makeSiblings(
@@ -772,14 +768,14 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     return null;
   }
 
-  public AbstractNode visitWhileStatement(MapsParser.WhileStatementContext ctx) {
+  public AbstractNode visitWhileStatement(MapsParser.WhileStatementContext ctx) {      
     return new WhileNode(
       visitBoolExpression(ctx.boolExpression()), 
       visitBlock(ctx.block())
     );
   }
 
-  public AbstractNode visitIfStatement(MapsParser.IfStatementContext ctx) {
+  public AbstractNode visitIfStatement(MapsParser.IfStatementContext ctx) {      
     return new IfNode(
       visitBoolExpression(ctx.boolExpression()),
       visitBlock(ctx.block(0)),
@@ -789,13 +785,13 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitBlock(MapsParser.BlockContext ctx) {
+  public AbstractNode visitBlock(MapsParser.BlockContext ctx) {      
     return new BlockNode(
       visitStatement(ctx.statement())
     );
   }
 
-  public AbstractNode visitFuncDataType(MapsParser.FuncDataTypeContext ctx) {
+  public AbstractNode visitFuncDataType(MapsParser.FuncDataTypeContext ctx) {      
     switch (ctx.type.getType()) {
       case MapsLexer.INT:
         return new TypeNode("int");
@@ -814,7 +810,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  public AbstractNode visitFunctionHeader(MapsParser.FunctionHeaderContext ctx) {
+  public AbstractNode visitFunctionHeader(MapsParser.FunctionHeaderContext ctx) {      
     return new FunctionHeaderNode(
       ctx.functionDeclParams() == null
       ? null
@@ -822,7 +818,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx) {
+  public AbstractNode visitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx) {      
     return new FunctionParamNode(
       ctx.name.getText(), 
       visitFuncDataType(ctx.funcDataType())
@@ -833,7 +829,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) {
+  public AbstractNode visitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) {      
     return new FunctionDeclNode(
       new IdentifierNode(ctx.name.getText()),
       ctx.funcDataType() == null
