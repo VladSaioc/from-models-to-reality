@@ -4,20 +4,27 @@ import Nodes.AbstractNode;
 
 public class LAccessorNode extends AbstractNode {
   private AbstractNode identifier;
-  private AbstractNode props;
+  private AbstractNode indexes;
+  private AbstractNode prop;
 
-  public LAccessorNode(AbstractNode identifier, AbstractNode props) {
+  public LAccessorNode(AbstractNode identifier, AbstractNode indexes, AbstractNode prop) {
     this.identifier = identifier;
-    this.props = props;
+    this.indexes = indexes;
+    this.prop = prop;
     this.adoptChildren(identifier)
-    .adoptChildren(props);
+    .adoptChildren(indexes)
+    .adoptChildren(prop);
   }
 
   public AbstractNode getIdentifier() {
     return this.identifier;
   }
 
-  public AbstractNode getProps() {
-    return this.props;
+  public AbstractNode getProp() {
+    return this.prop;
+  }
+
+  public AbstractNode getIndexes() {
+    return this.indexes;
   }
 }

@@ -14,7 +14,7 @@ import Nodes.RecordNodes.*;
 import Nodes.StringNodes.*;
 import Nodes.TypeNodes.*;
 
-public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
+public class BuildAST extends MapsBaseVisitor<AbstractNode> {
   //
   // Program visit operations
   //
@@ -29,16 +29,15 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   //
   // Import/Export visit operations
   //
-
   public AbstractNode visitImports(MapsParser.ImportsContext ctx) {      
     return ctx.impexVarChain() == null
-    ? null 
-    : new ImportNode(
-        new PathNode(ctx.path.getText()),
-        visitImpexVarChain(ctx.impexVarChain())
-      ).makeSiblings(
-        visitImports(ctx.imports())
-      );
+      ? null 
+      : new ImportNode(
+          ctx.path.getText(),
+          visitImpexVarChain(ctx.impexVarChain())
+        ).makeSiblings(
+          visitImports(ctx.imports())
+        );
   }
 
   public AbstractNode visitExports(MapsParser.ExportsContext ctx) {      
@@ -63,27 +62,20 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   //
 
   public AbstractNode visitIndexedProp(MapsParser.IndexedPropContext ctx) {      
+    if(ctx.indexedProp() == null) {
+      return null;
+    }
     return new IndexNode(
       visitArithmeticExpression(ctx.arithmeticExpression())
     ).makeSiblings(
-      ctx.indexedProp() == null
-      ? null
-      : visitIndexedProp(ctx.indexedProp())
+      visitIndexedProp(ctx.indexedProp())
     );
   }
 
   public AbstractNode visitPropChain(MapsParser.PropChainContext ctx) {      
-    return ctx.indexedProp() == null
-    ? new IdentifierNode(ctx.name.getText())
-      .makeSiblings(
-        ctx.propChain() == null
-        ? null
-        : visitPropChain(ctx.propChain())
-      )
-    : visitIndexedProp(ctx.indexedProp())
-      .makeSiblings(
-        new IdentifierNode(ctx.name.getText())
-      ).makeSiblings(
+    return new PropertyNode(
+        new IdentifierNode(ctx.name.getText()),
+        visitIndexedProp(ctx.indexedProp()),
         ctx.propChain() == null
         ? null
         : visitPropChain(ctx.propChain())
@@ -93,6 +85,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitLAccessor(MapsParser.LAccessorContext ctx) {      
     return new LAccessorNode(
       new IdentifierNode(ctx.name.getText()),
+      visitIndexedProp(ctx.indexedProp()),
       ctx.propChain() == null
       ? null
       : visitPropChain(ctx.propChain())
@@ -102,6 +95,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitRAccessor(MapsParser.RAccessorContext ctx) {      
     return new RAccessorNode(
       visitFunctionCall(ctx.functionCall()),
+      visitIndexedProp(ctx.indexedProp()),
       ctx.propChain() == null
       ? null
       : visitPropChain(ctx.propChain())
@@ -352,7 +346,7 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
           visitComparisonTerm(ctx.comparisonTerm(1))
         );
       case MapsLexer.EQ:
-        return new ComparisonEqNode(          
+        return new ComparisonEqNode(
           visitComparisonTerm(ctx.comparisonTerm(0)),
           visitComparisonTerm(ctx.comparisonTerm(1))
         );
@@ -457,8 +451,8 @@ public class BuildAstVisitor extends MapsBaseVisitor<AbstractNode> {
     throw new Error("Unrecognized arithmetic expression operator: " + ctx.op.getText());
   }
 
-  public AbstractNode visitArithmeticTerm(MapsParser.ArithmeticTermContext ctx) {      
-    if (ctx.arithmeticFactor() == null) {
+  public AbstractNode visitArithmeticTerm(MapsParser.ArithmeticTermContext ctx) { 
+    if (ctx.arithmeticTerm() == null) {
       return visitArithmeticFactor(ctx.arithmeticFactor());
     }
     if (ctx.op.getType() == MapsLexer.MUL) {

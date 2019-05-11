@@ -4,20 +4,27 @@ import Nodes.AbstractNode;
 
 public class RAccessorNode extends AbstractNode {
   private AbstractNode functionCall;
-  private AbstractNode props;
+  private AbstractNode indexes;
+  private AbstractNode prop;
 
-  public RAccessorNode(AbstractNode functionCall, AbstractNode props) {
+  public RAccessorNode(AbstractNode functionCall, AbstractNode indexes, AbstractNode prop) {
     this.functionCall = functionCall;
-    this.props = props;
+    this.indexes = indexes;
+    this.prop = prop;
     this.adoptChildren(functionCall)
-    .adoptChildren(props);
+    .adoptChildren(indexes)
+    .adoptChildren(prop);
   }
 
   public AbstractNode getFunctionCall() {
     return this.functionCall;
   }
 
-  public AbstractNode getProps() {
-    return this.props;
+  public AbstractNode getProp() {
+    return this.prop;
+  }
+
+  public AbstractNode getIndexes() {
+    return this.indexes;
   }
 }

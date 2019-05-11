@@ -3,17 +3,16 @@ package Nodes.ImpexNodes;
 import Nodes.AbstractNode;
 
 public class ImportNode extends AbstractNode {
-  private AbstractNode path = null;
+  private String path = null;
   private AbstractNode vars = null;
 
-  public ImportNode(AbstractNode path, AbstractNode vars) {
+  public ImportNode(String path, AbstractNode vars) {
     this.path = path;
     this.vars = vars;
-    this.adoptChildren(path)
-    .adoptChildren(vars);
+    this.adoptChildren(vars);
   }
 
-  public AbstractNode getPath() {
+  public String getPath() {
     return this.path;
   }
   

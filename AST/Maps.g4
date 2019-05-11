@@ -13,20 +13,18 @@ exports : EXPORT LCURLY impexVarChain RCURLY SEMI	// AST Done
 	;
 
 indexedProp : LBRACK arithmeticExpression RBRACK indexedProp // AST Done
-	| LBRACK arithmeticExpression RBRACK
+	|
 	;
 
-propChain : indexedProp DOT name=IDENTIFIER propChain // AST Done
-	| indexedProp DOT name=IDENTIFIER
-	| DOT name=IDENTIFIER propChain
-	| DOT name=IDENTIFIER
+propChain : DOT name=IDENTIFIER indexedProp propChain // AST Done
+	| DOT name=IDENTIFIER indexedProp
 	;
 
-lAccessor : name=IDENTIFIER propChain // AST Done
-	| name=IDENTIFIER
+lAccessor : name=IDENTIFIER indexedProp propChain // AST Done
+	| name=IDENTIFIER indexedProp
 	;
-rAccessor : functionCall propChain // AST Done
-  | functionCall
+rAccessor : functionCall indexedProp propChain // AST Done
+  | functionCall indexedProp
   ;
 functionExpressionChain : expression COMMA functionExpressionChain // AST DONE
 	| expression
@@ -34,8 +32,8 @@ functionExpressionChain : expression COMMA functionExpressionChain // AST DONE
 functionParams : LPAREN functionExpressionChain RPAREN // AST Done
 	| LPAREN RPAREN
 	;
-functionCall : name=IDENTIFIER functionParams // ast done
-  | name=IDENTIFIER
+functionCall : name=IDENTIFIER indexedProp functionParams // ast done
+  | name=IDENTIFIER indexedProp
   ;
 
 declaration : variableDeclaration // ast done
