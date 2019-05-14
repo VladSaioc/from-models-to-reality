@@ -5,19 +5,18 @@ import Nodes.AbstractNode;
 public class ArrayDeclNode extends AbstractNode {
   private AbstractNode type;
   private AbstractNode declaration;
-  private AbstractNode brackets;
+  private int dimensions;
 
-  public ArrayDeclNode(AbstractNode type, AbstractNode brackets, AbstractNode declaration) {
+  public ArrayDeclNode(AbstractNode type, int dimensions, AbstractNode declaration) {
     this.type = type;
-    this.brackets = brackets;
+    this.dimensions = dimensions;
     this.declaration = declaration;
     this.adoptChildren(type)
-    .adoptChildren(brackets)
     .adoptChildren(declaration);
   }
 
-  public AbstractNode getBrackets() {
-    return this.brackets;
+  public int getDimensions() {
+    return this.dimensions;
   }
 
   public AbstractNode getDeclaration() {

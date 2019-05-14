@@ -1378,8 +1378,8 @@ public class MapsParser extends Parser {
 	}
 
 	public static class VariableDeclChainContext extends ParserRuleContext {
-		public VariableDeclarationContext variableDeclaration() {
-			return getRuleContext(VariableDeclarationContext.class,0);
+		public DeclarationContext declaration() {
+			return getRuleContext(DeclarationContext.class,0);
 		}
 		public TerminalNode SEMI() { return getToken(MapsParser.SEMI, 0); }
 		public VariableDeclChainContext variableDeclChain() {
@@ -1402,7 +1402,7 @@ public class MapsParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(312);
-				variableDeclaration();
+				declaration();
 				setState(313);
 				match(SEMI);
 				setState(314);
@@ -1413,7 +1413,7 @@ public class MapsParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(316);
-				variableDeclaration();
+				declaration();
 				setState(317);
 				match(SEMI);
 				}
@@ -3089,8 +3089,8 @@ public class MapsParser extends Parser {
 		public RecordAssignmentChainContext recordAssignmentChain() {
 			return getRuleContext(RecordAssignmentChainContext.class,0);
 		}
-		public VariableDeclarationContext variableDeclaration() {
-			return getRuleContext(VariableDeclarationContext.class,0);
+		public DeclarationContext declaration() {
+			return getRuleContext(DeclarationContext.class,0);
 		}
 		public TerminalNode DELETE() { return getToken(MapsParser.DELETE, 0); }
 		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
@@ -3122,7 +3122,7 @@ public class MapsParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(536);
-				variableDeclaration();
+				declaration();
 				setState(537);
 				match(SEMI);
 				setState(538);
@@ -3155,7 +3155,7 @@ public class MapsParser extends Parser {
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(547);
-				variableDeclaration();
+				declaration();
 				setState(548);
 				match(SEMI);
 				}
@@ -4097,26 +4097,26 @@ public class MapsParser extends Parser {
 		"\u0131\7-\2\2\u0131+\3\2\2\2\u0132\u0133\7\t\2\2\u0133\u0134\7%\2\2\u0134"+
 		"\u0135\7\63\2\2\u0135\u0139\5*\26\2\u0136\u0137\7\t\2\2\u0137\u0139\7"+
 		"%\2\2\u0138\u0132\3\2\2\2\u0138\u0136\3\2\2\2\u0139-\3\2\2\2\u013a\u013b"+
-		"\5\32\16\2\u013b\u013c\7/\2\2\u013c\u013d\5.\30\2\u013d\u0142\3\2\2\2"+
-		"\u013e\u013f\5\32\16\2\u013f\u0140\7/\2\2\u0140\u0142\3\2\2\2\u0141\u013a"+
-		"\3\2\2\2\u0141\u013e\3\2\2\2\u0142/\3\2\2\2\u0143\u0144\5\62\32\2\u0144"+
-		"\u0145\7;\2\2\u0145\u0146\5\60\31\2\u0146\u0149\3\2\2\2\u0147\u0149\5"+
-		"\62\32\2\u0148\u0143\3\2\2\2\u0148\u0147\3\2\2\2\u0149\61\3\2\2\2\u014a"+
-		"\u014b\5\66\34\2\u014b\u014c\7:\2\2\u014c\u014d\5\62\32\2\u014d\u0150"+
-		"\3\2\2\2\u014e\u0150\5\66\34\2\u014f\u014a\3\2\2\2\u014f\u014e\3\2\2\2"+
-		"\u0150\63\3\2\2\2\u0151\u0152\7<\2\2\u0152\u0155\5\64\33\2\u0153\u0155"+
-		"\3\2\2\2\u0154\u0151\3\2\2\2\u0154\u0153\3\2\2\2\u0155\65\3\2\2\2\u0156"+
-		"\u0163\5<\37\2\u0157\u0158\5\64\33\2\u0158\u0159\7(\2\2\u0159\u015a\5"+
-		"\60\31\2\u015a\u015b\7)\2\2\u015b\u0163\3\2\2\2\u015c\u015d\5\64\33\2"+
-		"\u015d\u015e\5\20\t\2\u015e\u0163\3\2\2\2\u015f\u0160\5\64\33\2\u0160"+
-		"\u0161\7\27\2\2\u0161\u0163\3\2\2\2\u0162\u0156\3\2\2\2\u0162\u0157\3"+
-		"\2\2\2\u0162\u015c\3\2\2\2\u0162\u015f\3\2\2\2\u0163\67\3\2\2\2\u0164"+
-		"\u0165\5:\36\2\u0165\u0166\7B\2\2\u0166\u0167\58\35\2\u0167\u016a\3\2"+
-		"\2\2\u0168\u016a\5:\36\2\u0169\u0164\3\2\2\2\u0169\u0168\3\2\2\2\u016a"+
-		"9\3\2\2\2\u016b\u016c\7(\2\2\u016c\u016d\58\35\2\u016d\u016e\7)\2\2\u016e"+
-		"\u0172\3\2\2\2\u016f\u0172\5\20\t\2\u0170\u0172\7\30\2\2\u0171\u016b\3"+
-		"\2\2\2\u0171\u016f\3\2\2\2\u0171\u0170\3\2\2\2\u0172;\3\2\2\2\u0173\u0174"+
-		"\5> \2\u0174\u0175\t\2\2\2\u0175\u0176\5> \2\u0176=\3\2\2\2\u0177\u0178"+
+		"\5\30\r\2\u013b\u013c\7/\2\2\u013c\u013d\5.\30\2\u013d\u0142\3\2\2\2\u013e"+
+		"\u013f\5\30\r\2\u013f\u0140\7/\2\2\u0140\u0142\3\2\2\2\u0141\u013a\3\2"+
+		"\2\2\u0141\u013e\3\2\2\2\u0142/\3\2\2\2\u0143\u0144\5\62\32\2\u0144\u0145"+
+		"\7;\2\2\u0145\u0146\5\60\31\2\u0146\u0149\3\2\2\2\u0147\u0149\5\62\32"+
+		"\2\u0148\u0143\3\2\2\2\u0148\u0147\3\2\2\2\u0149\61\3\2\2\2\u014a\u014b"+
+		"\5\66\34\2\u014b\u014c\7:\2\2\u014c\u014d\5\62\32\2\u014d\u0150\3\2\2"+
+		"\2\u014e\u0150\5\66\34\2\u014f\u014a\3\2\2\2\u014f\u014e\3\2\2\2\u0150"+
+		"\63\3\2\2\2\u0151\u0152\7<\2\2\u0152\u0155\5\64\33\2\u0153\u0155\3\2\2"+
+		"\2\u0154\u0151\3\2\2\2\u0154\u0153\3\2\2\2\u0155\65\3\2\2\2\u0156\u0163"+
+		"\5<\37\2\u0157\u0158\5\64\33\2\u0158\u0159\7(\2\2\u0159\u015a\5\60\31"+
+		"\2\u015a\u015b\7)\2\2\u015b\u0163\3\2\2\2\u015c\u015d\5\64\33\2\u015d"+
+		"\u015e\5\20\t\2\u015e\u0163\3\2\2\2\u015f\u0160\5\64\33\2\u0160\u0161"+
+		"\7\27\2\2\u0161\u0163\3\2\2\2\u0162\u0156\3\2\2\2\u0162\u0157\3\2\2\2"+
+		"\u0162\u015c\3\2\2\2\u0162\u015f\3\2\2\2\u0163\67\3\2\2\2\u0164\u0165"+
+		"\5:\36\2\u0165\u0166\7B\2\2\u0166\u0167\58\35\2\u0167\u016a\3\2\2\2\u0168"+
+		"\u016a\5:\36\2\u0169\u0164\3\2\2\2\u0169\u0168\3\2\2\2\u016a9\3\2\2\2"+
+		"\u016b\u016c\7(\2\2\u016c\u016d\58\35\2\u016d\u016e\7)\2\2\u016e\u0172"+
+		"\3\2\2\2\u016f\u0172\5\20\t\2\u0170\u0172\7\30\2\2\u0171\u016b\3\2\2\2"+
+		"\u0171\u016f\3\2\2\2\u0171\u0170\3\2\2\2\u0172;\3\2\2\2\u0173\u0174\5"+
+		"> \2\u0174\u0175\t\2\2\2\u0175\u0176\5> \2\u0176=\3\2\2\2\u0177\u0178"+
 		"\5\64\33\2\u0178\u0179\7\27\2\2\u0179\u0185\3\2\2\2\u017a\u017b\5\64\33"+
 		"\2\u017b\u017c\5\20\t\2\u017c\u0185\3\2\2\2\u017d\u017e\5\64\33\2\u017e"+
 		"\u017f\7(\2\2\u017f\u0180\5\60\31\2\u0180\u0181\7)\2\2\u0181\u0185\3\2"+
@@ -4166,10 +4166,10 @@ public class MapsParser extends Parser {
 		"\2\u020f\u0211\7-\2\2\u0210\u020a\3\2\2\2\u0210\u020e\3\2\2\2\u0211g\3"+
 		"\2\2\2\u0212\u0213\5\16\b\2\u0213\u0214\7\63\2\2\u0214\u0215\5f\64\2\u0215"+
 		"i\3\2\2\2\u0216\u0217\5n8\2\u0217\u0218\7/\2\2\u0218\u0219\5j\66\2\u0219"+
-		"\u022c\3\2\2\2\u021a\u021b\5\32\16\2\u021b\u021c\7/\2\2\u021c\u021d\5"+
-		"j\66\2\u021d\u022c\3\2\2\2\u021e\u021f\7\n\2\2\u021f\u0220\7%\2\2\u0220"+
+		"\u022c\3\2\2\2\u021a\u021b\5\30\r\2\u021b\u021c\7/\2\2\u021c\u021d\5j"+
+		"\66\2\u021d\u022c\3\2\2\2\u021e\u021f\7\n\2\2\u021f\u0220\7%\2\2\u0220"+
 		"\u0221\7/\2\2\u0221\u022c\5j\66\2\u0222\u0223\5n8\2\u0223\u0224\7/\2\2"+
-		"\u0224\u022c\3\2\2\2\u0225\u0226\5\32\16\2\u0226\u0227\7/\2\2\u0227\u022c"+
+		"\u0224\u022c\3\2\2\2\u0225\u0226\5\30\r\2\u0226\u0227\7/\2\2\u0227\u022c"+
 		"\3\2\2\2\u0228\u0229\7\n\2\2\u0229\u022a\7%\2\2\u022a\u022c\7/\2\2\u022b"+
 		"\u0216\3\2\2\2\u022b\u021a\3\2\2\2\u022b\u021e\3\2\2\2\u022b\u0222\3\2"+
 		"\2\2\u022b\u0225\3\2\2\2\u022b\u0228\3\2\2\2\u022ck\3\2\2\2\u022d\u0233"+

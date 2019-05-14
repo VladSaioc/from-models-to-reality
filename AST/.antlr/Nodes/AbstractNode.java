@@ -1,5 +1,7 @@
 package Nodes;
 
+import Visitors.*;
+
 public abstract class AbstractNode {
   public AbstractNode rightSib;
   public AbstractNode leftmostSib;
@@ -58,5 +60,9 @@ public abstract class AbstractNode {
       }
     }
     return this;
+  }
+
+  public void accept(BaseVisitor v) {
+    v.visit(this);
   }
 }

@@ -14,7 +14,7 @@ import Nodes.RecordNodes.*;
 import Nodes.StringNodes.*;
 import Nodes.TypeNodes.*;
 
-public class BuildAST extends MapsBaseVisitor<AbstractNode> {
+public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   //
   // Program visit operations
   //
@@ -183,10 +183,16 @@ public class BuildAST extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) {      
+  public AbstractNode visitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) {
+    int dimensions = 0;
+    MapsParser.ArrayDeclBracketsContext brckCtx = ctx.arrayDeclBrackets();
+    while(brckCtx != null) {
+      dimensions += 1;
+      brckCtx = brckCtx.arrayDeclBrackets();
+    }
     return new ArrayDeclNode(
       visitDataType(ctx.dataType()),
-      visitArrayDeclBrackets(ctx.arrayDeclBrackets()),
+      dimensions,
       visitArrayDeclIdentifier(ctx.arrayDeclIdentifier())
     );
   }
@@ -204,15 +210,6 @@ public class BuildAST extends MapsBaseVisitor<AbstractNode> {
         visitArrayLiteral(ctx.arrayLiteral())
       )
     : id;
-  }
-
-  public AbstractNode visitArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx) {      
-    return new ArrayDeclBracketNode()
-    .makeSiblings(
-      ctx.arrayDeclBrackets() == null
-      ? null
-      : visitArrayDeclBrackets(ctx.arrayDeclBrackets())
-    );
   }
 
   public AbstractNode visitArrayLiteral(MapsParser.ArrayLiteralContext ctx) {      
@@ -250,7 +247,7 @@ public class BuildAST extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitVariableDeclChain(MapsParser.VariableDeclChainContext ctx) {      
-    return visitVariableDeclaration(ctx.variableDeclaration())
+    return visitDeclaration(ctx.declaration())
     .makeSiblings(
       ctx.variableDeclChain() != null 
       ? visitVariableDeclChain(ctx.variableDeclChain())
@@ -684,8 +681,8 @@ public class BuildAST extends MapsBaseVisitor<AbstractNode> {
           : visitRecordAssignmentChain(ctx.recordAssignmentChain())
       );
     }
-    if(ctx.variableDeclaration() != null) {
-      return visitVariableDeclaration(ctx.variableDeclaration()).makeSiblings(
+    if(ctx.declaration() != null) {
+      return visitDeclaration(ctx.declaration()).makeSiblings(
         ctx.recordAssignmentChain() == null
           ? null
           : visitRecordAssignmentChain(ctx.recordAssignmentChain())

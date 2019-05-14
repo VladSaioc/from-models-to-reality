@@ -73,8 +73,8 @@ recordDeclarationBody : LCURLY variableDeclChain RCURLY ; // ast done
 recordDeclaration : RECORD var=IDENTIFIER ASSIGN recordDeclarationBody // ast done
 	| RECORD var=IDENTIFIER
 	;
-variableDeclChain : variableDeclaration SEMI variableDeclChain // ast done
-	| variableDeclaration SEMI
+variableDeclChain : declaration SEMI variableDeclChain // ast done
+	| declaration SEMI
 	;
 
 boolExpression : boolTerm OR boolExpression // ast done
@@ -166,10 +166,10 @@ recordAssignmentBody: LCURLY recordAssignmentChain RCURLY // ast done
 	;
 recordAssignment : lAccessor ASSIGN recordAssignmentBody ; // ast done
 recordAssignmentChain : assignment SEMI recordAssignmentChain // ast done
-	| variableDeclaration SEMI recordAssignmentChain
+	| declaration SEMI recordAssignmentChain
 	| DELETE var=IDENTIFIER SEMI recordAssignmentChain
 	| assignment SEMI
-	| variableDeclaration SEMI
+	| declaration SEMI
 	| DELETE var=IDENTIFIER SEMI
 	;
 
