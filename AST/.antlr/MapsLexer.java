@@ -1,4 +1,4 @@
-// Generated from c:\L&C\Project\from-models-to-reality\AST\Maps.g4 by ANTLR 4.7.1
+// Generated from ../Maps.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class MapsLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -33,39 +33,48 @@ public class MapsLexer extends Lexer {
 		"DEFAULT_MODE"
 	};
 
-	public static final String[] ruleNames = {
-		"BOOLEAN", "STRING", "DOUBLE", "INT", "MAP", "VOID", "RECORD", "DELETE", 
-		"ELSE", "FOR", "IF", "WHILE", "BREAK", "RETURN", "IMPORT", "EXPORT", "FROM", 
-		"WS", "INT_LITERAL", "DOUBLE_LITERAL", "BOOL_LITERAL", "STRING_LITERAL", 
-		"NULL", "JOIN_X", "JOIN_Y", "INSERT_X", "INSERT_Y", "DROP_X", "DROP_Y", 
-		"MASK", "MIRROR_X", "MIRROR_Y", "ROTATE_CW", "ROTATE_CCW", "IDENTIFIER", 
-		"MLPAREN", "MRPAREN", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LCURLY", 
-		"RCURLY", "HASH", "SEMI", "COMMA", "DOT", "COLON", "ASSIGN", "GT", "LT", 
-		"GTE", "LTE", "EQ", "NEQ", "AND", "OR", "NEG", "ADD", "SUB", "MUL", "DIV", 
-		"MOD", "CONCAT", "COMMENT", "LINE_COMMENT"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"BOOLEAN", "STRING", "DOUBLE", "INT", "MAP", "VOID", "RECORD", "DELETE", 
+			"ELSE", "FOR", "IF", "WHILE", "BREAK", "RETURN", "IMPORT", "EXPORT", 
+			"FROM", "WS", "INT_LITERAL", "DOUBLE_LITERAL", "BOOL_LITERAL", "STRING_LITERAL", 
+			"NULL", "JOIN_X", "JOIN_Y", "INSERT_X", "INSERT_Y", "DROP_X", "DROP_Y", 
+			"MASK", "MIRROR_X", "MIRROR_Y", "ROTATE_CW", "ROTATE_CCW", "IDENTIFIER", 
+			"MLPAREN", "MRPAREN", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LCURLY", 
+			"RCURLY", "HASH", "SEMI", "COMMA", "DOT", "COLON", "ASSIGN", "GT", "LT", 
+			"GTE", "LTE", "EQ", "NEQ", "AND", "OR", "NEG", "ADD", "SUB", "MUL", "DIV", 
+			"MOD", "CONCAT", "COMMENT", "LINE_COMMENT"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "'boolean'", "'string'", "'double'", "'int'", "'map'", "'void'", 
-		"'record'", "'delete'", "'else'", "'for'", "'if'", "'while'", "'break'", 
-		"'return'", "'import'", "'export'", "'from'", null, null, null, null, 
-		null, "'null'", "'joinX'", "'joinY'", "'insertX'", "'insertY'", "'dropX'", 
-		"'dropY'", "'mask'", "'mirrorX'", "'mirrorY'", "'rotateCw'", "'rotateCcw'", 
-		null, "':<'", "'>:'", "'('", "')'", "'['", "']'", "'{'", "'}'", "'#'", 
-		"';'", "','", "'.'", "':'", "'='", "'>'", "'<'", "'<='", "'>='", "'=='", 
-		"'!='", "'&&'", "'||'", "'!'", "'+'", "'-'", "'*'", "'/'", "'%'", "'++'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, "BOOLEAN", "STRING", "DOUBLE", "INT", "MAP", "VOID", "RECORD", "DELETE", 
-		"ELSE", "FOR", "IF", "WHILE", "BREAK", "RETURN", "IMPORT", "EXPORT", "FROM", 
-		"WS", "INT_LITERAL", "DOUBLE_LITERAL", "BOOL_LITERAL", "STRING_LITERAL", 
-		"NULL", "JOIN_X", "JOIN_Y", "INSERT_X", "INSERT_Y", "DROP_X", "DROP_Y", 
-		"MASK", "MIRROR_X", "MIRROR_Y", "ROTATE_CW", "ROTATE_CCW", "IDENTIFIER", 
-		"MLPAREN", "MRPAREN", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LCURLY", 
-		"RCURLY", "HASH", "SEMI", "COMMA", "DOT", "COLON", "ASSIGN", "GT", "LT", 
-		"GTE", "LTE", "EQ", "NEQ", "AND", "OR", "NEG", "ADD", "SUB", "MUL", "DIV", 
-		"MOD", "CONCAT", "COMMENT", "LINE_COMMENT"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "'boolean'", "'string'", "'double'", "'int'", "'map'", "'void'", 
+			"'record'", "'delete'", "'else'", "'for'", "'if'", "'while'", "'break'", 
+			"'return'", "'import'", "'export'", "'from'", null, null, null, null, 
+			null, "'null'", "'joinX'", "'joinY'", "'insertX'", "'insertY'", "'dropX'", 
+			"'dropY'", "'mask'", "'mirrorX'", "'mirrorY'", "'rotateCw'", "'rotateCcw'", 
+			null, "':<'", "'>:'", "'('", "')'", "'['", "']'", "'{'", "'}'", "'#'", 
+			"';'", "','", "'.'", "':'", "'='", "'>'", "'<'", "'<='", "'>='", "'=='", 
+			"'!='", "'&&'", "'||'", "'!'", "'+'", "'-'", "'*'", "'/'", "'%'", "'++'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, "BOOLEAN", "STRING", "DOUBLE", "INT", "MAP", "VOID", "RECORD", 
+			"DELETE", "ELSE", "FOR", "IF", "WHILE", "BREAK", "RETURN", "IMPORT", 
+			"EXPORT", "FROM", "WS", "INT_LITERAL", "DOUBLE_LITERAL", "BOOL_LITERAL", 
+			"STRING_LITERAL", "NULL", "JOIN_X", "JOIN_Y", "INSERT_X", "INSERT_Y", 
+			"DROP_X", "DROP_Y", "MASK", "MIRROR_X", "MIRROR_Y", "ROTATE_CW", "ROTATE_CCW", 
+			"IDENTIFIER", "MLPAREN", "MRPAREN", "LPAREN", "RPAREN", "LBRACK", "RBRACK", 
+			"LCURLY", "RCURLY", "HASH", "SEMI", "COMMA", "DOT", "COLON", "ASSIGN", 
+			"GT", "LT", "GTE", "LTE", "EQ", "NEQ", "AND", "OR", "NEG", "ADD", "SUB", 
+			"MUL", "DIV", "MOD", "CONCAT", "COMMENT", "LINE_COMMENT"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**

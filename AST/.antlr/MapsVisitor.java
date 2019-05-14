@@ -346,12 +346,6 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#funcDataType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncDataType(MapsParser.FuncDataTypeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MapsParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

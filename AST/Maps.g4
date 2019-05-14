@@ -186,15 +186,14 @@ assignment : nonRecordAssignment // AST Done
   ;
 nonRecordAssignment : lAccessor ASSIGN expression ;	// ast done
 
-funcDataType : type=(BOOLEAN | STRING | DOUBLE | INT | MAP | RECORD);
-functionDefinition : funcDataType name=IDENTIFIER functionHeader functionReturnBody
+functionDefinition : dataType name=IDENTIFIER functionHeader functionReturnBody
   | VOID name=IDENTIFIER functionHeader block 
   ;		    
 functionHeader : LPAREN functionDeclParams RPAREN
 	| LPAREN RPAREN
 	;
-functionDeclParams : funcDataType name=IDENTIFIER COMMA functionDeclParams
-  | funcDataType name=IDENTIFIER
+functionDeclParams : dataType name=IDENTIFIER COMMA functionDeclParams
+  | dataType name=IDENTIFIER
   ;
 functionReturnBody : LCURLY statement returnStatement RCURLY ;
 returnStatement : RETURN expression SEMI ;

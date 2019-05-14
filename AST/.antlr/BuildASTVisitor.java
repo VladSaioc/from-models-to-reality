@@ -782,25 +782,6 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitFuncDataType(MapsParser.FuncDataTypeContext ctx) {      
-    switch (ctx.type.getType()) {
-      case MapsLexer.INT:
-        return new TypeNode("int");
-      case MapsLexer.BOOLEAN:
-        return new TypeNode("boolean");
-      case MapsLexer.DOUBLE:
-        return new TypeNode("double");
-      case MapsLexer.MAP:
-        return new TypeNode("map");
-      case MapsLexer.RECORD:
-        return new TypeNode("record");
-      case MapsLexer.STRING:
-        return new TypeNode("string");
-      default:
-        throw new Error("Unrecognized function data type: " + ctx.type.getText());
-    }
-  }
-
   public AbstractNode visitFunctionHeader(MapsParser.FunctionHeaderContext ctx) {      
     return new FunctionHeaderNode(
       ctx.functionDeclParams() == null
@@ -812,7 +793,7 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx) {      
     return new FunctionParamNode(
       ctx.name.getText(), 
-      visitFuncDataType(ctx.funcDataType())
+      visitDataType(ctx.dataType())
     ).makeSiblings(
       ctx.functionDeclParams() == null
       ? null
@@ -823,9 +804,9 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) {      
     return new FunctionDeclNode(
       new IdentifierNode(ctx.name.getText()),
-      ctx.funcDataType() == null
+      ctx.dataType() == null
       ? null
-      : visitFuncDataType(ctx.funcDataType()), 
+      : visitDataType(ctx.dataType()), 
       visitFunctionHeader(ctx.functionHeader()), 
       new FunctionBodyNode(
         ctx.functionReturnBody() == null

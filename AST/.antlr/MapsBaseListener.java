@@ -687,18 +687,6 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncDataType(MapsParser.FuncDataTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncDataType(MapsParser.FuncDataTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
