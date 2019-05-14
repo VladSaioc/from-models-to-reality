@@ -43,7 +43,7 @@ public class SymbolTableContainer
 		while (!found && !mainTable.isEmpty())
 		{
 			tempTable.push(mainTable.pop());
-			found=tempTable.peek().checkFunctionType(name, paramTypes, type);
+			//found=tempTable.peek().checkFunctionType(name, paramTypes, type);
 		}
 		while (!tempTable.isEmpty())
 		{
@@ -88,11 +88,11 @@ public class SymbolTableContainer
 		}
 	}
 	
-	public void addArraySymbol(String name, String type, int count)
+	/*public void addArraySymbol(String name, String type, int count)
 	{
 		mainTable.peek().addArraySymbol(name, type, count);
 	}
-	
+	*/
 	public void addRecordSymbol(String name, String type, ArrayList<RecordDetails> record)
 	{
 		

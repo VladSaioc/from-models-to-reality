@@ -23,7 +23,7 @@ public class TestAst {
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         MapsParser parser = new MapsParser(tokenStream);
         AbstractNode ast = new BuildASTVisitor().visitProgram(parser.program());
-        new BuildSymbolTable().visit(ast);
+        //new BuildSymbolTable().visit(ast);
       }
       catch(IOException error) {
 

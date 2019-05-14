@@ -97,7 +97,7 @@ public class TypeChecker extends BaseVisitor
 			id=(IdentifierNode)ass.getIdentifier();
 		}
 		name=id.getValue();
-		symbolTable.addArraySymbol(name, type, bracketcount);
+		//symbolTable.addArraySymbol(name, type, bracketcount);
 		getNextNode(node).accept(this);
 	}
 	
