@@ -147,4 +147,6 @@ public abstract class BaseVisitor {
 //  public abstract void visit(FunctionDeclNode n);
 //
 //  public abstract void visit(FunctionBodyNode n);
+
+  public abstract AbstractNode getNextNode(AbstractNode n);
 }
