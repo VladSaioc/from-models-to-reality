@@ -34,35 +34,41 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExports(MapsParser.ExportsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#indexedProp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndexedProp(MapsParser.IndexedPropContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#propChain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropChain(MapsParser.PropChainContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#lAccessor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLAccessor(MapsParser.LAccessorContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MapsParser#rAccessor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitRAccessor(MapsParser.RAccessorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#functionExpressionChain}.
+	 * Visit a parse tree produced by {@link MapsParser#functions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx);
+	T visitFunctions(MapsParser.FunctionsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MapsParser#functionDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDef(MapsParser.FunctionDefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MapsParser#functionStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionStatement(MapsParser.FunctionStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MapsParser#functionDefParams}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDefParams(MapsParser.FunctionDefParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MapsParser#primitiveType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimitiveType(MapsParser.PrimitiveTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#functionParams}.
 	 * @param ctx the parse tree
@@ -82,11 +88,11 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(MapsParser.DeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#variableDeclaration}.
+	 * Visit a parse tree produced by {@link MapsParser#primitiveDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariableDeclaration(MapsParser.VariableDeclarationContext ctx);
+	T visitPrimitiveDeclaration(MapsParser.PrimitiveDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#variableChain}.
 	 * @param ctx the parse tree
@@ -94,59 +100,11 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariableChain(MapsParser.VariableChainContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#arrayLiteralChain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#arrayLiteral}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayLiteral(MapsParser.ArrayLiteralContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#arrayDeclBrackets}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#arrayDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#arrayDeclIdentifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MapsParser#mapDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMapDeclaration(MapsParser.MapDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#recordDeclarationBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#recordDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRecordDeclaration(MapsParser.RecordDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#variableDeclChain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableDeclChain(MapsParser.VariableDeclChainContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#boolExpression}.
 	 * @param ctx the parse tree
@@ -159,12 +117,6 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBoolTerm(MapsParser.BoolTermContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#negChain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNegChain(MapsParser.NegChainContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#boolFactor}.
 	 * @param ctx the parse tree
@@ -244,12 +196,6 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUnaryMapOperator(MapsParser.UnaryMapOperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#unaryMapOperand}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MapsParser#unaryMapOperation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -274,23 +220,11 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMapExpression(MapsParser.MapExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#mapQueryChain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMapQueryChain(MapsParser.MapQueryChainContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MapsParser#mapQuery}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMapQuery(MapsParser.MapQueryContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#mapQueryPredicate}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#coordinateChain}.
 	 * @param ctx the parse tree
@@ -304,29 +238,23 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCoordinates(MapsParser.CoordinatesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#mapQueryAssignment}.
+	 * Visit a parse tree produced by {@link MapsParser#mapPropsAssignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx);
+	T visitMapPropsAssignment(MapsParser.MapPropsAssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#recordAssignmentBody}.
+	 * Visit a parse tree produced by {@link MapsParser#mapPropsBody}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx);
+	T visitMapPropsBody(MapsParser.MapPropsBodyContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#recordAssignment}.
+	 * Visit a parse tree produced by {@link MapsParser#mapPropsChain}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRecordAssignment(MapsParser.RecordAssignmentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#recordAssignmentChain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx);
+	T visitMapPropsChain(MapsParser.MapPropsChainContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#expression}.
 	 * @param ctx the parse tree
@@ -340,47 +268,17 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(MapsParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#nonRecordAssignment}.
+	 * Visit a parse tree produced by {@link MapsParser#primitiveAssignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx);
+	T visitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#functionDefinition}.
+	 * Visit a parse tree produced by {@link MapsParser#mapAssignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#functionHeader}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionHeader(MapsParser.FunctionHeaderContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#functionDeclParams}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#functionReturnBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionReturnBody(MapsParser.FunctionReturnBodyContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#returnStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReturnStatement(MapsParser.ReturnStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#dataType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDataType(MapsParser.DataTypeContext ctx);
+	T visitMapAssignment(MapsParser.MapAssignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#ifStatement}.
 	 * @param ctx the parse tree

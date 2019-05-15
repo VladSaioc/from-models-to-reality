@@ -10,25 +10,64 @@ import Nodes.ControlStatements.*;
 import Nodes.FunctionNodes.*;
 import Nodes.MapNodes.*;
 import Nodes.ImpexNodes.*;
-import Nodes.RecordNodes.*;
 import Nodes.StringNodes.*;
 import Nodes.TypeNodes.*;
 
 public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
-  //
-  // Program visit operations
-  //
   public AbstractNode visitProgram(MapsParser.ProgramContext ctx) {    
     return new ProgramNode(
+      visitFunctions(ctx.functions()),
       visitImports(ctx.imports()),
       visitStatement(ctx.statement()),
       visitExports(ctx.exports())
     );
   }
 
-  //
-  // Import/Export visit operations
-  //
+  public AbstractNode visitFunctions(MapsParser.FunctionsContext ctx) {
+    return ctx.functions() == null
+    ? null
+    : visitFunctionDef(ctx.functionDef())
+      .makeSiblings(
+        visitFunctions(ctx.functions())
+      );
+  }
+
+  public AbstractNode visitFunctionDefParams(MapsParser.FunctionDefParamsContext ctx) {      
+    return new FunctionParamNode(
+      ctx.name.getText(), 
+      ctx.primitiveType().getText()
+    ).makeSiblings(
+      ctx.functionDefParams() == null
+      ? null
+      : visitFunctionDefParams(ctx.functionDefParams())
+    );
+  }
+
+  public AbstractNode visitFunctionStatement(MapsParser.FunctionStatementContext ctx) {
+    return ctx.primitiveAssignment() != null
+    ? visitPrimitiveAssignment(ctx.primitiveAssignment())
+      .makeSiblings(visitFunctionStatement(ctx.functionStatement()))
+    : ctx.primitiveDeclaration() != null
+    ? visitPrimitiveDeclaration(ctx.primitiveDeclaration())
+      .makeSiblings(visitFunctionStatement(ctx.functionStatement()))
+    : ctx.expression() != null
+    ? visitExpression(ctx.expression())
+      .makeSiblings(visitFunctionStatement(ctx.functionStatement()))
+    : null;
+  }
+
+  public AbstractNode visitFunctionDef(MapsParser.FunctionDefContext ctx) {
+    return new FunctionDefNode(
+      ctx.name.getText(),
+      ctx.primitiveType().getText(), 
+      visitFunctionDefParams(ctx.functionDefParams()),
+      visitFunctionStatement(ctx.functionStatement()),
+      new FunctionReturnNode(
+        visitExpression(ctx.expression())
+      )
+    );
+  }
+
   public AbstractNode visitImports(MapsParser.ImportsContext ctx) {      
     return ctx.impexVarChain() == null
       ? null 
@@ -57,112 +96,42 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  //
-  // Accessor visitors.
-  //
-
-  public AbstractNode visitIndexedProp(MapsParser.IndexedPropContext ctx) {      
-    if(ctx.indexedProp() == null) {
-      return null;
-    }
-    return new IndexNode(
-      visitArithmeticExpression(ctx.arithmeticExpression())
-    ).makeSiblings(
-      visitIndexedProp(ctx.indexedProp())
-    );
-  }
-
-  public AbstractNode visitPropChain(MapsParser.PropChainContext ctx) {      
-    return new PropertyNode(
-        new IdentifierNode(ctx.name.getText()),
-        visitIndexedProp(ctx.indexedProp()),
-        ctx.propChain() == null
-        ? null
-        : visitPropChain(ctx.propChain())
-      );
-  }
-
-  public AbstractNode visitLAccessor(MapsParser.LAccessorContext ctx) {      
-    return new LAccessorNode(
-      new IdentifierNode(ctx.name.getText()),
-      visitIndexedProp(ctx.indexedProp()),
-      ctx.propChain() == null
-      ? null
-      : visitPropChain(ctx.propChain())
-    );
-  }
-
   public AbstractNode visitRAccessor(MapsParser.RAccessorContext ctx) {      
-    return new RAccessorNode(
-      visitFunctionCall(ctx.functionCall()),
-      visitIndexedProp(ctx.indexedProp()),
-      ctx.propChain() == null
-      ? null
-      : visitPropChain(ctx.propChain())
-    );
+    return ctx.functionCall() != null
+    ? visitFunctionCall(ctx.functionCall())
+    : new IdentifierNode(ctx.name.getText());
   }
 
   public AbstractNode visitFunctionCall(MapsParser.FunctionCallContext ctx) {      
-    return ctx.functionParams() == null
-    ? new IdentifierNode(ctx.name.getText())
-    : new FunctionCallNode(
-        new IdentifierNode(ctx.name.getText()), 
+    return new FunctionCallNode(
+        ctx.name.getText(),
         visitFunctionParams(ctx.functionParams())
       );
   }
 
-  public AbstractNode visitFunctionParams(MapsParser.FunctionParamsContext ctx) {      
-    return ctx.functionExpressionChain() == null
-    ? null
-    : visitFunctionExpressionChain(ctx.functionExpressionChain());
-  }
-
-  public AbstractNode visitFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx) {      
+  public AbstractNode visitFunctionParams(MapsParser.FunctionParamsContext ctx) {
     return visitExpression(ctx.expression())
     .makeSiblings(
-      ctx.functionExpressionChain() == null
+      ctx.functionParams() == null
       ? null
-      : visitFunctionExpressionChain(ctx.functionExpressionChain())
+      : visitFunctionParams(ctx.functionParams())
     );
   }
 
-  //
-  // Declaration visitors.
-  //
-
   public AbstractNode visitDeclaration(MapsParser.DeclarationContext ctx) {      
-    if (ctx.variableDeclaration() != null) {
-      return visitVariableDeclaration(ctx.variableDeclaration());
-    } if (ctx.arrayDeclaration() != null) {
-      return visitArrayDeclaration(ctx.arrayDeclaration());
+    if (ctx.primitiveDeclaration() != null) {
+      return visitPrimitiveDeclaration(ctx.primitiveDeclaration());
     } if (ctx.mapDeclaration() != null) {
       return visitMapDeclaration(ctx.mapDeclaration());
-    } if (ctx.recordDeclaration() != null) {
-      return visitRecordDeclaration(ctx.recordDeclaration());
     }
     throw new Error("Unrecognized declaration type: " + ctx.getText());
   }
 
-  public AbstractNode visitVariableDeclaration(MapsParser.VariableDeclarationContext ctx) {      
+  public AbstractNode visitPrimitiveDeclaration(MapsParser.PrimitiveDeclarationContext ctx) {      
     return new PrimitiveDeclarationNode(
-      visitDataType(ctx.dataType()),
+      ctx.primitiveType().getText(),
       visitVariableChain(ctx.variableChain())
     );
-  }
-
-  public AbstractNode visitDataType(MapsParser.DataTypeContext ctx) {      
-    switch (ctx.type.getType()) {
-      case MapsLexer.BOOLEAN:
-        return new TypeNode("boolean");
-      case MapsLexer.DOUBLE:
-        return new TypeNode("double");
-      case MapsLexer.STRING:
-        return new TypeNode("string");
-      case MapsLexer.INT:
-        return new TypeNode("int");
-      default:
-        throw new Error("Invalid data type " + ctx.type.getText());
-    }
   }
 
   public AbstractNode visitVariableChain(MapsParser.VariableChainContext ctx) {      
@@ -174,7 +143,7 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
         : visitVariableChain(ctx.variableChain())
       )
     : new AssignNode(
-        new IdentifierNode(ctx.var.getText()),
+        ctx.var.getText(),
         visitExpression(ctx.expression())
       ).makeSiblings(
         ctx.variableChain() == null
@@ -183,84 +152,32 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
       );
   }
 
-  public AbstractNode visitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) {
-    int dimensions = 0;
-    MapsParser.ArrayDeclBracketsContext brckCtx = ctx.arrayDeclBrackets();
-    while(brckCtx != null) {
-      dimensions += 1;
-      brckCtx = brckCtx.arrayDeclBrackets();
-    }
-    return new ArrayDeclNode(
-      visitDataType(ctx.dataType()),
-      dimensions,
-      visitArrayDeclIdentifier(ctx.arrayDeclIdentifier())
-    );
-  }
-
-  public AbstractNode visitArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx) {      
-    AbstractNode id = new IdentifierNode(ctx.var.getText()); 
-    return ctx.expression() != null
-    ? new AssignNode(
-        id,
-        visitExpression(ctx.expression())
-      )
-    : ctx.arrayLiteral() != null
-    ? new AssignNode(
-        id,
-        visitArrayLiteral(ctx.arrayLiteral())
-      )
-    : id;
-  }
-
-  public AbstractNode visitArrayLiteral(MapsParser.ArrayLiteralContext ctx) {      
-    return new ArrayLiteralNode(
-      ctx.arrayLiteralChain() == null 
-      ? null
-      : visitArrayLiteralChain(ctx.arrayLiteralChain())
-    );
-  }
-
-  public AbstractNode visitArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx) {      
-    return visitExpression(ctx.expression())
-    .makeSiblings(
-      ctx.arrayLiteralChain() == null
-      ? null
-      : visitArrayLiteralChain(ctx.arrayLiteralChain())
-    );
-  }
-
   public AbstractNode visitMapDeclaration(MapsParser.MapDeclarationContext ctx) {
     return new MapDeclarationNode(
-      new IntegerNode(Integer.parseInt(ctx.sizeX.getText())),
-      new IntegerNode(Integer.parseInt(ctx.sizeY.getText())),
-      new IdentifierNode(ctx.var.getText()),
-      ctx.recordDeclarationBody() == null
+      ctx.var.getText(),
+      visitArithmeticExpression(ctx.arithmeticExpression(0)),
+      visitArithmeticExpression(ctx.arithmeticExpression(1)),
+      ctx.mapPropsBody() == null
       ? null
-      : visitRecordDeclarationBody(ctx.recordDeclarationBody())
+      : visitMapPropsBody(ctx.mapPropsBody())
     );
   }
 
-  public AbstractNode visitRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx) {      
-    return new RecordDeclBodyNode(
-      visitVariableDeclChain(ctx.variableDeclChain())
+  public AbstractNode visitMapPropsBody(MapsParser.MapPropsBodyContext ctx) {      
+    return new MapPropsAssignBodyNode(
+      visitMapPropsChain(ctx.mapPropsChain())
     );
   }
 
-  public AbstractNode visitVariableDeclChain(MapsParser.VariableDeclChainContext ctx) {      
-    return visitDeclaration(ctx.declaration())
-    .makeSiblings(
-      ctx.variableDeclChain() != null 
-      ? visitVariableDeclChain(ctx.variableDeclChain())
+  public AbstractNode visitMapPropsChain(MapsParser.MapPropsChainContext ctx) {      
+    return new MapPropsAssignPropNode(
+      ctx.primitiveType().getText(),
+      ctx.name.getText(),
+      visitExpression(ctx.expression()) 
+    ).makeSiblings(
+      ctx.mapPropsChain() != null 
+      ? visitMapPropsChain(ctx.mapPropsChain())
       : null
-    );
-  }
-
-  public AbstractNode visitRecordDeclaration(MapsParser.RecordDeclarationContext ctx) {      
-    return new RecordDeclNode(
-      new IdentifierNode(ctx.var.getText()),
-      ctx.recordDeclarationBody() == null
-      ? null
-      : visitRecordDeclarationBody(ctx.recordDeclarationBody())
     );
   }
 
@@ -282,45 +199,20 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     : visitBoolFactor(ctx.boolFactor());
   }
 
-  public AbstractNode visitNegChain(MapsParser.NegChainContext ctx) {      
-    return ctx.negChain() != null
-    ? new BooleanNegationNode()
-      .makeSiblings(
-        visitNegChain(ctx.negChain())
-      )
-    : null;
-  }
-
-  public AbstractNode visitBoolFactor(MapsParser.BoolFactorContext ctx) {      
-    if(ctx.comparisonExpression() != null) {
-      return visitComparisonExpression(ctx.comparisonExpression());
-    }
-    AbstractNode negChain = visitNegChain(ctx.negChain());
-    if(ctx.boolExpression() != null) {
-      return negChain == null
-      ? visitBoolExpression(ctx.boolExpression())
-      :  new BooleanNegateNode(
+  public AbstractNode visitBoolFactor(MapsParser.BoolFactorContext ctx) {
+    if(ctx.neg != null) {
+      return new BooleanNegateNode(
         visitBoolExpression(ctx.boolExpression())
-      ).addOperation(negChain);
+      );
     }
-    if(ctx.rAccessor() != null) {
-      return negChain == null
-        ? visitRAccessor(ctx.rAccessor())
-        : new BooleanNegateNode(
-        visitRAccessor(ctx.rAccessor())
-      ).addOperation(negChain);
-    }
-    if(ctx.value != null) {
-      return negChain == null
-        ? new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()))
-        : new BooleanNegateNode(
-        new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()))
-      ).addOperation(negChain);
-    }
+    if(ctx.comparisonExpression() != null) return visitComparisonExpression(ctx.comparisonExpression());
+    if(ctx.boolExpression() != null) return visitBoolExpression(ctx.boolExpression());
+    if(ctx.rAccessor() != null) return visitRAccessor(ctx.rAccessor());
+    if(ctx.value != null) return new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()));
     throw new Error("Unrecognized boolean factor: " + ctx.getText());
   }
 
-  public AbstractNode visitComparisonExpression(MapsParser.ComparisonExpressionContext ctx) {      
+  public AbstractNode visitComparisonExpression(MapsParser.ComparisonExpressionContext ctx) {
     switch (ctx.op.getType()) {
       case MapsLexer.GT: 
         return new ComparisonGtNode(
@@ -358,46 +250,16 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitComparisonTerm(MapsParser.ComparisonTermContext ctx) {      
-    if(ctx.arithmeticExpression() != null) {
-      return visitArithmeticExpression(ctx.arithmeticExpression());
-    }
-    if(ctx.stringExpression() != null) {
-      return visitStringExpression(ctx.stringExpression());
-    }
-    AbstractNode negChain = visitNegChain(ctx.negChain());
-    if(ctx.value != null) {
-      return negChain != null
-        ? new BooleanNegateNode(
-            new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()))
-          ).addOperation(negChain)
-        : new BooleanLiteralNode(Boolean.parseBoolean(ctx.value.getText()));
-    }
-    if(ctx.rAccessor() != null) {
-      return negChain != null
-        ? new BooleanNegateNode(
-            visitRAccessor(ctx.rAccessor())
-          ).addOperation(negChain)
-        : visitRAccessor(ctx.rAccessor());
-    }
-    if(ctx.boolExpression() != null) {
-      return negChain != null
-        ? new BooleanNegateNode(visitBoolExpression(ctx.boolExpression()))
-        .addOperation(negChain)
-        : visitBoolExpression(ctx.boolExpression());
-    }
+    if(ctx.arithmeticExpression() != null) return visitArithmeticExpression(ctx.arithmeticExpression());
+    if(ctx.stringExpression() != null) return visitStringExpression(ctx.stringExpression());
+    if(ctx.boolExpression() != null) return visitBoolExpression(ctx.boolExpression());
     throw new Error("Unrecognized comparison term: " + ctx.getText());
   }
 
   public AbstractNode visitStringTerm(MapsParser.StringTermContext ctx) {      
-    if(ctx.stringExpression() != null) {
-      return visitStringExpression(ctx.stringExpression());
-    }
-    if(ctx.rAccessor() != null) {
-      return visitRAccessor(ctx.rAccessor());
-    }
-    if(ctx.value != null) {
-      return new StringLiteralNode(ctx.value.getText());
-    }
+    if(ctx.stringExpression() != null) return visitStringExpression(ctx.stringExpression());
+    if(ctx.rAccessor() != null) return visitRAccessor(ctx.rAccessor());
+    if(ctx.value != null) return new StringLiteralNode(ctx.value.getText());
     throw new Error("Unrecognized string term: " + ctx.getText());
   }
 
@@ -410,22 +272,11 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     : visitStringTerm(ctx.stringTerm());
   }
 
-  //
-  // Arithmetic visitors.
-  //
-
-  public AbstractNode visitArithmeticFactor(MapsParser.ArithmeticFactorContext ctx) {      
-    if(ctx.arithmeticExpression() != null) {
-      return visitArithmeticExpression(ctx.arithmeticExpression());
-    } if(ctx.rAccessor() != null) {
-      return visitRAccessor(ctx.rAccessor());
-    } if(ctx.value != null) {
-      if(ctx.value.getType() == MapsLexer.INT_LITERAL) {
-        return new IntegerNode(Integer.parseInt(ctx.value.getText()));
-      } else if (ctx.value.getType() == MapsLexer.DOUBLE_LITERAL) {
-        return new DoubleNode(Double.parseDouble(ctx.value.getText()));
-      }
-    }
+  public AbstractNode visitArithmeticFactor(MapsParser.ArithmeticFactorContext ctx) {
+    if(ctx.negated != null) return new ArithmeticNegateNode(visitArithmeticExpression(ctx.arithmeticExpression()));
+    if(ctx.arithmeticExpression() != null) return visitArithmeticExpression(ctx.arithmeticExpression());
+    if(ctx.rAccessor() != null) return visitRAccessor(ctx.rAccessor());
+    if(ctx.value != null) return new IntegerNode(Integer.parseInt(ctx.value.getText()));
     throw new Error("Unrecognized arithmetic factor: " + ctx.getText());
   }
 
@@ -472,10 +323,6 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     }
     throw new Error("Unrecognized operator: " + ctx.op.getText());
   }
-
-  //
-  // Map visitors.
-  //
 
   public AbstractNode visitMapExpression(MapsParser.MapExpressionContext ctx) {      
     return visitJoinExpression(ctx.joinExpression());
@@ -529,41 +376,22 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitUnaryMapOperation(MapsParser.UnaryMapOperationContext ctx) {      
-    return ctx.unaryMapOperator() == null
-    ? visitUnaryMapOperand(ctx.unaryMapOperand())
-    : new MapUnaryOperationNode(
-        visitUnaryMapOperand(ctx.unaryMapOperand())
-      ).addOperation(
-        visitUnaryMapOperator(ctx.unaryMapOperator())
-      );
-  }
-
-  public AbstractNode visitUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx) {      
-    if(ctx.joinExpression() != null) {
-      return visitJoinExpression(ctx.joinExpression());
-    }
-    if(ctx.rAccessor() != null) {
-      return visitRAccessor(ctx.rAccessor());
-    }
-    throw new Error("Unrecognized unary map operand: " + ctx.getText());
+    return ctx.unaryMapOperator() != null
+    ? ((MapUnaryOperationNode) visitUnaryMapOperator(ctx.unaryMapOperator()))
+      .setInner(
+        visitJoinExpression(ctx.joinExpression())
+      )
+    : ctx.joinExpression() != null
+    ? visitJoinExpression(ctx.joinExpression()) 
+    : new IdentifierNode(ctx.name.getText());
   }
 
   public AbstractNode visitUnaryMapOperator(MapsParser.UnaryMapOperatorContext ctx) {      
     if(ctx.mapUnaryIndexedOperator() != null) {
-      return visitMapUnaryIndexedOperator(ctx.mapUnaryIndexedOperator())
-        .makeSiblings(
-          ctx.unaryMapOperator() == null
-            ? null
-            : visitUnaryMapOperator(ctx.unaryMapOperator())
-        );
+      return visitMapUnaryIndexedOperator(ctx.mapUnaryIndexedOperator());
     }
     if(ctx.mapUnaryUnindexedOperator() != null) {
-      return visitMapUnaryUnindexedOperator(ctx.mapUnaryUnindexedOperator())
-      .makeSiblings(
-        ctx.unaryMapOperator() == null
-        ? null
-        : visitUnaryMapOperator(ctx.unaryMapOperator())
-      );
+      return visitMapUnaryUnindexedOperator(ctx.mapUnaryUnindexedOperator());
     }
     throw new Error("Unrecognized unary map operator: " + ctx.getText());
   }
@@ -599,30 +427,12 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  //
-  // Map query visitors.
-  //
-
   public AbstractNode visitMapQuery(MapsParser.MapQueryContext ctx) {      
-    return ctx.mapQueryChain() == null
+    return ctx.coordinateChain() == null
     ? null
-    : visitMapQueryChain(ctx.mapQueryChain());
-  }
-
-  public AbstractNode visitMapQueryChain(MapsParser.MapQueryChainContext ctx) {      
-    return visitMapQueryPredicate(ctx.mapQueryPredicate())
-    .makeSiblings(
-      ctx.mapQueryChain() == null
-      ? null
-      : visitMapQueryChain(ctx.mapQueryChain())
-    );
-  }
-
-  public AbstractNode visitMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx) {      
-    return new MapQueryPredicateNode(
-      visitBoolExpression(ctx.boolExpression()), 
-      visitCoordinateChain(ctx.coordinateChain())
-    );
+    : new MapQueryNode( 
+        visitCoordinateChain(ctx.coordinateChain())
+      );
   }
 
   public AbstractNode visitCoordinateChain(MapsParser.CoordinateChainContext ctx) {      
@@ -640,62 +450,29 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitAssignment(MapsParser.AssignmentContext ctx) {      
-    if(ctx.mapQueryAssignment() != null) {
-      return visitMapQueryAssignment(ctx.mapQueryAssignment());
-    } if(ctx.recordAssignment() != null) {
-      return visitRecordAssignment(ctx.recordAssignment());
-    } if (ctx.nonRecordAssignment() != null) {
-      return visitNonRecordAssignment(ctx.nonRecordAssignment());
+    if(ctx.mapPropsAssignment() != null) {
+      return visitMapPropsAssignment(ctx.mapPropsAssignment());
+    } if(ctx.mapAssignment() != null) {
+      return visitMapAssignment(ctx.mapAssignment());
+    } if (ctx.primitiveAssignment() != null) {
+      return visitPrimitiveAssignment(ctx.primitiveAssignment());
     }
     throw new Error("Unrecognized assignment: " + ctx.getText());
   }
 
-  public AbstractNode visitMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx) {      
-    return new MapQueryAssignmentNode(
-      visitLAccessor(ctx.lAccessor()), 
+  public AbstractNode visitMapAssignment(MapsParser.MapAssignmentContext ctx) {
+    return new MapAssignNode(
+      ctx.name.getText(),
+      visitMapExpression(ctx.mapExpression())
+    );
+  }
+
+  public AbstractNode visitMapPropsAssignment(MapsParser.MapPropsAssignmentContext ctx) {
+    return new MapPropsAssignNode(
+      ctx.name.getText(), 
       visitMapQuery(ctx.mapQuery()), 
-      visitRecordAssignmentBody(ctx.recordAssignmentBody())
+      visitMapPropsBody(ctx.mapPropsBody())
     );
-  }
-
-  public AbstractNode visitRecordAssignment(MapsParser.RecordAssignmentContext ctx) {      
-    return new RecordAssignNode(
-      visitLAccessor(ctx.lAccessor()),
-      visitRecordAssignmentBody(ctx.recordAssignmentBody())
-    );
-  }
-
-  public AbstractNode visitRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx) {      
-    return new RecordAssignBodyNode(
-      ctx.recordAssignmentChain() == null
-      ? null
-      : visitRecordAssignmentChain(ctx.recordAssignmentChain())
-    );
-  }
-
-  public AbstractNode visitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx) {      
-    if(ctx.assignment() != null) {
-      return visitAssignment(ctx.assignment()).makeSiblings(
-        ctx.recordAssignmentChain() == null
-          ? null
-          : visitRecordAssignmentChain(ctx.recordAssignmentChain())
-      );
-    }
-    if(ctx.declaration() != null) {
-      return visitDeclaration(ctx.declaration()).makeSiblings(
-        ctx.recordAssignmentChain() == null
-          ? null
-          : visitRecordAssignmentChain(ctx.recordAssignmentChain())
-      );
-    }
-    if(ctx.DELETE() != null) {
-      return new RecordDeleteNode(new IdentifierNode(ctx.var.getText())).makeSiblings(
-        ctx.recordAssignmentChain() == null
-          ? null
-          : visitRecordAssignmentChain(ctx.recordAssignmentChain())
-      );
-    }
-    throw new Error("Unrecognized record property operation: " + ctx.getText());
   }
 
   public AbstractNode visitExpression(MapsParser.ExpressionContext ctx) {      
@@ -703,8 +480,6 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
       return visitArithmeticExpression(ctx.arithmeticExpression());
     } if(ctx.boolExpression() != null) {
       return visitBoolExpression(ctx.boolExpression());
-    } if(ctx.mapExpression() != null) {
-      return visitMapExpression(ctx.mapExpression());
     } if(ctx.comparisonExpression() != null) {
       return visitComparisonExpression(ctx.comparisonExpression());
     } if(ctx.stringExpression() != null) {
@@ -712,48 +487,38 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     } throw new Error("Unrecognized expression: " + ctx.getText());
   }
 
-  public AbstractNode visitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx) {      
+  public AbstractNode visitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx) {      
     return new AssignNode(
-      visitLAccessor(ctx.lAccessor()), 
+      ctx.name.getText(), 
       visitExpression(ctx.expression())
     );
   }
 
-  public AbstractNode visitStatement(MapsParser.StatementContext ctx) {      
+  public AbstractNode visitStatement(MapsParser.StatementContext ctx) {
     if(ctx.declaration() != null) {
       return visitDeclaration(ctx.declaration())
-        .makeSiblings(
-          ctx.statement() == null
-          ? null
-          : visitStatement(ctx.statement())
-        );
+      .makeSiblings(
+        visitStatement(ctx.statement())
+      );
     } if (ctx.expression() != null) {
       return visitExpression(ctx.expression())
       .makeSiblings(
-        ctx.statement() == null
-        ? null
-        : visitStatement(ctx.statement())
+        visitStatement(ctx.statement())
       );
-    } if (ctx.functionDefinition() != null) {
-      return visitFunctionDefinition(ctx.functionDefinition())
+    } if(ctx.mapExpression() != null) {
+      return visitMapExpression(ctx.mapExpression())
       .makeSiblings(
-        ctx.statement() == null
-        ? null
-        : visitStatement(ctx.statement())
+        visitStatement(ctx.statement())
       );
     } if (ctx.ifStatement() != null) {
       return visitIfStatement(ctx.ifStatement())
       .makeSiblings(
-        ctx.statement() == null
-        ? null
-        : visitStatement(ctx.statement())
+        visitStatement(ctx.statement())
       );
     } if (ctx.whileStatement() != null) {
       return visitWhileStatement(ctx.whileStatement())
       .makeSiblings(
-        ctx.statement() == null
-        ? null
-        : visitStatement(ctx.statement())
+        visitStatement(ctx.statement())
       );
     }
     return null;
@@ -779,45 +544,6 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitBlock(MapsParser.BlockContext ctx) {      
     return new BlockNode(
       visitStatement(ctx.statement())
-    );
-  }
-
-  public AbstractNode visitFunctionHeader(MapsParser.FunctionHeaderContext ctx) {      
-    return new FunctionHeaderNode(
-      ctx.functionDeclParams() == null
-      ? null
-      : visitFunctionDeclParams(ctx.functionDeclParams())
-    );
-  }
-
-  public AbstractNode visitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx) {      
-    return new FunctionParamNode(
-      ctx.name.getText(), 
-      visitDataType(ctx.dataType())
-    ).makeSiblings(
-      ctx.functionDeclParams() == null
-      ? null
-      : visitFunctionDeclParams(ctx.functionDeclParams())
-    );
-  }
-
-  public AbstractNode visitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) {      
-    return new FunctionDeclNode(
-      new IdentifierNode(ctx.name.getText()),
-      ctx.dataType() == null
-      ? null
-      : visitDataType(ctx.dataType()), 
-      visitFunctionHeader(ctx.functionHeader()), 
-      new FunctionBodyNode(
-        ctx.functionReturnBody() == null
-        ? ((BlockNode) visitBlock(ctx.block())).getStatements()
-        : visitFunctionReturnBody(ctx.functionReturnBody()), 
-        ctx.functionReturnBody() == null
-        ? null
-        : new FunctionReturnNode(
-          visitExpression(ctx.functionReturnBody().returnStatement().expression())
-        )
-      )
     );
   }
 }

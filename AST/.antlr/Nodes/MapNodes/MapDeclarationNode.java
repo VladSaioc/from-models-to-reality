@@ -5,17 +5,16 @@ import Nodes.AbstractNode;
 public class MapDeclarationNode extends AbstractNode {
   private AbstractNode sizeX;
   private AbstractNode sizeY;
-  private AbstractNode identifier;
+  private String identifier;
   private AbstractNode record = null;
 
-  public MapDeclarationNode(AbstractNode sizeX, AbstractNode sizeY, AbstractNode identifier, AbstractNode record) {
+  public MapDeclarationNode(String identifier, AbstractNode sizeX, AbstractNode sizeY, AbstractNode record) {
+    this.identifier = identifier;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
-    this.identifier = identifier;
     this.record = record;
     this.adoptChildren(sizeX)
     .adoptChildren(sizeY)
-    .adoptChildren(identifier)
     .adoptChildren(record);
   }
 
@@ -27,7 +26,7 @@ public class MapDeclarationNode extends AbstractNode {
     return this.sizeY;
   }
 
-  public AbstractNode getIdentifier() {
+  public String getIdentifier() {
     return this.identifier;
   }
 

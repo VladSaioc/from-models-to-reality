@@ -1,17 +1,16 @@
 package Nodes;
 
 public class PrimitiveDeclarationNode extends AbstractNode {
-  private AbstractNode type;
+  private String type;
   private AbstractNode declarations;
 
-  public PrimitiveDeclarationNode(AbstractNode type, AbstractNode declarations) {
+  public PrimitiveDeclarationNode(String type, AbstractNode declarations) {
     this.type = type;
     this.declarations = declarations;
-    this.adoptChildren(type)
-    .adoptChildren(declarations);
+    this.adoptChildren(declarations);
   }
 
-  public AbstractNode getType() {
+  public String getType() {
     return this.type;
   }
 

@@ -3,8 +3,8 @@ package Nodes.ExpressionNodes;
 import Nodes.AbstractNode;
 
 public abstract class BinaryExpressionNode extends AbstractNode {
-  private AbstractNode left;
-  private AbstractNode right;
+  protected AbstractNode left;
+  protected AbstractNode right;
 
   public BinaryExpressionNode() {}
   

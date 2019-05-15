@@ -63,42 +63,6 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIndexedProp(MapsParser.IndexedPropContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIndexedProp(MapsParser.IndexedPropContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPropChain(MapsParser.PropChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPropChain(MapsParser.PropChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLAccessor(MapsParser.LAccessorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLAccessor(MapsParser.LAccessorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterRAccessor(MapsParser.RAccessorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -111,13 +75,61 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx) { }
+	@Override public void enterFunctions(MapsParser.FunctionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx) { }
+	@Override public void exitFunctions(MapsParser.FunctionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionDef(MapsParser.FunctionDefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionDef(MapsParser.FunctionDefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionStatement(MapsParser.FunctionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionStatement(MapsParser.FunctionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionDefParams(MapsParser.FunctionDefParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionDefParams(MapsParser.FunctionDefParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrimitiveType(MapsParser.PrimitiveTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimitiveType(MapsParser.PrimitiveTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -159,13 +171,13 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableDeclaration(MapsParser.VariableDeclarationContext ctx) { }
+	@Override public void enterPrimitiveDeclaration(MapsParser.PrimitiveDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariableDeclaration(MapsParser.VariableDeclarationContext ctx) { }
+	@Override public void exitPrimitiveDeclaration(MapsParser.PrimitiveDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -183,66 +195,6 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayLiteral(MapsParser.ArrayLiteralContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayLiteral(MapsParser.ArrayLiteralContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMapDeclaration(MapsParser.MapDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -250,42 +202,6 @@ public class MapsBaseListener implements MapsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMapDeclaration(MapsParser.MapDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRecordDeclaration(MapsParser.RecordDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRecordDeclaration(MapsParser.RecordDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVariableDeclChain(MapsParser.VariableDeclChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableDeclChain(MapsParser.VariableDeclChainContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -310,18 +226,6 @@ public class MapsBaseListener implements MapsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBoolTerm(MapsParser.BoolTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNegChain(MapsParser.NegChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNegChain(MapsParser.NegChainContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -483,18 +387,6 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterUnaryMapOperation(MapsParser.UnaryMapOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -543,18 +435,6 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMapQueryChain(MapsParser.MapQueryChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMapQueryChain(MapsParser.MapQueryChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMapQuery(MapsParser.MapQueryContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -562,18 +442,6 @@ public class MapsBaseListener implements MapsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMapQuery(MapsParser.MapQueryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -603,49 +471,37 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx) { }
+	@Override public void enterMapPropsAssignment(MapsParser.MapPropsAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx) { }
+	@Override public void exitMapPropsAssignment(MapsParser.MapPropsAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx) { }
+	@Override public void enterMapPropsBody(MapsParser.MapPropsBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx) { }
+	@Override public void exitMapPropsBody(MapsParser.MapPropsBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRecordAssignment(MapsParser.RecordAssignmentContext ctx) { }
+	@Override public void enterMapPropsChain(MapsParser.MapPropsChainContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRecordAssignment(MapsParser.RecordAssignmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx) { }
+	@Override public void exitMapPropsChain(MapsParser.MapPropsChainContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -675,85 +531,25 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx) { }
+	@Override public void enterPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx) { }
+	@Override public void exitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) { }
+	@Override public void enterMapAssignment(MapsParser.MapAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionHeader(MapsParser.FunctionHeaderContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionHeader(MapsParser.FunctionHeaderContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionReturnBody(MapsParser.FunctionReturnBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionReturnBody(MapsParser.FunctionReturnBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterReturnStatement(MapsParser.ReturnStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturnStatement(MapsParser.ReturnStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDataType(MapsParser.DataTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDataType(MapsParser.DataTypeContext ctx) { }
+	@Override public void exitMapAssignment(MapsParser.MapAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

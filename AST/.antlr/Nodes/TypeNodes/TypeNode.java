@@ -3,13 +3,13 @@ package Nodes.TypeNodes;
 import Nodes.AbstractNode;
 
 public class TypeNode extends AbstractNode {
-  private String typeName;
+  private String name;
 
-  public TypeNode(String typeName) {
-    this.typeName = typeName;
+  public TypeNode(String name) {
+    this.name = name;
   }
 
-  public String getTypeName() {
-    return this.typeName;
+  public String getType() {
+    return this.name;
   }
 }

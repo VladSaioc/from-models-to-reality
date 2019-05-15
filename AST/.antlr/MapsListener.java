@@ -47,36 +47,6 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitExports(MapsParser.ExportsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#indexedProp}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndexedProp(MapsParser.IndexedPropContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#indexedProp}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndexedProp(MapsParser.IndexedPropContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#propChain}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropChain(MapsParser.PropChainContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#propChain}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropChain(MapsParser.PropChainContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#lAccessor}.
-	 * @param ctx the parse tree
-	 */
-	void enterLAccessor(MapsParser.LAccessorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#lAccessor}.
-	 * @param ctx the parse tree
-	 */
-	void exitLAccessor(MapsParser.LAccessorContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MapsParser#rAccessor}.
 	 * @param ctx the parse tree
 	 */
@@ -87,15 +57,55 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitRAccessor(MapsParser.RAccessorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#functionExpressionChain}.
+	 * Enter a parse tree produced by {@link MapsParser#functions}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx);
+	void enterFunctions(MapsParser.FunctionsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#functionExpressionChain}.
+	 * Exit a parse tree produced by {@link MapsParser#functions}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionExpressionChain(MapsParser.FunctionExpressionChainContext ctx);
+	void exitFunctions(MapsParser.FunctionsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MapsParser#functionDef}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDef(MapsParser.FunctionDefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MapsParser#functionDef}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDef(MapsParser.FunctionDefContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MapsParser#functionStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionStatement(MapsParser.FunctionStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MapsParser#functionStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionStatement(MapsParser.FunctionStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MapsParser#functionDefParams}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDefParams(MapsParser.FunctionDefParamsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MapsParser#functionDefParams}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDefParams(MapsParser.FunctionDefParamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MapsParser#primitiveType}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveType(MapsParser.PrimitiveTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MapsParser#primitiveType}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveType(MapsParser.PrimitiveTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#functionParams}.
 	 * @param ctx the parse tree
@@ -127,15 +137,15 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitDeclaration(MapsParser.DeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#variableDeclaration}.
+	 * Enter a parse tree produced by {@link MapsParser#primitiveDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariableDeclaration(MapsParser.VariableDeclarationContext ctx);
+	void enterPrimitiveDeclaration(MapsParser.PrimitiveDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#variableDeclaration}.
+	 * Exit a parse tree produced by {@link MapsParser#primitiveDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariableDeclaration(MapsParser.VariableDeclarationContext ctx);
+	void exitPrimitiveDeclaration(MapsParser.PrimitiveDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#variableChain}.
 	 * @param ctx the parse tree
@@ -147,56 +157,6 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitVariableChain(MapsParser.VariableChainContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#arrayLiteralChain}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#arrayLiteralChain}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayLiteralChain(MapsParser.ArrayLiteralChainContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#arrayLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayLiteral(MapsParser.ArrayLiteralContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#arrayLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayLiteral(MapsParser.ArrayLiteralContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#arrayDeclBrackets}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#arrayDeclBrackets}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayDeclBrackets(MapsParser.ArrayDeclBracketsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#arrayDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayDeclaration(MapsParser.ArrayDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#arrayDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayDeclaration(MapsParser.ArrayDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#arrayDeclIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#arrayDeclIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayDeclIdentifier(MapsParser.ArrayDeclIdentifierContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MapsParser#mapDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -206,36 +166,6 @@ public interface MapsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMapDeclaration(MapsParser.MapDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#recordDeclarationBody}.
-	 * @param ctx the parse tree
-	 */
-	void enterRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#recordDeclarationBody}.
-	 * @param ctx the parse tree
-	 */
-	void exitRecordDeclarationBody(MapsParser.RecordDeclarationBodyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#recordDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterRecordDeclaration(MapsParser.RecordDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#recordDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitRecordDeclaration(MapsParser.RecordDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#variableDeclChain}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableDeclChain(MapsParser.VariableDeclChainContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#variableDeclChain}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableDeclChain(MapsParser.VariableDeclChainContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#boolExpression}.
 	 * @param ctx the parse tree
@@ -256,16 +186,6 @@ public interface MapsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBoolTerm(MapsParser.BoolTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#negChain}.
-	 * @param ctx the parse tree
-	 */
-	void enterNegChain(MapsParser.NegChainContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#negChain}.
-	 * @param ctx the parse tree
-	 */
-	void exitNegChain(MapsParser.NegChainContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#boolFactor}.
 	 * @param ctx the parse tree
@@ -397,16 +317,6 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitUnaryMapOperator(MapsParser.UnaryMapOperatorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#unaryMapOperand}.
-	 * @param ctx the parse tree
-	 */
-	void enterUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#unaryMapOperand}.
-	 * @param ctx the parse tree
-	 */
-	void exitUnaryMapOperand(MapsParser.UnaryMapOperandContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MapsParser#unaryMapOperation}.
 	 * @param ctx the parse tree
 	 */
@@ -447,16 +357,6 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitMapExpression(MapsParser.MapExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#mapQueryChain}.
-	 * @param ctx the parse tree
-	 */
-	void enterMapQueryChain(MapsParser.MapQueryChainContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#mapQueryChain}.
-	 * @param ctx the parse tree
-	 */
-	void exitMapQueryChain(MapsParser.MapQueryChainContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MapsParser#mapQuery}.
 	 * @param ctx the parse tree
 	 */
@@ -466,16 +366,6 @@ public interface MapsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMapQuery(MapsParser.MapQueryContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#mapQueryPredicate}.
-	 * @param ctx the parse tree
-	 */
-	void enterMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#mapQueryPredicate}.
-	 * @param ctx the parse tree
-	 */
-	void exitMapQueryPredicate(MapsParser.MapQueryPredicateContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#coordinateChain}.
 	 * @param ctx the parse tree
@@ -497,45 +387,35 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitCoordinates(MapsParser.CoordinatesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#mapQueryAssignment}.
+	 * Enter a parse tree produced by {@link MapsParser#mapPropsAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx);
+	void enterMapPropsAssignment(MapsParser.MapPropsAssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#mapQueryAssignment}.
+	 * Exit a parse tree produced by {@link MapsParser#mapPropsAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitMapQueryAssignment(MapsParser.MapQueryAssignmentContext ctx);
+	void exitMapPropsAssignment(MapsParser.MapPropsAssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#recordAssignmentBody}.
+	 * Enter a parse tree produced by {@link MapsParser#mapPropsBody}.
 	 * @param ctx the parse tree
 	 */
-	void enterRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx);
+	void enterMapPropsBody(MapsParser.MapPropsBodyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#recordAssignmentBody}.
+	 * Exit a parse tree produced by {@link MapsParser#mapPropsBody}.
 	 * @param ctx the parse tree
 	 */
-	void exitRecordAssignmentBody(MapsParser.RecordAssignmentBodyContext ctx);
+	void exitMapPropsBody(MapsParser.MapPropsBodyContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#recordAssignment}.
+	 * Enter a parse tree produced by {@link MapsParser#mapPropsChain}.
 	 * @param ctx the parse tree
 	 */
-	void enterRecordAssignment(MapsParser.RecordAssignmentContext ctx);
+	void enterMapPropsChain(MapsParser.MapPropsChainContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#recordAssignment}.
+	 * Exit a parse tree produced by {@link MapsParser#mapPropsChain}.
 	 * @param ctx the parse tree
 	 */
-	void exitRecordAssignment(MapsParser.RecordAssignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#recordAssignmentChain}.
-	 * @param ctx the parse tree
-	 */
-	void enterRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#recordAssignmentChain}.
-	 * @param ctx the parse tree
-	 */
-	void exitRecordAssignmentChain(MapsParser.RecordAssignmentChainContext ctx);
+	void exitMapPropsChain(MapsParser.MapPropsChainContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#expression}.
 	 * @param ctx the parse tree
@@ -557,75 +437,25 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitAssignment(MapsParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#nonRecordAssignment}.
+	 * Enter a parse tree produced by {@link MapsParser#primitiveAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx);
+	void enterPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#nonRecordAssignment}.
+	 * Exit a parse tree produced by {@link MapsParser#primitiveAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitNonRecordAssignment(MapsParser.NonRecordAssignmentContext ctx);
+	void exitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#functionDefinition}.
+	 * Enter a parse tree produced by {@link MapsParser#mapAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionDefinition(MapsParser.FunctionDefinitionContext ctx);
+	void enterMapAssignment(MapsParser.MapAssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#functionDefinition}.
+	 * Exit a parse tree produced by {@link MapsParser#mapAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionDefinition(MapsParser.FunctionDefinitionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#functionHeader}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionHeader(MapsParser.FunctionHeaderContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#functionHeader}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionHeader(MapsParser.FunctionHeaderContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#functionDeclParams}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#functionDeclParams}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionDeclParams(MapsParser.FunctionDeclParamsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#functionReturnBody}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionReturnBody(MapsParser.FunctionReturnBodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#functionReturnBody}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionReturnBody(MapsParser.FunctionReturnBodyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#returnStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturnStatement(MapsParser.ReturnStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#returnStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturnStatement(MapsParser.ReturnStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#dataType}.
-	 * @param ctx the parse tree
-	 */
-	void enterDataType(MapsParser.DataTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#dataType}.
-	 * @param ctx the parse tree
-	 */
-	void exitDataType(MapsParser.DataTypeContext ctx);
+	void exitMapAssignment(MapsParser.MapAssignmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#ifStatement}.
 	 * @param ctx the parse tree

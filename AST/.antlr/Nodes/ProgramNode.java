@@ -1,17 +1,24 @@
 package Nodes;
 
 public class ProgramNode extends AbstractNode {
+  private AbstractNode functions;
   private AbstractNode imports;
   private AbstractNode statements;
   private AbstractNode exports;
 
-  public ProgramNode(AbstractNode imports, AbstractNode statements, AbstractNode exports) {
+  public ProgramNode(AbstractNode functions, AbstractNode imports, AbstractNode statements, AbstractNode exports) {
+    this.functions = functions;
     this.imports = imports;
     this.statements = statements;
     this.exports = exports;
-    this.adoptChildren(imports)
+    this.adoptChildren(functions)
+    .adoptChildren(imports)
     .adoptChildren(statements)
     .adoptChildren(exports);
+  }
+
+  public AbstractNode getFunctions() {
+    return this.functions;
   }
 
   public AbstractNode getImports() {

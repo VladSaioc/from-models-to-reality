@@ -1,6 +1,6 @@
 grammar Maps;
 
-program : imports statement exports ; // AST Done
+program : functions imports statement exports ; // AST Done
 
 impexVarChain : var=IDENTIFIER COMMA impexVarChain // AST Done
 	| var=IDENTIFIER
@@ -12,70 +12,46 @@ exports : EXPORT LCURLY impexVarChain RCURLY SEMI	// AST Done
 	|
 	;
 
-indexedProp : LBRACK arithmeticExpression RBRACK indexedProp // AST Done
+rAccessor : functionCall
+	| name=IDENTIFIER
+  ;
+
+functions : functionDef functions
 	|
 	;
-
-propChain : DOT name=IDENTIFIER indexedProp propChain // AST Done
-	| DOT name=IDENTIFIER indexedProp
+functionDef : primitiveType name=IDENTIFIER LPAREN functionDefParams RPAREN LCURLY functionStatement RETURN expression SEMI RCURLY  ;
+functionStatement : primitiveAssignment SEMI functionStatement
+	| primitiveDeclaration SEMI functionStatement
+	|	expression SEMI functionStatement
+	|
 	;
-
-lAccessor : name=IDENTIFIER indexedProp propChain // AST Done
-	| name=IDENTIFIER indexedProp
-	;
-rAccessor : functionCall indexedProp propChain // AST Done
-  | functionCall indexedProp
+functionDefParams : primitiveType name=IDENTIFIER COMMA functionDefParams
+  | primitiveType name=IDENTIFIER
   ;
-functionExpressionChain : expression COMMA functionExpressionChain // AST DONE
+
+primitiveType : type=( BOOLEAN | STRING | INT ); // AST Done
+
+functionParams : expression COMMA functionParams // AST DONE
 	| expression
 	;
-functionParams : LPAREN functionExpressionChain RPAREN // AST Done
-	| LPAREN RPAREN
-	;
-functionCall : name=IDENTIFIER indexedProp functionParams // ast done
-  | name=IDENTIFIER indexedProp
-  ;
 
-declaration : variableDeclaration // ast done
-  | arrayDeclaration
+functionCall : name=IDENTIFIER LPAREN functionParams RPAREN ;
+
+declaration : primitiveDeclaration 
   | mapDeclaration
-  | recordDeclaration
   ;
 
-variableDeclaration : dataType variableChain ; // ast done
+primitiveDeclaration : primitiveType variableChain ; // ast done
 
 variableChain : var=IDENTIFIER ASSIGN expression COMMA variableChain // ast done
   | var=IDENTIFIER ASSIGN expression																
   | var=IDENTIFIER COMMA variableChain															
   | var=IDENTIFIER																									
   ;
-  
-arrayLiteralChain : expression COMMA arrayLiteralChain
-	| expression
-	;
-arrayLiteral : LBRACK arrayLiteralChain RBRACK // ast done
-  | LBRACK RBRACK
-  ;
-arrayDeclBrackets : LBRACK RBRACK arrayDeclBrackets // ast done
-	| LBRACK RBRACK
-	;
-arrayDeclaration : dataType arrayDeclBrackets arrayDeclIdentifier; // ast done
-arrayDeclIdentifier : var=IDENTIFIER ASSIGN expression
-	| var=IDENTIFIER ASSIGN arrayLiteral
-	| var=IDENTIFIER
-	;
 
-mapDeclaration : MAP MLPAREN sizeX=INT_LITERAL COMMA sizeY=INT_LITERAL MRPAREN var=IDENTIFIER ASSIGN recordDeclarationBody // ast done
-	| MAP MLPAREN sizeX=INT_LITERAL COMMA sizeY=INT_LITERAL MRPAREN var=IDENTIFIER
+mapDeclaration : MAP var=IDENTIFIER MLPAREN arithmeticExpression COMMA arithmeticExpression MRPAREN ASSIGN mapPropsBody // ast done
+	| MAP var=IDENTIFIER MLPAREN arithmeticExpression COMMA arithmeticExpression MRPAREN
   ;
-
-recordDeclarationBody : LCURLY variableDeclChain RCURLY ; // ast done
-recordDeclaration : RECORD var=IDENTIFIER ASSIGN recordDeclarationBody // ast done
-	| RECORD var=IDENTIFIER
-	;
-variableDeclChain : declaration SEMI variableDeclChain // ast done
-	| declaration SEMI
-	;
 
 boolExpression : boolTerm OR boolExpression // ast done
 	| boolTerm
@@ -83,27 +59,23 @@ boolExpression : boolTerm OR boolExpression // ast done
 boolTerm : boolFactor AND boolTerm // ast done
   | boolFactor
   ;
-negChain : neg=NEG negChain // ast done
-	|
-	;
 boolFactor : comparisonExpression	 // ast done
-  | negChain LPAREN boolExpression RPAREN
-  | negChain rAccessor									
-  | negChain value=BOOL_LITERAL					
+	| neg=NEG boolExpression
+  | LPAREN boolExpression RPAREN
+  | rAccessor									
+  | value=BOOL_LITERAL					
   ;
 
 stringExpression : stringTerm CONCAT stringExpression // ast done
 	| stringTerm
 	;
 stringTerm : LPAREN stringExpression RPAREN // ast done
-	| rAccessor															
-	| value=STRING_LITERAL									
+	| rAccessor						
+	| value=STRING_LITERAL						
 	;
 
 comparisonExpression :  comparisonTerm op=(GT | LT | LTE | GTE | EQ | NEQ) comparisonTerm ; // ast done
-comparisonTerm : negChain value=BOOL_LITERAL // ast done
-  | negChain rAccessor											
-  | negChain LPAREN boolExpression RPAREN		
+comparisonTerm : LPAREN boolExpression RPAREN		
   | arithmeticExpression										
   | stringExpression												
   ;
@@ -115,26 +87,25 @@ arithmeticTerm : arithmeticFactor op=(MUL | DIV | MOD) arithmeticTerm // ast don
 	| arithmeticFactor
 	;
 arithmeticFactor : LPAREN arithmeticExpression RPAREN // ast done
+	| negated=SUB arithmeticExpression
   | rAccessor																					
-  | value=(INT_LITERAL | DOUBLE_LITERAL)						
+  | value=INT_LITERAL
   ;
 
-joinOperator : COLON op=(JOIN_X | JOIN_Y) HASH arithmeticExpression COLON // ast done
-	| COLON op=(JOIN_X | JOIN_Y) COLON
+joinOperator : MLPAREN op=(JOIN_X | JOIN_Y) HASH arithmeticExpression MRPAREN // ast done
+	| MLPAREN op=(JOIN_X | JOIN_Y) MRPAREN
 	;
-maskOperator : COLON MASK HASH arithmeticExpression COMMA arithmeticExpression COLON // ast done
-	| COLON MASK COLON
+maskOperator : MLPAREN MASK HASH arithmeticExpression COMMA arithmeticExpression MRPAREN // ast done
+	| MLPAREN MASK MRPAREN
 	;
-mapUnaryIndexedOperator : COLON op=(DROP_X | DROP_Y | INSERT_X | INSERT_Y) COLON arithmeticExpression ; // ast done
-mapUnaryUnindexedOperator : COLON op=(ROTATE_CW | ROTATE_CCW | MIRROR_X | MIRROR_Y) ; // ast done
-unaryMapOperator : mapUnaryIndexedOperator unaryMapOperator // ast done
-	| mapUnaryUnindexedOperator unaryMapOperator
+mapUnaryIndexedOperator : MLPAREN op=(DROP_X | DROP_Y | INSERT_X | INSERT_Y) HASH arithmeticExpression MRPAREN ; // ast done
+mapUnaryUnindexedOperator : MLPAREN op=(ROTATE_CW | ROTATE_CCW | MIRROR_X | MIRROR_Y) MRPAREN ; // ast done
+unaryMapOperator : mapUnaryIndexedOperator // ast done
+	| mapUnaryUnindexedOperator
 	;
-unaryMapOperand : rAccessor // ast done
+unaryMapOperation : unaryMapOperator joinExpression
 	| LPAREN joinExpression RPAREN
-	;
-unaryMapOperation : unaryMapOperand unaryMapOperator 
-	| unaryMapOperand
+	| name=IDENTIFIER
 	;
 joinExpression : maskExpression joinOperator joinExpression // ast done
 	| maskExpression
@@ -144,60 +115,37 @@ maskExpression : unaryMapOperation maskOperator maskExpression // ast done
 	;
 mapExpression : joinExpression ; // ast done
 
-mapQueryChain: MLPAREN mapQueryPredicate MRPAREN mapQueryChain // ast done
-	| MLPAREN mapQueryPredicate MRPAREN
+mapQuery : MLPAREN coordinateChain MRPAREN // ast done
+	|
 	;
-mapQuery : mapQueryChain // ast done
-	| MLPAREN MRPAREN
-	;
-mapQueryPredicate : coordinateChain HASH boolExpression // ast done
-  | boolExpression
-  | coordinateChain
-  ;
 coordinateChain : coordinates COMMA coordinateChain // ast done
 	| coordinates
 	;
 coordinates : LPAREN arithmeticExpression COMMA arithmeticExpression RPAREN ; // ast done
 
-mapQueryAssignment : lAccessor mapQuery recordAssignmentBody ; // ast done
+mapPropsAssignment : name=IDENTIFIER mapQuery mapPropsBody ; // ast done
 
-recordAssignmentBody: LCURLY recordAssignmentChain RCURLY // ast done
-	| LCURLY RCURLY
+mapPropsBody: extended=EXTEND LCURLY mapPropsChain RCURLY // ast done
+	| LCURLY mapPropsChain RCURLY
 	;
-recordAssignment : lAccessor ASSIGN recordAssignmentBody ; // ast done
-recordAssignmentChain : assignment SEMI recordAssignmentChain // ast done
-	| declaration SEMI recordAssignmentChain
-	| DELETE var=IDENTIFIER SEMI recordAssignmentChain
-	| assignment SEMI
-	| declaration SEMI
-	| DELETE var=IDENTIFIER SEMI
+
+mapPropsChain : primitiveType name=IDENTIFIER ASSIGN expression SEMI mapPropsChain
+	| primitiveType name=IDENTIFIER ASSIGN expression SEMI
 	;
 
 expression : arithmeticExpression	// AST Done
-  | boolExpression 
-  | mapExpression
+  | boolExpression
   | comparisonExpression
 	| stringExpression
   ;
 
-assignment : nonRecordAssignment // AST Done
-  | recordAssignment
-  | mapQueryAssignment
+assignment : primitiveAssignment // AST Done
+	| mapAssignment
+  | mapPropsAssignment
   ;
-nonRecordAssignment : lAccessor ASSIGN expression ;	// ast done
 
-functionDefinition : dataType name=IDENTIFIER functionHeader functionReturnBody
-  | VOID name=IDENTIFIER functionHeader block 
-  ;		    
-functionHeader : LPAREN functionDeclParams RPAREN
-	| LPAREN RPAREN
-	;
-functionDeclParams : dataType name=IDENTIFIER COMMA functionDeclParams
-  | dataType name=IDENTIFIER
-  ;
-functionReturnBody : LCURLY statement returnStatement RCURLY ;
-returnStatement : RETURN expression SEMI ;
-dataType : type=(BOOLEAN | STRING | DOUBLE | INT ); // AST Done
+primitiveAssignment : name=IDENTIFIER ASSIGN expression ;	// ast done
+mapAssignment : name=IDENTIFIER ASSIGN mapExpression ;
 
 ifStatement : IF LPAREN boolExpression RPAREN block ELSE block // AST Done
   | IF LPAREN boolExpression RPAREN block
@@ -208,9 +156,9 @@ whileStatement : WHILE LPAREN boolExpression RPAREN block; // AST Done
 statement : declaration SEMI statement	// AST Done
 	| expression SEMI statement
 	| assignment SEMI statement
-	| functionDefinition statement
 	| ifStatement statement
 	| whileStatement statement
+	| mapExpression SEMI statement
 	|
 	;
 		
@@ -218,11 +166,9 @@ block : LCURLY statement RCURLY ;
 
 BOOLEAN:	'boolean' ;
 STRING:		'string' ;
-DOUBLE:		'double' ;
 INT:			'int' ;
 MAP:			'map' ;
 VOID:     'void' ;
-RECORD:		'record' ;
 DELETE:		'delete' ;
 
 ELSE:			'else' ;
@@ -230,6 +176,7 @@ FOR:			'for' ;
 IF:				'if' ;
 WHILE:		'while' ;
 BREAK:		'break' ;
+EXTEND:		'extend';
 
 RETURN:		'return' ;
 IMPORT:		'import' ;
@@ -237,8 +184,7 @@ EXPORT:		'export' ;
 FROM:			'from'   ;
 
 WS: 			[ \t\r\n]+ -> skip ;
-INT_LITERAL: 	'-'?[0-9]+ ;
-DOUBLE_LITERAL:	'-'?[0-9]+'.'[0-9]+ ;
+INT_LITERAL: 	[0-9]+ ;
 BOOL_LITERAL:	'true' | 'false' ;
 STRING_LITERAL:	 '"' [ !a-zA-Z0-9/.]+ '"' ;
 NULL:			'null' ;
@@ -257,12 +203,10 @@ ROTATE_CCW:     'rotateCcw' ;
 
 IDENTIFIER:    	[a-zA-Z][a-zA-Z0-9]* ;
 
-MLPAREN:		':<' ;
-MRPAREN:		'>:' ;
+MLPAREN:		'[' ;
+MRPAREN:		']' ;
 LPAREN:  		'(' ;
 RPAREN:  		')' ;
-LBRACK:  		'[' ;
-RBRACK:  		']' ;
 LCURLY:		'{' ;
 RCURLY:		'}' ;
 HASH:			'#' ;
