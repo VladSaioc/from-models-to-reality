@@ -5,6 +5,7 @@ public class PrimitiveDeclarationNode extends AbstractNode {
   private AbstractNode declarations;
 
   public PrimitiveDeclarationNode(String type, AbstractNode declarations) {
+    super();
     this.type = type;
     this.declarations = declarations;
     this.adoptChildren(declarations);

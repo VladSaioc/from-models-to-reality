@@ -1,5 +1,6 @@
 package Nodes.StringNodes;
 
-import Nodes.AbstractNode;
+import Nodes.IAbstractNode;
 
-public class StringNode extends AbstractNode {}
+public interface StringNode extends IAbstractNode {
+}

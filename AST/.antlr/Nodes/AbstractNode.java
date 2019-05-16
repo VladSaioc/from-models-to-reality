@@ -2,11 +2,15 @@ package Nodes;
 
 import Visitors.*;
 
-public abstract class AbstractNode {
+public abstract class AbstractNode implements IAbstractNode {
   public AbstractNode rightSib;
   public AbstractNode leftmostSib;
   public AbstractNode parent;
   public AbstractNode leftmostChild;
+
+  public AbstractNode() {
+    this.leftmostSib = this;
+  }
 
   public static AbstractNode makeNode(AbstractNode n) {
     return null;
@@ -35,11 +39,11 @@ public abstract class AbstractNode {
         this.leftmostChild.makeSiblings(y);
       } else {
         AbstractNode ysibs = y.leftmostSib;
+        this.leftmostChild = ysibs;
         while (ysibs != null) {
           ysibs.parent = this;
           ysibs = ysibs.rightSib;
         }
-        this.leftmostChild = ysibs;
       }
     }
     return this;
@@ -60,9 +64,5 @@ public abstract class AbstractNode {
       }
     }
     return this;
-  }
-
-  public void accept(BaseVisitor v) {
-    v.visit(this);
   }
 }

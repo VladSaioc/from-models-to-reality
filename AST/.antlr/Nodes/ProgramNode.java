@@ -1,5 +1,7 @@
 package Nodes;
 
+import Visitors.BaseVisitor;
+
 public class ProgramNode extends AbstractNode {
   private AbstractNode functions;
   private AbstractNode imports;
@@ -7,6 +9,7 @@ public class ProgramNode extends AbstractNode {
   private AbstractNode exports;
 
   public ProgramNode(AbstractNode functions, AbstractNode imports, AbstractNode statements, AbstractNode exports) {
+    super();
     this.functions = functions;
     this.imports = imports;
     this.statements = statements;

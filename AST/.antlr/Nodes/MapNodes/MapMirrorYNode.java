@@ -1,3 +1,3 @@
 package Nodes.MapNodes;
 
-public class MapMirrorYNode extends MapUnaryOperatorNode {}
+public class MapMirrorYNode extends MapUnaryOperationNode {}

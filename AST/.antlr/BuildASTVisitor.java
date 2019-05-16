@@ -1,7 +1,6 @@
 import Nodes.*;
 import Nodes.AccessorNodes.*;
 import Nodes.ArithmeticNodes.*;
-import Nodes.ArrayNodes.*;
 import Nodes.AssignNodes.*;
 import Nodes.BlockStatements.*;
 import Nodes.BooleanNodes.*;
@@ -61,7 +60,9 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
       ctx.name.getText(),
       ctx.primitiveType().getText(), 
       visitFunctionDefParams(ctx.functionDefParams()),
-      visitFunctionStatement(ctx.functionStatement()),
+      new FunctionBodyNode(
+        visitFunctionStatement(ctx.functionStatement())
+      ),
       new FunctionReturnNode(
         visitExpression(ctx.expression())
       )
@@ -259,7 +260,12 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitStringTerm(MapsParser.StringTermContext ctx) {      
     if(ctx.stringExpression() != null) return visitStringExpression(ctx.stringExpression());
     if(ctx.rAccessor() != null) return visitRAccessor(ctx.rAccessor());
-    if(ctx.value != null) return new StringLiteralNode(ctx.value.getText());
+    if(ctx.value != null) return new StringLiteralNode(
+        ctx.value.getText().substring(
+          1,
+          ctx.getText().length() - 1
+        )
+      );
     throw new Error("Unrecognized string term: " + ctx.getText());
   }
 

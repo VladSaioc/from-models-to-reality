@@ -7,6 +7,7 @@ public class FunctionParamNode extends AbstractNode {
   private String name;
 
   public FunctionParamNode(String name, String type) {
+    super();
     this.name = name;
     this.type = type;
   }

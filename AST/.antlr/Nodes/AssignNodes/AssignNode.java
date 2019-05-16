@@ -7,6 +7,7 @@ public class AssignNode extends AbstractNode {
   private AbstractNode expression;
 
   public AssignNode(String identifier, AbstractNode expression) {
+    super();
     this.identifier = identifier;
     this.expression = expression;
     this.adoptChildren(expression);

@@ -9,6 +9,7 @@ public abstract class BinaryExpressionNode extends AbstractNode {
   public BinaryExpressionNode() {}
   
   public BinaryExpressionNode(AbstractNode left, AbstractNode right) {
+    super();
     this.left = left;
     this.right = right;
     this.adoptChildren(this.left)

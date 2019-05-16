@@ -7,6 +7,7 @@ public class ImportNode extends AbstractNode {
   private AbstractNode vars = null;
 
   public ImportNode(String path, AbstractNode vars) {
+    super();
     this.path = path;
     this.vars = vars;
     this.adoptChildren(vars);
