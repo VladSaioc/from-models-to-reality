@@ -40,23 +40,23 @@ public class TypeChecker extends BaseVisitor
 		getNextNode(node).accept(this);
 		//figure out what type of declaration it is, add type to symbol table
 	}
-	
+	/*
 	public void visit(RecordDeclNode node)
 	{
 		populateWithRecord("",node);
 		getNextNode(node).accept(this);
-	}
+	}*/
 	
-	public void visit(BlockNode node)
+	/*public void visit(BlockNode node)
 	{
 		symbolTable.openSoftScope();
 		System.out.println("Entering new Scope");
 		node.leftmostChild.accept(this);
-	}
+	}*/
 	
 	public void closeVisit()
 	{
-		symbolTable.closeSoftScope();
+		symbolTable.closeScope();
 		System.out.println("Exiting scope");
 	}
 	
@@ -67,7 +67,7 @@ public class TypeChecker extends BaseVisitor
 		IdentifierNode iden=(IdentifierNode) node.getName();
 		String name=iden.getValue();
 		FunctionParamNode operationNode=(FunctionParamNode)node.getParams();
-		HashMap<String,String> params=new HashMap<String,String>();
+		HashMap<String,String> params=new HashMap<>();
 		while (operationNode.rightSib.getClass()!=FunctionBodyNode.class)
 		{
 			String paramName=operationNode.getName();
@@ -84,7 +84,7 @@ public class TypeChecker extends BaseVisitor
 	{
 		TypeNode typen=(TypeNode) node.getType();
 		String type=typen.getTypeName();
-		String name="";
+		String name;
 		int bracketcount=node.getDimensions();
 		IdentifierNode id;
 		if (node.getDeclaration().getClass()==IdentifierNode.class)
@@ -97,7 +97,7 @@ public class TypeChecker extends BaseVisitor
 			id=(IdentifierNode)ass.getIdentifier();
 		}
 		name=id.getValue();
-		//symbolTable.addArraySymbol(name, type, bracketcount);
+		symbolTable.addArraySymbol(name, type, bracketcount);
 		getNextNode(node).accept(this);
 	}
 	
@@ -130,7 +130,7 @@ public class TypeChecker extends BaseVisitor
 			System.out.println("Adding "+base+operationNode.leftmostChild.toString()+" to Symbol Table");
 		}
 	}
-	
+	/*
 	public void populateWithRecord(String baseName, RecordDeclNode node)
 	{
 		ArrayList<RecordDetails> recordVariables=new ArrayList<RecordDetails>();
@@ -157,5 +157,5 @@ public class TypeChecker extends BaseVisitor
 			}
 			operationNode=(PrimitiveDeclarationNode)operationNode.rightSib;
 		}
-	}
+	}*/
 }

@@ -1,10 +1,8 @@
 package SymbolTable.Symbols;
 
-public class PrimitiveSymbol<T> extends Symbol {
-    public T value;
+public class PrimitiveSymbol extends Symbol {
 
-    public PrimitiveSymbol(String name, String type, int depth, T value) {
+    public PrimitiveSymbol(String name, String type, int depth) {
         super(name, type, depth);
-        this.value = value;
     }
 }

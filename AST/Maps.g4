@@ -22,7 +22,9 @@ functions : functionDef functions
 functionDef : primitiveType name=IDENTIFIER LPAREN functionDefParams RPAREN LCURLY functionStatement RETURN expression SEMI RCURLY  ;
 functionStatement : primitiveAssignment SEMI functionStatement
 	| primitiveDeclaration SEMI functionStatement
-	|	expression SEMI functionStatement
+	| expression SEMI functionStatement
+	| ifStatement functionStatement
+	| whileStatement functionStatement
 	|
 	;
 functionDefParams : primitiveType name=IDENTIFIER COMMA functionDefParams

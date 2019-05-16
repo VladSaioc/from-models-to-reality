@@ -4,97 +4,66 @@ import java.util.HashMap;
 import java.util.ArrayList;
 public class SymbolTableContainer 
 {
-	Stack<SymbolTable> mainTable=new Stack<>();
-	
-	public void openHardScope()
+	private SymbolTable table;
+
+	public SymbolTableContainer()
 	{
-		mainTable.push(new SymbolTable());
+		table=new SymbolTable();
+	}
+
+	public void openScope()
+	{
+		table.openScope();
 	}
 	
-	public void closeHardScope()
+	public void closeScope()
 	{
-		mainTable.pop();
+		table.closeScope();
 	}
 	
 	public void addSymbol(String name, String type)
 	{
-		mainTable.peek().addSymbol(name, type);
+		table.enterSymbol(name,type);
 	}
 	
-	public String checkType(String name) //gets type of symbolName
+	public String getType(String name) //gets type of symbolName
 	{
-		return mainTable.peek().checkType(name);
+		return table.getType(name);
 	}
 	
 	public boolean checkType(String name, String type) //Checks if given symbolname is of given type
 	{
-		return mainTable.peek().checkType(name, type);
-	}
-	
-	public boolean checkFunctionType(String name, ArrayList<String> params, String type)
-	{
-		ArrayList<String> paramTypes = new ArrayList<>();
-		for (String param:params)
-		{
-			paramTypes.add(checkType(param));
-		}
-		Stack<SymbolTable> tempTable=new Stack<>();
-		boolean found=false;
-		while (!found && !mainTable.isEmpty())
-		{
-			tempTable.push(mainTable.pop());
-			//found=tempTable.peek().checkFunctionType(name, paramTypes, type);
-		}
-		while (!tempTable.isEmpty())
-		{
-			mainTable.push(tempTable.pop());
-		}
-		return found;
-	}
-	
-	public void openSoftScope()
-	{
-		mainTable.peek().openSoftScope();
+		return table.checkType(name, type);
 	}
 
-	public void closeSoftScope()
+	public boolean checkFunctionType(String name, ArrayList<String> params, String type)
 	{
-		mainTable.peek().closeSoftScope();
+		return table.checkType(name, type, params);
+	}
+
+	public boolean checkType(String name, String type, int dimensions)
+	{
+		return table.checkType(name, type, dimensions);
 	}
 	
 	public int getCurrentScope()
 	{
-		return mainTable.peek().getCurrentScope();
-	}
-	
-	public SymbolTableContainer getTableStack()
-	{
-		return this;
+		return table.getCurrentScope();
 	}
 	
 	public SymbolTable getCurrentTable()
 	{
-		return mainTable.peek();
+		return table;
 	}
-	
+
 	public void addFunctionSymbol(String name, String type, HashMap<String,String> params)
 	{
 		ArrayList<String> paramTypes=new ArrayList<>(params.values());
-		mainTable.peek().addFunctionSymbol(name, type, paramTypes);
-		openHardScope();
-		for (String param:params.keySet())
-		{
-			mainTable.peek().addSymbol(param, params.get(param));
-		}
+		table.enterSymbol(name, type, paramTypes);
 	}
 	
-	/*public void addArraySymbol(String name, String type, int count)
+	public void addArraySymbol(String name, String type, int count)
 	{
-		mainTable.peek().addArraySymbol(name, type, count);
-	}
-	*/
-	public void addRecordSymbol(String name, String type, ArrayList<RecordDetails> record)
-	{
-		
+		table.enterSymbol(name, type, count);
 	}
 }

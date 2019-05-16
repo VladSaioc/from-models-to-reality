@@ -1,12 +1,9 @@
 package SymbolTable.Symbols;
 
-import SymbolTable.SymbolTable;
-import SymbolTable.Symbols.Symbol;
-
-public class StringSymbol extends PrimitiveSymbol<String>
+public class StringSymbol extends PrimitiveSymbol
 {
-    public StringSymbol(String name, String type, int depth, String value)
+    public StringSymbol(String name, String type, int depth)
     {
-        super(name, type, depth, value);
+        super(name, type, depth);
     }
 }
