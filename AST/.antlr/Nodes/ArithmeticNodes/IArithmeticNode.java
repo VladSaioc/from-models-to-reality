@@ -2,4 +2,4 @@ package Nodes.ArithmeticNodes;
 
 import Nodes.IAbstractNode;
 
-public interface ArithmeticNode extends IAbstractNode {}
+public interface IArithmeticNode extends IAbstractNode {}

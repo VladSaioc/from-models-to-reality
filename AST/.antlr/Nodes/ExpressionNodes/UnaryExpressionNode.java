@@ -2,7 +2,7 @@ package Nodes.ExpressionNodes;
 
 import Nodes.AbstractNode;
 
-public class UnaryExpressionNode extends AbstractNode {
+public class UnaryExpressionNode extends AbstractNode implements IUnaryExpressionNode {
   protected AbstractNode inner;
 
   public UnaryExpressionNode() {

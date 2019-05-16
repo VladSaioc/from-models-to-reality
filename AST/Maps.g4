@@ -11,20 +11,10 @@ imports : IMPORT LCURLY impexVarChain RCURLY FROM path=STRING_LITERAL SEMI impor
 exports : EXPORT LCURLY impexVarChain RCURLY SEMI	// AST Done
 	|
 	;
-
-rAccessor : functionCall
-	| name=IDENTIFIER
-  ;
-
 functions : functionDef functions
 	|
 	;
-functionDef : primitiveType name=IDENTIFIER LPAREN functionDefParams RPAREN LCURLY functionStatement RETURN expression SEMI RCURLY  ;
-functionStatement : primitiveAssignment SEMI functionStatement
-	| primitiveDeclaration SEMI functionStatement
-	|	expression SEMI functionStatement
-	|
-	;
+functionDef : primitiveType name=IDENTIFIER LPAREN functionDefParams RPAREN block RETURN expression SEMI ;
 functionDefParams : primitiveType name=IDENTIFIER COMMA functionDefParams
   | primitiveType name=IDENTIFIER
   ;
@@ -36,6 +26,10 @@ functionParams : expression COMMA functionParams // AST DONE
 	;
 
 functionCall : name=IDENTIFIER LPAREN functionParams RPAREN ;
+
+rAccessor : functionCall
+	| name=IDENTIFIER
+  ;
 
 declaration : primitiveDeclaration 
   | mapDeclaration
@@ -129,23 +123,22 @@ mapPropsBody: extended=EXTEND LCURLY mapPropsChain RCURLY // ast done
 	| LCURLY mapPropsChain RCURLY
 	;
 
-mapPropsChain : primitiveType name=IDENTIFIER ASSIGN expression SEMI mapPropsChain
-	| primitiveType name=IDENTIFIER ASSIGN expression SEMI
+mapPropsChain : primitiveDeclaration SEMI mapPropsChain
+	| primitiveDeclaration SEMI
 	;
 
 expression : arithmeticExpression	// AST Done
   | boolExpression
   | comparisonExpression
 	| stringExpression
+	| mapExpression
   ;
 
-assignment : primitiveAssignment // AST Done
-	| mapAssignment
+assignment : regularAssignment // AST Done
   | mapPropsAssignment
   ;
 
-primitiveAssignment : name=IDENTIFIER ASSIGN expression ;	// ast done
-mapAssignment : name=IDENTIFIER ASSIGN mapExpression ;
+regularAssignment : name=IDENTIFIER ASSIGN expression ;	// ast done
 
 ifStatement : IF LPAREN boolExpression RPAREN block ELSE block // AST Done
   | IF LPAREN boolExpression RPAREN block
@@ -158,7 +151,6 @@ statement : declaration SEMI statement	// AST Done
 	| assignment SEMI statement
 	| ifStatement statement
 	| whileStatement statement
-	| mapExpression SEMI statement
 	|
 	;
 		
@@ -168,7 +160,6 @@ BOOLEAN:	'boolean' ;
 STRING:		'string' ;
 INT:			'int' ;
 MAP:			'map' ;
-VOID:     'void' ;
 DELETE:		'delete' ;
 
 ELSE:			'else' ;

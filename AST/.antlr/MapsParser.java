@@ -16,72 +16,72 @@ public class MapsParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		BOOLEAN=1, STRING=2, INT=3, MAP=4, VOID=5, DELETE=6, ELSE=7, FOR=8, IF=9, 
-		WHILE=10, BREAK=11, EXTEND=12, RETURN=13, IMPORT=14, EXPORT=15, FROM=16, 
-		WS=17, INT_LITERAL=18, BOOL_LITERAL=19, STRING_LITERAL=20, NULL=21, JOIN_X=22, 
-		JOIN_Y=23, INSERT_X=24, INSERT_Y=25, DROP_X=26, DROP_Y=27, MASK=28, MIRROR_X=29, 
-		MIRROR_Y=30, ROTATE_CW=31, ROTATE_CCW=32, IDENTIFIER=33, MLPAREN=34, MRPAREN=35, 
-		LPAREN=36, RPAREN=37, LCURLY=38, RCURLY=39, HASH=40, SEMI=41, COMMA=42, 
-		DOT=43, COLON=44, ASSIGN=45, GT=46, LT=47, GTE=48, LTE=49, EQ=50, NEQ=51, 
-		AND=52, OR=53, NEG=54, ADD=55, SUB=56, MUL=57, DIV=58, MOD=59, CONCAT=60, 
-		COMMENT=61, LINE_COMMENT=62;
+		BOOLEAN=1, STRING=2, INT=3, MAP=4, DELETE=5, ELSE=6, FOR=7, IF=8, WHILE=9, 
+		BREAK=10, EXTEND=11, RETURN=12, IMPORT=13, EXPORT=14, FROM=15, WS=16, 
+		INT_LITERAL=17, BOOL_LITERAL=18, STRING_LITERAL=19, NULL=20, JOIN_X=21, 
+		JOIN_Y=22, INSERT_X=23, INSERT_Y=24, DROP_X=25, DROP_Y=26, MASK=27, MIRROR_X=28, 
+		MIRROR_Y=29, ROTATE_CW=30, ROTATE_CCW=31, IDENTIFIER=32, MLPAREN=33, MRPAREN=34, 
+		LPAREN=35, RPAREN=36, LCURLY=37, RCURLY=38, HASH=39, SEMI=40, COMMA=41, 
+		DOT=42, COLON=43, ASSIGN=44, GT=45, LT=46, GTE=47, LTE=48, EQ=49, NEQ=50, 
+		AND=51, OR=52, NEG=53, ADD=54, SUB=55, MUL=56, DIV=57, MOD=58, CONCAT=59, 
+		COMMENT=60, LINE_COMMENT=61;
 	public static final int
 		RULE_program = 0, RULE_impexVarChain = 1, RULE_imports = 2, RULE_exports = 3, 
-		RULE_rAccessor = 4, RULE_functions = 5, RULE_functionDef = 6, RULE_functionStatement = 7, 
-		RULE_functionDefParams = 8, RULE_primitiveType = 9, RULE_functionParams = 10, 
-		RULE_functionCall = 11, RULE_declaration = 12, RULE_primitiveDeclaration = 13, 
-		RULE_variableChain = 14, RULE_mapDeclaration = 15, RULE_boolExpression = 16, 
-		RULE_boolTerm = 17, RULE_boolFactor = 18, RULE_stringExpression = 19, 
-		RULE_stringTerm = 20, RULE_comparisonExpression = 21, RULE_comparisonTerm = 22, 
-		RULE_arithmeticExpression = 23, RULE_arithmeticTerm = 24, RULE_arithmeticFactor = 25, 
-		RULE_joinOperator = 26, RULE_maskOperator = 27, RULE_mapUnaryIndexedOperator = 28, 
-		RULE_mapUnaryUnindexedOperator = 29, RULE_unaryMapOperator = 30, RULE_unaryMapOperation = 31, 
-		RULE_joinExpression = 32, RULE_maskExpression = 33, RULE_mapExpression = 34, 
-		RULE_mapQuery = 35, RULE_coordinateChain = 36, RULE_coordinates = 37, 
-		RULE_mapPropsAssignment = 38, RULE_mapPropsBody = 39, RULE_mapPropsChain = 40, 
-		RULE_expression = 41, RULE_assignment = 42, RULE_primitiveAssignment = 43, 
-		RULE_mapAssignment = 44, RULE_ifStatement = 45, RULE_whileStatement = 46, 
-		RULE_statement = 47, RULE_block = 48;
+		RULE_functions = 4, RULE_functionDef = 5, RULE_functionDefParams = 6, 
+		RULE_primitiveType = 7, RULE_functionParams = 8, RULE_functionCall = 9, 
+		RULE_rAccessor = 10, RULE_declaration = 11, RULE_primitiveDeclaration = 12, 
+		RULE_variableChain = 13, RULE_mapDeclaration = 14, RULE_boolExpression = 15, 
+		RULE_boolTerm = 16, RULE_boolFactor = 17, RULE_stringExpression = 18, 
+		RULE_stringTerm = 19, RULE_comparisonExpression = 20, RULE_comparisonTerm = 21, 
+		RULE_arithmeticExpression = 22, RULE_arithmeticTerm = 23, RULE_arithmeticFactor = 24, 
+		RULE_joinOperator = 25, RULE_maskOperator = 26, RULE_mapUnaryIndexedOperator = 27, 
+		RULE_mapUnaryUnindexedOperator = 28, RULE_unaryMapOperator = 29, RULE_unaryMapOperation = 30, 
+		RULE_joinExpression = 31, RULE_maskExpression = 32, RULE_mapExpression = 33, 
+		RULE_mapQuery = 34, RULE_coordinateChain = 35, RULE_coordinates = 36, 
+		RULE_mapPropsAssignment = 37, RULE_mapPropsBody = 38, RULE_mapPropsChain = 39, 
+		RULE_expression = 40, RULE_assignment = 41, RULE_regularAssignment = 42, 
+		RULE_ifStatement = 43, RULE_whileStatement = 44, RULE_statement = 45, 
+		RULE_block = 46;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "impexVarChain", "imports", "exports", "rAccessor", "functions", 
-			"functionDef", "functionStatement", "functionDefParams", "primitiveType", 
-			"functionParams", "functionCall", "declaration", "primitiveDeclaration", 
-			"variableChain", "mapDeclaration", "boolExpression", "boolTerm", "boolFactor", 
-			"stringExpression", "stringTerm", "comparisonExpression", "comparisonTerm", 
-			"arithmeticExpression", "arithmeticTerm", "arithmeticFactor", "joinOperator", 
-			"maskOperator", "mapUnaryIndexedOperator", "mapUnaryUnindexedOperator", 
-			"unaryMapOperator", "unaryMapOperation", "joinExpression", "maskExpression", 
-			"mapExpression", "mapQuery", "coordinateChain", "coordinates", "mapPropsAssignment", 
-			"mapPropsBody", "mapPropsChain", "expression", "assignment", "primitiveAssignment", 
-			"mapAssignment", "ifStatement", "whileStatement", "statement", "block"
+			"program", "impexVarChain", "imports", "exports", "functions", "functionDef", 
+			"functionDefParams", "primitiveType", "functionParams", "functionCall", 
+			"rAccessor", "declaration", "primitiveDeclaration", "variableChain", 
+			"mapDeclaration", "boolExpression", "boolTerm", "boolFactor", "stringExpression", 
+			"stringTerm", "comparisonExpression", "comparisonTerm", "arithmeticExpression", 
+			"arithmeticTerm", "arithmeticFactor", "joinOperator", "maskOperator", 
+			"mapUnaryIndexedOperator", "mapUnaryUnindexedOperator", "unaryMapOperator", 
+			"unaryMapOperation", "joinExpression", "maskExpression", "mapExpression", 
+			"mapQuery", "coordinateChain", "coordinates", "mapPropsAssignment", "mapPropsBody", 
+			"mapPropsChain", "expression", "assignment", "regularAssignment", "ifStatement", 
+			"whileStatement", "statement", "block"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'boolean'", "'string'", "'int'", "'map'", "'void'", "'delete'", 
-			"'else'", "'for'", "'if'", "'while'", "'break'", "'extend'", "'return'", 
-			"'import'", "'export'", "'from'", null, null, null, null, "'null'", "'joinX'", 
-			"'joinY'", "'insertX'", "'insertY'", "'dropX'", "'dropY'", "'mask'", 
-			"'mirrorX'", "'mirrorY'", "'rotateCw'", "'rotateCcw'", null, "'['", "']'", 
-			"'('", "')'", "'{'", "'}'", "'#'", "';'", "','", "'.'", "':'", "'='", 
-			"'>'", "'<'", "'<='", "'>='", "'=='", "'!='", "'&&'", "'||'", "'!'", 
-			"'+'", "'-'", "'*'", "'/'", "'%'", "'++'"
+			null, "'boolean'", "'string'", "'int'", "'map'", "'delete'", "'else'", 
+			"'for'", "'if'", "'while'", "'break'", "'extend'", "'return'", "'import'", 
+			"'export'", "'from'", null, null, null, null, "'null'", "'joinX'", "'joinY'", 
+			"'insertX'", "'insertY'", "'dropX'", "'dropY'", "'mask'", "'mirrorX'", 
+			"'mirrorY'", "'rotateCw'", "'rotateCcw'", null, "'['", "']'", "'('", 
+			"')'", "'{'", "'}'", "'#'", "';'", "','", "'.'", "':'", "'='", "'>'", 
+			"'<'", "'<='", "'>='", "'=='", "'!='", "'&&'", "'||'", "'!'", "'+'", 
+			"'-'", "'*'", "'/'", "'%'", "'++'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "BOOLEAN", "STRING", "INT", "MAP", "VOID", "DELETE", "ELSE", "FOR", 
-			"IF", "WHILE", "BREAK", "EXTEND", "RETURN", "IMPORT", "EXPORT", "FROM", 
-			"WS", "INT_LITERAL", "BOOL_LITERAL", "STRING_LITERAL", "NULL", "JOIN_X", 
-			"JOIN_Y", "INSERT_X", "INSERT_Y", "DROP_X", "DROP_Y", "MASK", "MIRROR_X", 
-			"MIRROR_Y", "ROTATE_CW", "ROTATE_CCW", "IDENTIFIER", "MLPAREN", "MRPAREN", 
-			"LPAREN", "RPAREN", "LCURLY", "RCURLY", "HASH", "SEMI", "COMMA", "DOT", 
-			"COLON", "ASSIGN", "GT", "LT", "GTE", "LTE", "EQ", "NEQ", "AND", "OR", 
-			"NEG", "ADD", "SUB", "MUL", "DIV", "MOD", "CONCAT", "COMMENT", "LINE_COMMENT"
+			null, "BOOLEAN", "STRING", "INT", "MAP", "DELETE", "ELSE", "FOR", "IF", 
+			"WHILE", "BREAK", "EXTEND", "RETURN", "IMPORT", "EXPORT", "FROM", "WS", 
+			"INT_LITERAL", "BOOL_LITERAL", "STRING_LITERAL", "NULL", "JOIN_X", "JOIN_Y", 
+			"INSERT_X", "INSERT_Y", "DROP_X", "DROP_Y", "MASK", "MIRROR_X", "MIRROR_Y", 
+			"ROTATE_CW", "ROTATE_CCW", "IDENTIFIER", "MLPAREN", "MRPAREN", "LPAREN", 
+			"RPAREN", "LCURLY", "RCURLY", "HASH", "SEMI", "COMMA", "DOT", "COLON", 
+			"ASSIGN", "GT", "LT", "GTE", "LTE", "EQ", "NEQ", "AND", "OR", "NEG", 
+			"ADD", "SUB", "MUL", "DIV", "MOD", "CONCAT", "COMMENT", "LINE_COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -173,13 +173,13 @@ public class MapsParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(98);
+			setState(94);
 			functions();
-			setState(99);
+			setState(95);
 			imports();
-			setState(100);
+			setState(96);
 			statement();
-			setState(101);
+			setState(97);
 			exports();
 			}
 		}
@@ -224,24 +224,24 @@ public class MapsParser extends Parser {
 		ImpexVarChainContext _localctx = new ImpexVarChainContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_impexVarChain);
 		try {
-			setState(107);
+			setState(103);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(103);
+				setState(99);
 				((ImpexVarChainContext)_localctx).var = match(IDENTIFIER);
-				setState(104);
+				setState(100);
 				match(COMMA);
-				setState(105);
+				setState(101);
 				impexVarChain();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(106);
+				setState(102);
 				((ImpexVarChainContext)_localctx).var = match(IDENTIFIER);
 				}
 				break;
@@ -295,27 +295,27 @@ public class MapsParser extends Parser {
 		ImportsContext _localctx = new ImportsContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_imports);
 		try {
-			setState(119);
+			setState(115);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case IMPORT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(109);
+				setState(105);
 				match(IMPORT);
-				setState(110);
+				setState(106);
 				match(LCURLY);
-				setState(111);
+				setState(107);
 				impexVarChain();
-				setState(112);
+				setState(108);
 				match(RCURLY);
-				setState(113);
+				setState(109);
 				match(FROM);
-				setState(114);
+				setState(110);
 				((ImportsContext)_localctx).path = match(STRING_LITERAL);
-				setState(115);
+				setState(111);
 				match(SEMI);
-				setState(116);
+				setState(112);
 				imports();
 				}
 				break;
@@ -385,21 +385,21 @@ public class MapsParser extends Parser {
 		ExportsContext _localctx = new ExportsContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_exports);
 		try {
-			setState(128);
+			setState(124);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case EXPORT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(121);
+				setState(117);
 				match(EXPORT);
-				setState(122);
+				setState(118);
 				match(LCURLY);
-				setState(123);
+				setState(119);
 				impexVarChain();
-				setState(124);
+				setState(120);
 				match(RCURLY);
-				setState(125);
+				setState(121);
 				match(SEMI);
 				}
 				break;
@@ -410,65 +410,6 @@ public class MapsParser extends Parser {
 				break;
 			default:
 				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class RAccessorContext extends ParserRuleContext {
-		public Token name;
-		public FunctionCallContext functionCall() {
-			return getRuleContext(FunctionCallContext.class,0);
-		}
-		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
-		public RAccessorContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_rAccessor; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).enterRAccessor(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).exitRAccessor(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MapsVisitor ) return ((MapsVisitor<? extends T>)visitor).visitRAccessor(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final RAccessorContext rAccessor() throws RecognitionException {
-		RAccessorContext _localctx = new RAccessorContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_rAccessor);
-		try {
-			setState(132);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(130);
-				functionCall();
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(131);
-				((RAccessorContext)_localctx).name = match(IDENTIFIER);
-				}
-				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -510,17 +451,17 @@ public class MapsParser extends Parser {
 
 	public final FunctionsContext functions() throws RecognitionException {
 		FunctionsContext _localctx = new FunctionsContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_functions);
+		enterRule(_localctx, 8, RULE_functions);
 		try {
-			setState(138);
+			setState(130);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(134);
+				setState(126);
 				functionDef();
-				setState(135);
+				setState(127);
 				functions();
 				}
 				break;
@@ -552,16 +493,14 @@ public class MapsParser extends Parser {
 			return getRuleContext(FunctionDefParamsContext.class,0);
 		}
 		public TerminalNode RPAREN() { return getToken(MapsParser.RPAREN, 0); }
-		public TerminalNode LCURLY() { return getToken(MapsParser.LCURLY, 0); }
-		public FunctionStatementContext functionStatement() {
-			return getRuleContext(FunctionStatementContext.class,0);
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
 		}
 		public TerminalNode RETURN() { return getToken(MapsParser.RETURN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode SEMI() { return getToken(MapsParser.SEMI, 0); }
-		public TerminalNode RCURLY() { return getToken(MapsParser.RCURLY, 0); }
 		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
 		public FunctionDefContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -584,123 +523,28 @@ public class MapsParser extends Parser {
 
 	public final FunctionDefContext functionDef() throws RecognitionException {
 		FunctionDefContext _localctx = new FunctionDefContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_functionDef);
+		enterRule(_localctx, 10, RULE_functionDef);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(140);
+			setState(132);
 			primitiveType();
-			setState(141);
+			setState(133);
 			((FunctionDefContext)_localctx).name = match(IDENTIFIER);
-			setState(142);
+			setState(134);
 			match(LPAREN);
-			setState(143);
+			setState(135);
 			functionDefParams();
-			setState(144);
+			setState(136);
 			match(RPAREN);
-			setState(145);
-			match(LCURLY);
-			setState(146);
-			functionStatement();
-			setState(147);
+			setState(137);
+			block();
+			setState(138);
 			match(RETURN);
-			setState(148);
+			setState(139);
 			expression();
-			setState(149);
+			setState(140);
 			match(SEMI);
-			setState(150);
-			match(RCURLY);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class FunctionStatementContext extends ParserRuleContext {
-		public PrimitiveAssignmentContext primitiveAssignment() {
-			return getRuleContext(PrimitiveAssignmentContext.class,0);
-		}
-		public TerminalNode SEMI() { return getToken(MapsParser.SEMI, 0); }
-		public FunctionStatementContext functionStatement() {
-			return getRuleContext(FunctionStatementContext.class,0);
-		}
-		public PrimitiveDeclarationContext primitiveDeclaration() {
-			return getRuleContext(PrimitiveDeclarationContext.class,0);
-		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public FunctionStatementContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_functionStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).enterFunctionStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).exitFunctionStatement(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MapsVisitor ) return ((MapsVisitor<? extends T>)visitor).visitFunctionStatement(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final FunctionStatementContext functionStatement() throws RecognitionException {
-		FunctionStatementContext _localctx = new FunctionStatementContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_functionStatement);
-		try {
-			setState(165);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(152);
-				primitiveAssignment();
-				setState(153);
-				match(SEMI);
-				setState(154);
-				functionStatement();
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(156);
-				primitiveDeclaration();
-				setState(157);
-				match(SEMI);
-				setState(158);
-				functionStatement();
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(160);
-				expression();
-				setState(161);
-				match(SEMI);
-				setState(162);
-				functionStatement();
-				}
-				break;
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				}
-				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -745,30 +589,30 @@ public class MapsParser extends Parser {
 
 	public final FunctionDefParamsContext functionDefParams() throws RecognitionException {
 		FunctionDefParamsContext _localctx = new FunctionDefParamsContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_functionDefParams);
+		enterRule(_localctx, 12, RULE_functionDefParams);
 		try {
-			setState(175);
+			setState(150);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(167);
+				setState(142);
 				primitiveType();
-				setState(168);
+				setState(143);
 				((FunctionDefParamsContext)_localctx).name = match(IDENTIFIER);
-				setState(169);
+				setState(144);
 				match(COMMA);
-				setState(170);
+				setState(145);
 				functionDefParams();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(172);
+				setState(147);
 				primitiveType();
-				setState(173);
+				setState(148);
 				((FunctionDefParamsContext)_localctx).name = match(IDENTIFIER);
 				}
 				break;
@@ -811,12 +655,12 @@ public class MapsParser extends Parser {
 
 	public final PrimitiveTypeContext primitiveType() throws RecognitionException {
 		PrimitiveTypeContext _localctx = new PrimitiveTypeContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_primitiveType);
+		enterRule(_localctx, 14, RULE_primitiveType);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(177);
+			setState(152);
 			((PrimitiveTypeContext)_localctx).type = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << STRING) | (1L << INT))) != 0)) ) {
@@ -869,26 +713,26 @@ public class MapsParser extends Parser {
 
 	public final FunctionParamsContext functionParams() throws RecognitionException {
 		FunctionParamsContext _localctx = new FunctionParamsContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_functionParams);
+		enterRule(_localctx, 16, RULE_functionParams);
 		try {
-			setState(184);
+			setState(159);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(179);
+				setState(154);
 				expression();
-				setState(180);
+				setState(155);
 				match(COMMA);
-				setState(181);
+				setState(156);
 				functionParams();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(183);
+				setState(158);
 				expression();
 				}
 				break;
@@ -934,18 +778,77 @@ public class MapsParser extends Parser {
 
 	public final FunctionCallContext functionCall() throws RecognitionException {
 		FunctionCallContext _localctx = new FunctionCallContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_functionCall);
+		enterRule(_localctx, 18, RULE_functionCall);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(186);
+			setState(161);
 			((FunctionCallContext)_localctx).name = match(IDENTIFIER);
-			setState(187);
+			setState(162);
 			match(LPAREN);
-			setState(188);
+			setState(163);
 			functionParams();
-			setState(189);
+			setState(164);
 			match(RPAREN);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class RAccessorContext extends ParserRuleContext {
+		public Token name;
+		public FunctionCallContext functionCall() {
+			return getRuleContext(FunctionCallContext.class,0);
+		}
+		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
+		public RAccessorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_rAccessor; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MapsListener ) ((MapsListener)listener).enterRAccessor(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MapsListener ) ((MapsListener)listener).exitRAccessor(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MapsVisitor ) return ((MapsVisitor<? extends T>)visitor).visitRAccessor(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final RAccessorContext rAccessor() throws RecognitionException {
+		RAccessorContext _localctx = new RAccessorContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_rAccessor);
+		try {
+			setState(168);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(166);
+				functionCall();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(167);
+				((RAccessorContext)_localctx).name = match(IDENTIFIER);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -987,9 +890,9 @@ public class MapsParser extends Parser {
 
 	public final DeclarationContext declaration() throws RecognitionException {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_declaration);
+		enterRule(_localctx, 22, RULE_declaration);
 		try {
-			setState(193);
+			setState(172);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BOOLEAN:
@@ -997,14 +900,14 @@ public class MapsParser extends Parser {
 			case INT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(191);
+				setState(170);
 				primitiveDeclaration();
 				}
 				break;
 			case MAP:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(192);
+				setState(171);
 				mapDeclaration();
 				}
 				break;
@@ -1051,13 +954,13 @@ public class MapsParser extends Parser {
 
 	public final PrimitiveDeclarationContext primitiveDeclaration() throws RecognitionException {
 		PrimitiveDeclarationContext _localctx = new PrimitiveDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_primitiveDeclaration);
+		enterRule(_localctx, 24, RULE_primitiveDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(195);
+			setState(174);
 			primitiveType();
-			setState(196);
+			setState(175);
 			variableChain();
 			}
 		}
@@ -1104,52 +1007,52 @@ public class MapsParser extends Parser {
 
 	public final VariableChainContext variableChain() throws RecognitionException {
 		VariableChainContext _localctx = new VariableChainContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_variableChain);
+		enterRule(_localctx, 26, RULE_variableChain);
 		try {
-			setState(211);
+			setState(190);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(198);
+				setState(177);
 				((VariableChainContext)_localctx).var = match(IDENTIFIER);
-				setState(199);
+				setState(178);
 				match(ASSIGN);
-				setState(200);
+				setState(179);
 				expression();
-				setState(201);
+				setState(180);
 				match(COMMA);
-				setState(202);
+				setState(181);
 				variableChain();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(204);
+				setState(183);
 				((VariableChainContext)_localctx).var = match(IDENTIFIER);
-				setState(205);
+				setState(184);
 				match(ASSIGN);
-				setState(206);
+				setState(185);
 				expression();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(207);
+				setState(186);
 				((VariableChainContext)_localctx).var = match(IDENTIFIER);
-				setState(208);
+				setState(187);
 				match(COMMA);
-				setState(209);
+				setState(188);
 				variableChain();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(210);
+				setState(189);
 				((VariableChainContext)_localctx).var = match(IDENTIFIER);
 				}
 				break;
@@ -1204,50 +1107,50 @@ public class MapsParser extends Parser {
 
 	public final MapDeclarationContext mapDeclaration() throws RecognitionException {
 		MapDeclarationContext _localctx = new MapDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_mapDeclaration);
+		enterRule(_localctx, 28, RULE_mapDeclaration);
 		try {
-			setState(231);
+			setState(210);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(213);
+				setState(192);
 				match(MAP);
-				setState(214);
+				setState(193);
 				((MapDeclarationContext)_localctx).var = match(IDENTIFIER);
-				setState(215);
+				setState(194);
 				match(MLPAREN);
-				setState(216);
+				setState(195);
 				arithmeticExpression();
-				setState(217);
+				setState(196);
 				match(COMMA);
-				setState(218);
+				setState(197);
 				arithmeticExpression();
-				setState(219);
+				setState(198);
 				match(MRPAREN);
-				setState(220);
+				setState(199);
 				match(ASSIGN);
-				setState(221);
+				setState(200);
 				mapPropsBody();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(223);
+				setState(202);
 				match(MAP);
-				setState(224);
+				setState(203);
 				((MapDeclarationContext)_localctx).var = match(IDENTIFIER);
-				setState(225);
+				setState(204);
 				match(MLPAREN);
-				setState(226);
+				setState(205);
 				arithmeticExpression();
-				setState(227);
+				setState(206);
 				match(COMMA);
-				setState(228);
+				setState(207);
 				arithmeticExpression();
-				setState(229);
+				setState(208);
 				match(MRPAREN);
 				}
 				break;
@@ -1293,26 +1196,26 @@ public class MapsParser extends Parser {
 
 	public final BoolExpressionContext boolExpression() throws RecognitionException {
 		BoolExpressionContext _localctx = new BoolExpressionContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_boolExpression);
+		enterRule(_localctx, 30, RULE_boolExpression);
 		try {
-			setState(238);
+			setState(217);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(233);
+				setState(212);
 				boolTerm();
-				setState(234);
+				setState(213);
 				match(OR);
-				setState(235);
+				setState(214);
 				boolExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(237);
+				setState(216);
 				boolTerm();
 				}
 				break;
@@ -1358,26 +1261,26 @@ public class MapsParser extends Parser {
 
 	public final BoolTermContext boolTerm() throws RecognitionException {
 		BoolTermContext _localctx = new BoolTermContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_boolTerm);
+		enterRule(_localctx, 32, RULE_boolTerm);
 		try {
-			setState(245);
+			setState(224);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(240);
+				setState(219);
 				boolFactor();
-				setState(241);
+				setState(220);
 				match(AND);
-				setState(242);
+				setState(221);
 				boolTerm();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(244);
+				setState(223);
 				boolFactor();
 				}
 				break;
@@ -1431,49 +1334,49 @@ public class MapsParser extends Parser {
 
 	public final BoolFactorContext boolFactor() throws RecognitionException {
 		BoolFactorContext _localctx = new BoolFactorContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_boolFactor);
+		enterRule(_localctx, 34, RULE_boolFactor);
 		try {
-			setState(256);
+			setState(235);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(247);
+				setState(226);
 				comparisonExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(248);
+				setState(227);
 				((BoolFactorContext)_localctx).neg = match(NEG);
-				setState(249);
+				setState(228);
 				boolExpression();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(250);
+				setState(229);
 				match(LPAREN);
-				setState(251);
+				setState(230);
 				boolExpression();
-				setState(252);
+				setState(231);
 				match(RPAREN);
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(254);
+				setState(233);
 				rAccessor();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(255);
+				setState(234);
 				((BoolFactorContext)_localctx).value = match(BOOL_LITERAL);
 				}
 				break;
@@ -1519,26 +1422,26 @@ public class MapsParser extends Parser {
 
 	public final StringExpressionContext stringExpression() throws RecognitionException {
 		StringExpressionContext _localctx = new StringExpressionContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_stringExpression);
+		enterRule(_localctx, 36, RULE_stringExpression);
 		try {
-			setState(263);
+			setState(242);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(258);
+				setState(237);
 				stringTerm();
-				setState(259);
+				setState(238);
 				match(CONCAT);
-				setState(260);
+				setState(239);
 				stringExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(262);
+				setState(241);
 				stringTerm();
 				}
 				break;
@@ -1587,33 +1490,33 @@ public class MapsParser extends Parser {
 
 	public final StringTermContext stringTerm() throws RecognitionException {
 		StringTermContext _localctx = new StringTermContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_stringTerm);
+		enterRule(_localctx, 38, RULE_stringTerm);
 		try {
-			setState(271);
+			setState(250);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LPAREN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(265);
+				setState(244);
 				match(LPAREN);
-				setState(266);
+				setState(245);
 				stringExpression();
-				setState(267);
+				setState(246);
 				match(RPAREN);
 				}
 				break;
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(269);
+				setState(248);
 				rAccessor();
 				}
 				break;
 			case STRING_LITERAL:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(270);
+				setState(249);
 				((StringTermContext)_localctx).value = match(STRING_LITERAL);
 				}
 				break;
@@ -1667,14 +1570,14 @@ public class MapsParser extends Parser {
 
 	public final ComparisonExpressionContext comparisonExpression() throws RecognitionException {
 		ComparisonExpressionContext _localctx = new ComparisonExpressionContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_comparisonExpression);
+		enterRule(_localctx, 40, RULE_comparisonExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(273);
+			setState(252);
 			comparisonTerm();
-			setState(274);
+			setState(253);
 			((ComparisonExpressionContext)_localctx).op = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << GT) | (1L << LT) | (1L << GTE) | (1L << LTE) | (1L << EQ) | (1L << NEQ))) != 0)) ) {
@@ -1685,7 +1588,7 @@ public class MapsParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(275);
+			setState(254);
 			comparisonTerm();
 			}
 		}
@@ -1733,33 +1636,33 @@ public class MapsParser extends Parser {
 
 	public final ComparisonTermContext comparisonTerm() throws RecognitionException {
 		ComparisonTermContext _localctx = new ComparisonTermContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_comparisonTerm);
+		enterRule(_localctx, 42, RULE_comparisonTerm);
 		try {
-			setState(283);
+			setState(262);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(277);
+				setState(256);
 				match(LPAREN);
-				setState(278);
+				setState(257);
 				boolExpression();
-				setState(279);
+				setState(258);
 				match(RPAREN);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(281);
+				setState(260);
 				arithmeticExpression();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(282);
+				setState(261);
 				stringExpression();
 				}
 				break;
@@ -1807,18 +1710,18 @@ public class MapsParser extends Parser {
 
 	public final ArithmeticExpressionContext arithmeticExpression() throws RecognitionException {
 		ArithmeticExpressionContext _localctx = new ArithmeticExpressionContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_arithmeticExpression);
+		enterRule(_localctx, 44, RULE_arithmeticExpression);
 		int _la;
 		try {
-			setState(290);
+			setState(269);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(285);
+				setState(264);
 				arithmeticTerm();
-				setState(286);
+				setState(265);
 				((ArithmeticExpressionContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==ADD || _la==SUB) ) {
@@ -1829,14 +1732,14 @@ public class MapsParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(287);
+				setState(266);
 				arithmeticExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(289);
+				setState(268);
 				arithmeticTerm();
 				}
 				break;
@@ -1885,18 +1788,18 @@ public class MapsParser extends Parser {
 
 	public final ArithmeticTermContext arithmeticTerm() throws RecognitionException {
 		ArithmeticTermContext _localctx = new ArithmeticTermContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_arithmeticTerm);
+		enterRule(_localctx, 46, RULE_arithmeticTerm);
 		int _la;
 		try {
-			setState(297);
+			setState(276);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(292);
+				setState(271);
 				arithmeticFactor();
-				setState(293);
+				setState(272);
 				((ArithmeticTermContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MUL) | (1L << DIV) | (1L << MOD))) != 0)) ) {
@@ -1907,14 +1810,14 @@ public class MapsParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(294);
+				setState(273);
 				arithmeticTerm();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(296);
+				setState(275);
 				arithmeticFactor();
 				}
 				break;
@@ -1965,42 +1868,42 @@ public class MapsParser extends Parser {
 
 	public final ArithmeticFactorContext arithmeticFactor() throws RecognitionException {
 		ArithmeticFactorContext _localctx = new ArithmeticFactorContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_arithmeticFactor);
+		enterRule(_localctx, 48, RULE_arithmeticFactor);
 		try {
-			setState(307);
+			setState(286);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LPAREN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(299);
+				setState(278);
 				match(LPAREN);
-				setState(300);
+				setState(279);
 				arithmeticExpression();
-				setState(301);
+				setState(280);
 				match(RPAREN);
 				}
 				break;
 			case SUB:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(303);
+				setState(282);
 				((ArithmeticFactorContext)_localctx).negated = match(SUB);
-				setState(304);
+				setState(283);
 				arithmeticExpression();
 				}
 				break;
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(305);
+				setState(284);
 				rAccessor();
 				}
 				break;
 			case INT_LITERAL:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(306);
+				setState(285);
 				((ArithmeticFactorContext)_localctx).value = match(INT_LITERAL);
 				}
 				break;
@@ -2050,18 +1953,18 @@ public class MapsParser extends Parser {
 
 	public final JoinOperatorContext joinOperator() throws RecognitionException {
 		JoinOperatorContext _localctx = new JoinOperatorContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_joinOperator);
+		enterRule(_localctx, 50, RULE_joinOperator);
 		int _la;
 		try {
-			setState(318);
+			setState(297);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(309);
+				setState(288);
 				match(MLPAREN);
-				setState(310);
+				setState(289);
 				((JoinOperatorContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==JOIN_X || _la==JOIN_Y) ) {
@@ -2072,20 +1975,20 @@ public class MapsParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(311);
+				setState(290);
 				match(HASH);
-				setState(312);
+				setState(291);
 				arithmeticExpression();
-				setState(313);
+				setState(292);
 				match(MRPAREN);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(315);
+				setState(294);
 				match(MLPAREN);
-				setState(316);
+				setState(295);
 				((JoinOperatorContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==JOIN_X || _la==JOIN_Y) ) {
@@ -2096,7 +1999,7 @@ public class MapsParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(317);
+				setState(296);
 				match(MRPAREN);
 				}
 				break;
@@ -2146,38 +2049,38 @@ public class MapsParser extends Parser {
 
 	public final MaskOperatorContext maskOperator() throws RecognitionException {
 		MaskOperatorContext _localctx = new MaskOperatorContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_maskOperator);
+		enterRule(_localctx, 52, RULE_maskOperator);
 		try {
-			setState(331);
+			setState(310);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(320);
+				setState(299);
 				match(MLPAREN);
-				setState(321);
+				setState(300);
 				match(MASK);
-				setState(322);
+				setState(301);
 				match(HASH);
-				setState(323);
+				setState(302);
 				arithmeticExpression();
-				setState(324);
+				setState(303);
 				match(COMMA);
-				setState(325);
+				setState(304);
 				arithmeticExpression();
-				setState(326);
+				setState(305);
 				match(MRPAREN);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(328);
+				setState(307);
 				match(MLPAREN);
-				setState(329);
+				setState(308);
 				match(MASK);
-				setState(330);
+				setState(309);
 				match(MRPAREN);
 				}
 				break;
@@ -2227,14 +2130,14 @@ public class MapsParser extends Parser {
 
 	public final MapUnaryIndexedOperatorContext mapUnaryIndexedOperator() throws RecognitionException {
 		MapUnaryIndexedOperatorContext _localctx = new MapUnaryIndexedOperatorContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_mapUnaryIndexedOperator);
+		enterRule(_localctx, 54, RULE_mapUnaryIndexedOperator);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(333);
+			setState(312);
 			match(MLPAREN);
-			setState(334);
+			setState(313);
 			((MapUnaryIndexedOperatorContext)_localctx).op = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INSERT_X) | (1L << INSERT_Y) | (1L << DROP_X) | (1L << DROP_Y))) != 0)) ) {
@@ -2245,11 +2148,11 @@ public class MapsParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(335);
+			setState(314);
 			match(HASH);
-			setState(336);
+			setState(315);
 			arithmeticExpression();
-			setState(337);
+			setState(316);
 			match(MRPAREN);
 			}
 		}
@@ -2293,14 +2196,14 @@ public class MapsParser extends Parser {
 
 	public final MapUnaryUnindexedOperatorContext mapUnaryUnindexedOperator() throws RecognitionException {
 		MapUnaryUnindexedOperatorContext _localctx = new MapUnaryUnindexedOperatorContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_mapUnaryUnindexedOperator);
+		enterRule(_localctx, 56, RULE_mapUnaryUnindexedOperator);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(339);
+			setState(318);
 			match(MLPAREN);
-			setState(340);
+			setState(319);
 			((MapUnaryUnindexedOperatorContext)_localctx).op = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MIRROR_X) | (1L << MIRROR_Y) | (1L << ROTATE_CW) | (1L << ROTATE_CCW))) != 0)) ) {
@@ -2311,7 +2214,7 @@ public class MapsParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(341);
+			setState(320);
 			match(MRPAREN);
 			}
 		}
@@ -2354,22 +2257,22 @@ public class MapsParser extends Parser {
 
 	public final UnaryMapOperatorContext unaryMapOperator() throws RecognitionException {
 		UnaryMapOperatorContext _localctx = new UnaryMapOperatorContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_unaryMapOperator);
+		enterRule(_localctx, 58, RULE_unaryMapOperator);
 		try {
-			setState(345);
+			setState(324);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(343);
+				setState(322);
 				mapUnaryIndexedOperator();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(344);
+				setState(323);
 				mapUnaryUnindexedOperator();
 				}
 				break;
@@ -2418,35 +2321,35 @@ public class MapsParser extends Parser {
 
 	public final UnaryMapOperationContext unaryMapOperation() throws RecognitionException {
 		UnaryMapOperationContext _localctx = new UnaryMapOperationContext(_ctx, getState());
-		enterRule(_localctx, 62, RULE_unaryMapOperation);
+		enterRule(_localctx, 60, RULE_unaryMapOperation);
 		try {
-			setState(355);
+			setState(334);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case MLPAREN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(347);
+				setState(326);
 				unaryMapOperator();
-				setState(348);
+				setState(327);
 				joinExpression();
 				}
 				break;
 			case LPAREN:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(350);
+				setState(329);
 				match(LPAREN);
-				setState(351);
+				setState(330);
 				joinExpression();
-				setState(352);
+				setState(331);
 				match(RPAREN);
 				}
 				break;
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(354);
+				setState(333);
 				((UnaryMapOperationContext)_localctx).name = match(IDENTIFIER);
 				}
 				break;
@@ -2496,26 +2399,26 @@ public class MapsParser extends Parser {
 
 	public final JoinExpressionContext joinExpression() throws RecognitionException {
 		JoinExpressionContext _localctx = new JoinExpressionContext(_ctx, getState());
-		enterRule(_localctx, 64, RULE_joinExpression);
+		enterRule(_localctx, 62, RULE_joinExpression);
 		try {
-			setState(362);
+			setState(341);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(357);
+				setState(336);
 				maskExpression();
-				setState(358);
+				setState(337);
 				joinOperator();
-				setState(359);
+				setState(338);
 				joinExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(361);
+				setState(340);
 				maskExpression();
 				}
 				break;
@@ -2563,26 +2466,26 @@ public class MapsParser extends Parser {
 
 	public final MaskExpressionContext maskExpression() throws RecognitionException {
 		MaskExpressionContext _localctx = new MaskExpressionContext(_ctx, getState());
-		enterRule(_localctx, 66, RULE_maskExpression);
+		enterRule(_localctx, 64, RULE_maskExpression);
 		try {
-			setState(369);
+			setState(348);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(364);
+				setState(343);
 				unaryMapOperation();
-				setState(365);
+				setState(344);
 				maskOperator();
-				setState(366);
+				setState(345);
 				maskExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(368);
+				setState(347);
 				unaryMapOperation();
 				}
 				break;
@@ -2624,11 +2527,11 @@ public class MapsParser extends Parser {
 
 	public final MapExpressionContext mapExpression() throws RecognitionException {
 		MapExpressionContext _localctx = new MapExpressionContext(_ctx, getState());
-		enterRule(_localctx, 68, RULE_mapExpression);
+		enterRule(_localctx, 66, RULE_mapExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(371);
+			setState(350);
 			joinExpression();
 			}
 		}
@@ -2670,19 +2573,19 @@ public class MapsParser extends Parser {
 
 	public final MapQueryContext mapQuery() throws RecognitionException {
 		MapQueryContext _localctx = new MapQueryContext(_ctx, getState());
-		enterRule(_localctx, 70, RULE_mapQuery);
+		enterRule(_localctx, 68, RULE_mapQuery);
 		try {
-			setState(378);
+			setState(357);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case MLPAREN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(373);
+				setState(352);
 				match(MLPAREN);
-				setState(374);
+				setState(353);
 				coordinateChain();
-				setState(375);
+				setState(354);
 				match(MRPAREN);
 				}
 				break;
@@ -2736,26 +2639,26 @@ public class MapsParser extends Parser {
 
 	public final CoordinateChainContext coordinateChain() throws RecognitionException {
 		CoordinateChainContext _localctx = new CoordinateChainContext(_ctx, getState());
-		enterRule(_localctx, 72, RULE_coordinateChain);
+		enterRule(_localctx, 70, RULE_coordinateChain);
 		try {
-			setState(385);
+			setState(364);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(380);
+				setState(359);
 				coordinates();
-				setState(381);
+				setState(360);
 				match(COMMA);
-				setState(382);
+				setState(361);
 				coordinateChain();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(384);
+				setState(363);
 				coordinates();
 				}
 				break;
@@ -2803,19 +2706,19 @@ public class MapsParser extends Parser {
 
 	public final CoordinatesContext coordinates() throws RecognitionException {
 		CoordinatesContext _localctx = new CoordinatesContext(_ctx, getState());
-		enterRule(_localctx, 74, RULE_coordinates);
+		enterRule(_localctx, 72, RULE_coordinates);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(387);
+			setState(366);
 			match(LPAREN);
-			setState(388);
+			setState(367);
 			arithmeticExpression();
-			setState(389);
+			setState(368);
 			match(COMMA);
-			setState(390);
+			setState(369);
 			arithmeticExpression();
-			setState(391);
+			setState(370);
 			match(RPAREN);
 			}
 		}
@@ -2860,15 +2763,15 @@ public class MapsParser extends Parser {
 
 	public final MapPropsAssignmentContext mapPropsAssignment() throws RecognitionException {
 		MapPropsAssignmentContext _localctx = new MapPropsAssignmentContext(_ctx, getState());
-		enterRule(_localctx, 76, RULE_mapPropsAssignment);
+		enterRule(_localctx, 74, RULE_mapPropsAssignment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(393);
+			setState(372);
 			((MapPropsAssignmentContext)_localctx).name = match(IDENTIFIER);
-			setState(394);
+			setState(373);
 			mapQuery();
-			setState(395);
+			setState(374);
 			mapPropsBody();
 			}
 		}
@@ -2912,32 +2815,32 @@ public class MapsParser extends Parser {
 
 	public final MapPropsBodyContext mapPropsBody() throws RecognitionException {
 		MapPropsBodyContext _localctx = new MapPropsBodyContext(_ctx, getState());
-		enterRule(_localctx, 78, RULE_mapPropsBody);
+		enterRule(_localctx, 76, RULE_mapPropsBody);
 		try {
-			setState(406);
+			setState(385);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case EXTEND:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(397);
+				setState(376);
 				((MapPropsBodyContext)_localctx).extended = match(EXTEND);
-				setState(398);
+				setState(377);
 				match(LCURLY);
-				setState(399);
+				setState(378);
 				mapPropsChain();
-				setState(400);
+				setState(379);
 				match(RCURLY);
 				}
 				break;
 			case LCURLY:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(402);
+				setState(381);
 				match(LCURLY);
-				setState(403);
+				setState(382);
 				mapPropsChain();
-				setState(404);
+				setState(383);
 				match(RCURLY);
 				}
 				break;
@@ -2957,19 +2860,13 @@ public class MapsParser extends Parser {
 	}
 
 	public static class MapPropsChainContext extends ParserRuleContext {
-		public Token name;
-		public PrimitiveTypeContext primitiveType() {
-			return getRuleContext(PrimitiveTypeContext.class,0);
-		}
-		public TerminalNode ASSIGN() { return getToken(MapsParser.ASSIGN, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public PrimitiveDeclarationContext primitiveDeclaration() {
+			return getRuleContext(PrimitiveDeclarationContext.class,0);
 		}
 		public TerminalNode SEMI() { return getToken(MapsParser.SEMI, 0); }
 		public MapPropsChainContext mapPropsChain() {
 			return getRuleContext(MapPropsChainContext.class,0);
 		}
-		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
 		public MapPropsChainContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2991,40 +2888,28 @@ public class MapsParser extends Parser {
 
 	public final MapPropsChainContext mapPropsChain() throws RecognitionException {
 		MapPropsChainContext _localctx = new MapPropsChainContext(_ctx, getState());
-		enterRule(_localctx, 80, RULE_mapPropsChain);
+		enterRule(_localctx, 78, RULE_mapPropsChain);
 		try {
-			setState(421);
+			setState(394);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(408);
-				primitiveType();
-				setState(409);
-				((MapPropsChainContext)_localctx).name = match(IDENTIFIER);
-				setState(410);
-				match(ASSIGN);
-				setState(411);
-				expression();
-				setState(412);
+				setState(387);
+				primitiveDeclaration();
+				setState(388);
 				match(SEMI);
-				setState(413);
+				setState(389);
 				mapPropsChain();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(415);
-				primitiveType();
-				setState(416);
-				((MapPropsChainContext)_localctx).name = match(IDENTIFIER);
-				setState(417);
-				match(ASSIGN);
-				setState(418);
-				expression();
-				setState(419);
+				setState(391);
+				primitiveDeclaration();
+				setState(392);
 				match(SEMI);
 				}
 				break;
@@ -3054,6 +2939,9 @@ public class MapsParser extends Parser {
 		public StringExpressionContext stringExpression() {
 			return getRuleContext(StringExpressionContext.class,0);
 		}
+		public MapExpressionContext mapExpression() {
+			return getRuleContext(MapExpressionContext.class,0);
+		}
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3075,37 +2963,44 @@ public class MapsParser extends Parser {
 
 	public final ExpressionContext expression() throws RecognitionException {
 		ExpressionContext _localctx = new ExpressionContext(_ctx, getState());
-		enterRule(_localctx, 82, RULE_expression);
+		enterRule(_localctx, 80, RULE_expression);
 		try {
-			setState(427);
+			setState(401);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(423);
+				setState(396);
 				arithmeticExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(424);
+				setState(397);
 				boolExpression();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(425);
+				setState(398);
 				comparisonExpression();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(426);
+				setState(399);
 				stringExpression();
+				}
+				break;
+			case 5:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(400);
+				mapExpression();
 				}
 				break;
 			}
@@ -3122,11 +3017,8 @@ public class MapsParser extends Parser {
 	}
 
 	public static class AssignmentContext extends ParserRuleContext {
-		public PrimitiveAssignmentContext primitiveAssignment() {
-			return getRuleContext(PrimitiveAssignmentContext.class,0);
-		}
-		public MapAssignmentContext mapAssignment() {
-			return getRuleContext(MapAssignmentContext.class,0);
+		public RegularAssignmentContext regularAssignment() {
+			return getRuleContext(RegularAssignmentContext.class,0);
 		}
 		public MapPropsAssignmentContext mapPropsAssignment() {
 			return getRuleContext(MapPropsAssignmentContext.class,0);
@@ -3152,29 +3044,22 @@ public class MapsParser extends Parser {
 
 	public final AssignmentContext assignment() throws RecognitionException {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
-		enterRule(_localctx, 84, RULE_assignment);
+		enterRule(_localctx, 82, RULE_assignment);
 		try {
-			setState(432);
+			setState(405);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(429);
-				primitiveAssignment();
+				setState(403);
+				regularAssignment();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(430);
-				mapAssignment();
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(431);
+				setState(404);
 				mapPropsAssignment();
 				}
 				break;
@@ -3191,95 +3076,44 @@ public class MapsParser extends Parser {
 		return _localctx;
 	}
 
-	public static class PrimitiveAssignmentContext extends ParserRuleContext {
+	public static class RegularAssignmentContext extends ParserRuleContext {
 		public Token name;
 		public TerminalNode ASSIGN() { return getToken(MapsParser.ASSIGN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
-		public PrimitiveAssignmentContext(ParserRuleContext parent, int invokingState) {
+		public RegularAssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_primitiveAssignment; }
+		@Override public int getRuleIndex() { return RULE_regularAssignment; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).enterPrimitiveAssignment(this);
+			if ( listener instanceof MapsListener ) ((MapsListener)listener).enterRegularAssignment(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).exitPrimitiveAssignment(this);
+			if ( listener instanceof MapsListener ) ((MapsListener)listener).exitRegularAssignment(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MapsVisitor ) return ((MapsVisitor<? extends T>)visitor).visitPrimitiveAssignment(this);
+			if ( visitor instanceof MapsVisitor ) return ((MapsVisitor<? extends T>)visitor).visitRegularAssignment(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final PrimitiveAssignmentContext primitiveAssignment() throws RecognitionException {
-		PrimitiveAssignmentContext _localctx = new PrimitiveAssignmentContext(_ctx, getState());
-		enterRule(_localctx, 86, RULE_primitiveAssignment);
+	public final RegularAssignmentContext regularAssignment() throws RecognitionException {
+		RegularAssignmentContext _localctx = new RegularAssignmentContext(_ctx, getState());
+		enterRule(_localctx, 84, RULE_regularAssignment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(434);
-			((PrimitiveAssignmentContext)_localctx).name = match(IDENTIFIER);
-			setState(435);
+			setState(407);
+			((RegularAssignmentContext)_localctx).name = match(IDENTIFIER);
+			setState(408);
 			match(ASSIGN);
-			setState(436);
+			setState(409);
 			expression();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class MapAssignmentContext extends ParserRuleContext {
-		public Token name;
-		public TerminalNode ASSIGN() { return getToken(MapsParser.ASSIGN, 0); }
-		public MapExpressionContext mapExpression() {
-			return getRuleContext(MapExpressionContext.class,0);
-		}
-		public TerminalNode IDENTIFIER() { return getToken(MapsParser.IDENTIFIER, 0); }
-		public MapAssignmentContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_mapAssignment; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).enterMapAssignment(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MapsListener ) ((MapsListener)listener).exitMapAssignment(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MapsVisitor ) return ((MapsVisitor<? extends T>)visitor).visitMapAssignment(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final MapAssignmentContext mapAssignment() throws RecognitionException {
-		MapAssignmentContext _localctx = new MapAssignmentContext(_ctx, getState());
-		enterRule(_localctx, 88, RULE_mapAssignment);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(438);
-			((MapAssignmentContext)_localctx).name = match(IDENTIFIER);
-			setState(439);
-			match(ASSIGN);
-			setState(440);
-			mapExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3328,42 +3162,42 @@ public class MapsParser extends Parser {
 
 	public final IfStatementContext ifStatement() throws RecognitionException {
 		IfStatementContext _localctx = new IfStatementContext(_ctx, getState());
-		enterRule(_localctx, 90, RULE_ifStatement);
+		enterRule(_localctx, 86, RULE_ifStatement);
 		try {
-			setState(456);
+			setState(425);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(442);
+				setState(411);
 				match(IF);
-				setState(443);
+				setState(412);
 				match(LPAREN);
-				setState(444);
+				setState(413);
 				boolExpression();
-				setState(445);
+				setState(414);
 				match(RPAREN);
-				setState(446);
+				setState(415);
 				block();
-				setState(447);
+				setState(416);
 				match(ELSE);
-				setState(448);
+				setState(417);
 				block();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(450);
+				setState(419);
 				match(IF);
-				setState(451);
+				setState(420);
 				match(LPAREN);
-				setState(452);
+				setState(421);
 				boolExpression();
-				setState(453);
+				setState(422);
 				match(RPAREN);
-				setState(454);
+				setState(423);
 				block();
 				}
 				break;
@@ -3411,19 +3245,19 @@ public class MapsParser extends Parser {
 
 	public final WhileStatementContext whileStatement() throws RecognitionException {
 		WhileStatementContext _localctx = new WhileStatementContext(_ctx, getState());
-		enterRule(_localctx, 92, RULE_whileStatement);
+		enterRule(_localctx, 88, RULE_whileStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(458);
+			setState(427);
 			match(WHILE);
-			setState(459);
+			setState(428);
 			match(LPAREN);
-			setState(460);
+			setState(429);
 			boolExpression();
-			setState(461);
+			setState(430);
 			match(RPAREN);
-			setState(462);
+			setState(431);
 			block();
 			}
 		}
@@ -3458,9 +3292,6 @@ public class MapsParser extends Parser {
 		public WhileStatementContext whileStatement() {
 			return getRuleContext(WhileStatementContext.class,0);
 		}
-		public MapExpressionContext mapExpression() {
-			return getRuleContext(MapExpressionContext.class,0);
-		}
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3482,75 +3313,64 @@ public class MapsParser extends Parser {
 
 	public final StatementContext statement() throws RecognitionException {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
-		enterRule(_localctx, 94, RULE_statement);
+		enterRule(_localctx, 90, RULE_statement);
 		try {
-			setState(487);
+			setState(452);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,33,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(464);
+				setState(433);
 				declaration();
-				setState(465);
+				setState(434);
 				match(SEMI);
-				setState(466);
+				setState(435);
 				statement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(468);
+				setState(437);
 				expression();
-				setState(469);
+				setState(438);
 				match(SEMI);
-				setState(470);
+				setState(439);
 				statement();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(472);
+				setState(441);
 				assignment();
-				setState(473);
+				setState(442);
 				match(SEMI);
-				setState(474);
+				setState(443);
 				statement();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(476);
+				setState(445);
 				ifStatement();
-				setState(477);
+				setState(446);
 				statement();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(479);
+				setState(448);
 				whileStatement();
-				setState(480);
+				setState(449);
 				statement();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
-				{
-				setState(482);
-				mapExpression();
-				setState(483);
-				match(SEMI);
-				setState(484);
-				statement();
-				}
-				break;
-			case 7:
-				enterOuterAlt(_localctx, 7);
 				{
 				}
 				break;
@@ -3594,15 +3414,15 @@ public class MapsParser extends Parser {
 
 	public final BlockContext block() throws RecognitionException {
 		BlockContext _localctx = new BlockContext(_ctx, getState());
-		enterRule(_localctx, 96, RULE_block);
+		enterRule(_localctx, 92, RULE_block);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(489);
+			setState(454);
 			match(LCURLY);
-			setState(490);
+			setState(455);
 			statement();
-			setState(491);
+			setState(456);
 			match(RCURLY);
 			}
 		}
@@ -3618,174 +3438,160 @@ public class MapsParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3@\u01f0\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3?\u01cd\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
 		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
 		"\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\4&\t&\4\'\t\'\4(\t(\4)\t)\4*\t*\4+\t+\4"+
-		",\t,\4-\t-\4.\t.\4/\t/\4\60\t\60\4\61\t\61\4\62\t\62\3\2\3\2\3\2\3\2\3"+
-		"\2\3\3\3\3\3\3\3\3\5\3n\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5"+
-		"\4z\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\u0083\n\5\3\6\3\6\5\6\u0087\n"+
-		"\6\3\7\3\7\3\7\3\7\5\7\u008d\n\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3"+
-		"\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u00a8"+
-		"\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u00b2\n\n\3\13\3\13\3\f\3\f\3"+
-		"\f\3\f\3\f\5\f\u00bb\n\f\3\r\3\r\3\r\3\r\3\r\3\16\3\16\5\16\u00c4\n\16"+
-		"\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
-		"\3\20\3\20\5\20\u00d6\n\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21"+
-		"\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u00ea\n\21\3\22\3\22"+
-		"\3\22\3\22\3\22\5\22\u00f1\n\22\3\23\3\23\3\23\3\23\3\23\5\23\u00f8\n"+
-		"\23\3\24\3\24\3\24\3\24\3\24\3\24\3\24\3\24\3\24\5\24\u0103\n\24\3\25"+
-		"\3\25\3\25\3\25\3\25\5\25\u010a\n\25\3\26\3\26\3\26\3\26\3\26\3\26\5\26"+
-		"\u0112\n\26\3\27\3\27\3\27\3\27\3\30\3\30\3\30\3\30\3\30\3\30\5\30\u011e"+
-		"\n\30\3\31\3\31\3\31\3\31\3\31\5\31\u0125\n\31\3\32\3\32\3\32\3\32\3\32"+
-		"\5\32\u012c\n\32\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\5\33\u0136\n"+
-		"\33\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u0141\n\34\3\35"+
-		"\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\3\35\5\35\u014e\n\35\3\36"+
-		"\3\36\3\36\3\36\3\36\3\36\3\37\3\37\3\37\3\37\3 \3 \5 \u015c\n \3!\3!"+
-		"\3!\3!\3!\3!\3!\3!\5!\u0166\n!\3\"\3\"\3\"\3\"\3\"\5\"\u016d\n\"\3#\3"+
-		"#\3#\3#\3#\5#\u0174\n#\3$\3$\3%\3%\3%\3%\3%\5%\u017d\n%\3&\3&\3&\3&\3"+
-		"&\5&\u0184\n&\3\'\3\'\3\'\3\'\3\'\3\'\3(\3(\3(\3(\3)\3)\3)\3)\3)\3)\3"+
-		")\3)\3)\5)\u0199\n)\3*\3*\3*\3*\3*\3*\3*\3*\3*\3*\3*\3*\3*\5*\u01a8\n"+
-		"*\3+\3+\3+\3+\5+\u01ae\n+\3,\3,\3,\5,\u01b3\n,\3-\3-\3-\3-\3.\3.\3.\3"+
-		".\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\5/\u01cb\n/\3\60\3\60\3\60"+
-		"\3\60\3\60\3\60\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61"+
-		"\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\3\61\5\61\u01ea"+
-		"\n\61\3\62\3\62\3\62\3\62\3\62\2\2\63\2\4\6\b\n\f\16\20\22\24\26\30\32"+
-		"\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\^`b\2\t\3\2\3\5\3\2\60"+
-		"\65\3\29:\3\2;=\3\2\30\31\3\2\32\35\3\2\37\"\2\u01f4\2d\3\2\2\2\4m\3\2"+
-		"\2\2\6y\3\2\2\2\b\u0082\3\2\2\2\n\u0086\3\2\2\2\f\u008c\3\2\2\2\16\u008e"+
-		"\3\2\2\2\20\u00a7\3\2\2\2\22\u00b1\3\2\2\2\24\u00b3\3\2\2\2\26\u00ba\3"+
-		"\2\2\2\30\u00bc\3\2\2\2\32\u00c3\3\2\2\2\34\u00c5\3\2\2\2\36\u00d5\3\2"+
-		"\2\2 \u00e9\3\2\2\2\"\u00f0\3\2\2\2$\u00f7\3\2\2\2&\u0102\3\2\2\2(\u0109"+
-		"\3\2\2\2*\u0111\3\2\2\2,\u0113\3\2\2\2.\u011d\3\2\2\2\60\u0124\3\2\2\2"+
-		"\62\u012b\3\2\2\2\64\u0135\3\2\2\2\66\u0140\3\2\2\28\u014d\3\2\2\2:\u014f"+
-		"\3\2\2\2<\u0155\3\2\2\2>\u015b\3\2\2\2@\u0165\3\2\2\2B\u016c\3\2\2\2D"+
-		"\u0173\3\2\2\2F\u0175\3\2\2\2H\u017c\3\2\2\2J\u0183\3\2\2\2L\u0185\3\2"+
-		"\2\2N\u018b\3\2\2\2P\u0198\3\2\2\2R\u01a7\3\2\2\2T\u01ad\3\2\2\2V\u01b2"+
-		"\3\2\2\2X\u01b4\3\2\2\2Z\u01b8\3\2\2\2\\\u01ca\3\2\2\2^\u01cc\3\2\2\2"+
-		"`\u01e9\3\2\2\2b\u01eb\3\2\2\2de\5\f\7\2ef\5\6\4\2fg\5`\61\2gh\5\b\5\2"+
-		"h\3\3\2\2\2ij\7#\2\2jk\7,\2\2kn\5\4\3\2ln\7#\2\2mi\3\2\2\2ml\3\2\2\2n"+
-		"\5\3\2\2\2op\7\20\2\2pq\7(\2\2qr\5\4\3\2rs\7)\2\2st\7\22\2\2tu\7\26\2"+
-		"\2uv\7+\2\2vw\5\6\4\2wz\3\2\2\2xz\3\2\2\2yo\3\2\2\2yx\3\2\2\2z\7\3\2\2"+
-		"\2{|\7\21\2\2|}\7(\2\2}~\5\4\3\2~\177\7)\2\2\177\u0080\7+\2\2\u0080\u0083"+
-		"\3\2\2\2\u0081\u0083\3\2\2\2\u0082{\3\2\2\2\u0082\u0081\3\2\2\2\u0083"+
-		"\t\3\2\2\2\u0084\u0087\5\30\r\2\u0085\u0087\7#\2\2\u0086\u0084\3\2\2\2"+
-		"\u0086\u0085\3\2\2\2\u0087\13\3\2\2\2\u0088\u0089\5\16\b\2\u0089\u008a"+
-		"\5\f\7\2\u008a\u008d\3\2\2\2\u008b\u008d\3\2\2\2\u008c\u0088\3\2\2\2\u008c"+
-		"\u008b\3\2\2\2\u008d\r\3\2\2\2\u008e\u008f\5\24\13\2\u008f\u0090\7#\2"+
-		"\2\u0090\u0091\7&\2\2\u0091\u0092\5\22\n\2\u0092\u0093\7\'\2\2\u0093\u0094"+
-		"\7(\2\2\u0094\u0095\5\20\t\2\u0095\u0096\7\17\2\2\u0096\u0097\5T+\2\u0097"+
-		"\u0098\7+\2\2\u0098\u0099\7)\2\2\u0099\17\3\2\2\2\u009a\u009b\5X-\2\u009b"+
-		"\u009c\7+\2\2\u009c\u009d\5\20\t\2\u009d\u00a8\3\2\2\2\u009e\u009f\5\34"+
-		"\17\2\u009f\u00a0\7+\2\2\u00a0\u00a1\5\20\t\2\u00a1\u00a8\3\2\2\2\u00a2"+
-		"\u00a3\5T+\2\u00a3\u00a4\7+\2\2\u00a4\u00a5\5\20\t\2\u00a5\u00a8\3\2\2"+
-		"\2\u00a6\u00a8\3\2\2\2\u00a7\u009a\3\2\2\2\u00a7\u009e\3\2\2\2\u00a7\u00a2"+
-		"\3\2\2\2\u00a7\u00a6\3\2\2\2\u00a8\21\3\2\2\2\u00a9\u00aa\5\24\13\2\u00aa"+
-		"\u00ab\7#\2\2\u00ab\u00ac\7,\2\2\u00ac\u00ad\5\22\n\2\u00ad\u00b2\3\2"+
-		"\2\2\u00ae\u00af\5\24\13\2\u00af\u00b0\7#\2\2\u00b0\u00b2\3\2\2\2\u00b1"+
-		"\u00a9\3\2\2\2\u00b1\u00ae\3\2\2\2\u00b2\23\3\2\2\2\u00b3\u00b4\t\2\2"+
-		"\2\u00b4\25\3\2\2\2\u00b5\u00b6\5T+\2\u00b6\u00b7\7,\2\2\u00b7\u00b8\5"+
-		"\26\f\2\u00b8\u00bb\3\2\2\2\u00b9\u00bb\5T+\2\u00ba\u00b5\3\2\2\2\u00ba"+
-		"\u00b9\3\2\2\2\u00bb\27\3\2\2\2\u00bc\u00bd\7#\2\2\u00bd\u00be\7&\2\2"+
-		"\u00be\u00bf\5\26\f\2\u00bf\u00c0\7\'\2\2\u00c0\31\3\2\2\2\u00c1\u00c4"+
-		"\5\34\17\2\u00c2\u00c4\5 \21\2\u00c3\u00c1\3\2\2\2\u00c3\u00c2\3\2\2\2"+
-		"\u00c4\33\3\2\2\2\u00c5\u00c6\5\24\13\2\u00c6\u00c7\5\36\20\2\u00c7\35"+
-		"\3\2\2\2\u00c8\u00c9\7#\2\2\u00c9\u00ca\7/\2\2\u00ca\u00cb\5T+\2\u00cb"+
-		"\u00cc\7,\2\2\u00cc\u00cd\5\36\20\2\u00cd\u00d6\3\2\2\2\u00ce\u00cf\7"+
-		"#\2\2\u00cf\u00d0\7/\2\2\u00d0\u00d6\5T+\2\u00d1\u00d2\7#\2\2\u00d2\u00d3"+
-		"\7,\2\2\u00d3\u00d6\5\36\20\2\u00d4\u00d6\7#\2\2\u00d5\u00c8\3\2\2\2\u00d5"+
-		"\u00ce\3\2\2\2\u00d5\u00d1\3\2\2\2\u00d5\u00d4\3\2\2\2\u00d6\37\3\2\2"+
-		"\2\u00d7\u00d8\7\6\2\2\u00d8\u00d9\7#\2\2\u00d9\u00da\7$\2\2\u00da\u00db"+
-		"\5\60\31\2\u00db\u00dc\7,\2\2\u00dc\u00dd\5\60\31\2\u00dd\u00de\7%\2\2"+
-		"\u00de\u00df\7/\2\2\u00df\u00e0\5P)\2\u00e0\u00ea\3\2\2\2\u00e1\u00e2"+
-		"\7\6\2\2\u00e2\u00e3\7#\2\2\u00e3\u00e4\7$\2\2\u00e4\u00e5\5\60\31\2\u00e5"+
-		"\u00e6\7,\2\2\u00e6\u00e7\5\60\31\2\u00e7\u00e8\7%\2\2\u00e8\u00ea\3\2"+
-		"\2\2\u00e9\u00d7\3\2\2\2\u00e9\u00e1\3\2\2\2\u00ea!\3\2\2\2\u00eb\u00ec"+
-		"\5$\23\2\u00ec\u00ed\7\67\2\2\u00ed\u00ee\5\"\22\2\u00ee\u00f1\3\2\2\2"+
-		"\u00ef\u00f1\5$\23\2\u00f0\u00eb\3\2\2\2\u00f0\u00ef\3\2\2\2\u00f1#\3"+
-		"\2\2\2\u00f2\u00f3\5&\24\2\u00f3\u00f4\7\66\2\2\u00f4\u00f5\5$\23\2\u00f5"+
-		"\u00f8\3\2\2\2\u00f6\u00f8\5&\24\2\u00f7\u00f2\3\2\2\2\u00f7\u00f6\3\2"+
-		"\2\2\u00f8%\3\2\2\2\u00f9\u0103\5,\27\2\u00fa\u00fb\78\2\2\u00fb\u0103"+
-		"\5\"\22\2\u00fc\u00fd\7&\2\2\u00fd\u00fe\5\"\22\2\u00fe\u00ff\7\'\2\2"+
-		"\u00ff\u0103\3\2\2\2\u0100\u0103\5\n\6\2\u0101\u0103\7\25\2\2\u0102\u00f9"+
-		"\3\2\2\2\u0102\u00fa\3\2\2\2\u0102\u00fc\3\2\2\2\u0102\u0100\3\2\2\2\u0102"+
-		"\u0101\3\2\2\2\u0103\'\3\2\2\2\u0104\u0105\5*\26\2\u0105\u0106\7>\2\2"+
-		"\u0106\u0107\5(\25\2\u0107\u010a\3\2\2\2\u0108\u010a\5*\26\2\u0109\u0104"+
-		"\3\2\2\2\u0109\u0108\3\2\2\2\u010a)\3\2\2\2\u010b\u010c\7&\2\2\u010c\u010d"+
-		"\5(\25\2\u010d\u010e\7\'\2\2\u010e\u0112\3\2\2\2\u010f\u0112\5\n\6\2\u0110"+
-		"\u0112\7\26\2\2\u0111\u010b\3\2\2\2\u0111\u010f\3\2\2\2\u0111\u0110\3"+
-		"\2\2\2\u0112+\3\2\2\2\u0113\u0114\5.\30\2\u0114\u0115\t\3\2\2\u0115\u0116"+
-		"\5.\30\2\u0116-\3\2\2\2\u0117\u0118\7&\2\2\u0118\u0119\5\"\22\2\u0119"+
-		"\u011a\7\'\2\2\u011a\u011e\3\2\2\2\u011b\u011e\5\60\31\2\u011c\u011e\5"+
-		"(\25\2\u011d\u0117\3\2\2\2\u011d\u011b\3\2\2\2\u011d\u011c\3\2\2\2\u011e"+
-		"/\3\2\2\2\u011f\u0120\5\62\32\2\u0120\u0121\t\4\2\2\u0121\u0122\5\60\31"+
-		"\2\u0122\u0125\3\2\2\2\u0123\u0125\5\62\32\2\u0124\u011f\3\2\2\2\u0124"+
-		"\u0123\3\2\2\2\u0125\61\3\2\2\2\u0126\u0127\5\64\33\2\u0127\u0128\t\5"+
-		"\2\2\u0128\u0129\5\62\32\2\u0129\u012c\3\2\2\2\u012a\u012c\5\64\33\2\u012b"+
-		"\u0126\3\2\2\2\u012b\u012a\3\2\2\2\u012c\63\3\2\2\2\u012d\u012e\7&\2\2"+
-		"\u012e\u012f\5\60\31\2\u012f\u0130\7\'\2\2\u0130\u0136\3\2\2\2\u0131\u0132"+
-		"\7:\2\2\u0132\u0136\5\60\31\2\u0133\u0136\5\n\6\2\u0134\u0136\7\24\2\2"+
-		"\u0135\u012d\3\2\2\2\u0135\u0131\3\2\2\2\u0135\u0133\3\2\2\2\u0135\u0134"+
-		"\3\2\2\2\u0136\65\3\2\2\2\u0137\u0138\7$\2\2\u0138\u0139\t\6\2\2\u0139"+
-		"\u013a\7*\2\2\u013a\u013b\5\60\31\2\u013b\u013c\7%\2\2\u013c\u0141\3\2"+
-		"\2\2\u013d\u013e\7$\2\2\u013e\u013f\t\6\2\2\u013f\u0141\7%\2\2\u0140\u0137"+
-		"\3\2\2\2\u0140\u013d\3\2\2\2\u0141\67\3\2\2\2\u0142\u0143\7$\2\2\u0143"+
-		"\u0144\7\36\2\2\u0144\u0145\7*\2\2\u0145\u0146\5\60\31\2\u0146\u0147\7"+
-		",\2\2\u0147\u0148\5\60\31\2\u0148\u0149\7%\2\2\u0149\u014e\3\2\2\2\u014a"+
-		"\u014b\7$\2\2\u014b\u014c\7\36\2\2\u014c\u014e\7%\2\2\u014d\u0142\3\2"+
-		"\2\2\u014d\u014a\3\2\2\2\u014e9\3\2\2\2\u014f\u0150\7$\2\2\u0150\u0151"+
-		"\t\7\2\2\u0151\u0152\7*\2\2\u0152\u0153\5\60\31\2\u0153\u0154\7%\2\2\u0154"+
-		";\3\2\2\2\u0155\u0156\7$\2\2\u0156\u0157\t\b\2\2\u0157\u0158\7%\2\2\u0158"+
-		"=\3\2\2\2\u0159\u015c\5:\36\2\u015a\u015c\5<\37\2\u015b\u0159\3\2\2\2"+
-		"\u015b\u015a\3\2\2\2\u015c?\3\2\2\2\u015d\u015e\5> \2\u015e\u015f\5B\""+
-		"\2\u015f\u0166\3\2\2\2\u0160\u0161\7&\2\2\u0161\u0162\5B\"\2\u0162\u0163"+
-		"\7\'\2\2\u0163\u0166\3\2\2\2\u0164\u0166\7#\2\2\u0165\u015d\3\2\2\2\u0165"+
-		"\u0160\3\2\2\2\u0165\u0164\3\2\2\2\u0166A\3\2\2\2\u0167\u0168\5D#\2\u0168"+
-		"\u0169\5\66\34\2\u0169\u016a\5B\"\2\u016a\u016d\3\2\2\2\u016b\u016d\5"+
-		"D#\2\u016c\u0167\3\2\2\2\u016c\u016b\3\2\2\2\u016dC\3\2\2\2\u016e\u016f"+
-		"\5@!\2\u016f\u0170\58\35\2\u0170\u0171\5D#\2\u0171\u0174\3\2\2\2\u0172"+
-		"\u0174\5@!\2\u0173\u016e\3\2\2\2\u0173\u0172\3\2\2\2\u0174E\3\2\2\2\u0175"+
-		"\u0176\5B\"\2\u0176G\3\2\2\2\u0177\u0178\7$\2\2\u0178\u0179\5J&\2\u0179"+
-		"\u017a\7%\2\2\u017a\u017d\3\2\2\2\u017b\u017d\3\2\2\2\u017c\u0177\3\2"+
-		"\2\2\u017c\u017b\3\2\2\2\u017dI\3\2\2\2\u017e\u017f\5L\'\2\u017f\u0180"+
-		"\7,\2\2\u0180\u0181\5J&\2\u0181\u0184\3\2\2\2\u0182\u0184\5L\'\2\u0183"+
-		"\u017e\3\2\2\2\u0183\u0182\3\2\2\2\u0184K\3\2\2\2\u0185\u0186\7&\2\2\u0186"+
-		"\u0187\5\60\31\2\u0187\u0188\7,\2\2\u0188\u0189\5\60\31\2\u0189\u018a"+
-		"\7\'\2\2\u018aM\3\2\2\2\u018b\u018c\7#\2\2\u018c\u018d\5H%\2\u018d\u018e"+
-		"\5P)\2\u018eO\3\2\2\2\u018f\u0190\7\16\2\2\u0190\u0191\7(\2\2\u0191\u0192"+
-		"\5R*\2\u0192\u0193\7)\2\2\u0193\u0199\3\2\2\2\u0194\u0195\7(\2\2\u0195"+
-		"\u0196\5R*\2\u0196\u0197\7)\2\2\u0197\u0199\3\2\2\2\u0198\u018f\3\2\2"+
-		"\2\u0198\u0194\3\2\2\2\u0199Q\3\2\2\2\u019a\u019b\5\24\13\2\u019b\u019c"+
-		"\7#\2\2\u019c\u019d\7/\2\2\u019d\u019e\5T+\2\u019e\u019f\7+\2\2\u019f"+
-		"\u01a0\5R*\2\u01a0\u01a8\3\2\2\2\u01a1\u01a2\5\24\13\2\u01a2\u01a3\7#"+
-		"\2\2\u01a3\u01a4\7/\2\2\u01a4\u01a5\5T+\2\u01a5\u01a6\7+\2\2\u01a6\u01a8"+
-		"\3\2\2\2\u01a7\u019a\3\2\2\2\u01a7\u01a1\3\2\2\2\u01a8S\3\2\2\2\u01a9"+
-		"\u01ae\5\60\31\2\u01aa\u01ae\5\"\22\2\u01ab\u01ae\5,\27\2\u01ac\u01ae"+
-		"\5(\25\2\u01ad\u01a9\3\2\2\2\u01ad\u01aa\3\2\2\2\u01ad\u01ab\3\2\2\2\u01ad"+
-		"\u01ac\3\2\2\2\u01aeU\3\2\2\2\u01af\u01b3\5X-\2\u01b0\u01b3\5Z.\2\u01b1"+
-		"\u01b3\5N(\2\u01b2\u01af\3\2\2\2\u01b2\u01b0\3\2\2\2\u01b2\u01b1\3\2\2"+
-		"\2\u01b3W\3\2\2\2\u01b4\u01b5\7#\2\2\u01b5\u01b6\7/\2\2\u01b6\u01b7\5"+
-		"T+\2\u01b7Y\3\2\2\2\u01b8\u01b9\7#\2\2\u01b9\u01ba\7/\2\2\u01ba\u01bb"+
-		"\5F$\2\u01bb[\3\2\2\2\u01bc\u01bd\7\13\2\2\u01bd\u01be\7&\2\2\u01be\u01bf"+
-		"\5\"\22\2\u01bf\u01c0\7\'\2\2\u01c0\u01c1\5b\62\2\u01c1\u01c2\7\t\2\2"+
-		"\u01c2\u01c3\5b\62\2\u01c3\u01cb\3\2\2\2\u01c4\u01c5\7\13\2\2\u01c5\u01c6"+
-		"\7&\2\2\u01c6\u01c7\5\"\22\2\u01c7\u01c8\7\'\2\2\u01c8\u01c9\5b\62\2\u01c9"+
-		"\u01cb\3\2\2\2\u01ca\u01bc\3\2\2\2\u01ca\u01c4\3\2\2\2\u01cb]\3\2\2\2"+
-		"\u01cc\u01cd\7\f\2\2\u01cd\u01ce\7&\2\2\u01ce\u01cf\5\"\22\2\u01cf\u01d0"+
-		"\7\'\2\2\u01d0\u01d1\5b\62\2\u01d1_\3\2\2\2\u01d2\u01d3\5\32\16\2\u01d3"+
-		"\u01d4\7+\2\2\u01d4\u01d5\5`\61\2\u01d5\u01ea\3\2\2\2\u01d6\u01d7\5T+"+
-		"\2\u01d7\u01d8\7+\2\2\u01d8\u01d9\5`\61\2\u01d9\u01ea\3\2\2\2\u01da\u01db"+
-		"\5V,\2\u01db\u01dc\7+\2\2\u01dc\u01dd\5`\61\2\u01dd\u01ea\3\2\2\2\u01de"+
-		"\u01df\5\\/\2\u01df\u01e0\5`\61\2\u01e0\u01ea\3\2\2\2\u01e1\u01e2\5^\60"+
-		"\2\u01e2\u01e3\5`\61\2\u01e3\u01ea\3\2\2\2\u01e4\u01e5\5F$\2\u01e5\u01e6"+
-		"\7+\2\2\u01e6\u01e7\5`\61\2\u01e7\u01ea\3\2\2\2\u01e8\u01ea\3\2\2\2\u01e9"+
-		"\u01d2\3\2\2\2\u01e9\u01d6\3\2\2\2\u01e9\u01da\3\2\2\2\u01e9\u01de\3\2"+
-		"\2\2\u01e9\u01e1\3\2\2\2\u01e9\u01e4\3\2\2\2\u01e9\u01e8\3\2\2\2\u01ea"+
-		"a\3\2\2\2\u01eb\u01ec\7(\2\2\u01ec\u01ed\5`\61\2\u01ed\u01ee\7)\2\2\u01ee"+
-		"c\3\2\2\2$my\u0082\u0086\u008c\u00a7\u00b1\u00ba\u00c3\u00d5\u00e9\u00f0"+
-		"\u00f7\u0102\u0109\u0111\u011d\u0124\u012b\u0135\u0140\u014d\u015b\u0165"+
-		"\u016c\u0173\u017c\u0183\u0198\u01a7\u01ad\u01b2\u01ca\u01e9";
+		",\t,\4-\t-\4.\t.\4/\t/\4\60\t\60\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\5"+
+		"\3j\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4v\n\4\3\5\3\5\3\5\3"+
+		"\5\3\5\3\5\3\5\5\5\177\n\5\3\6\3\6\3\6\3\6\5\6\u0085\n\6\3\7\3\7\3\7\3"+
+		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\b\u0099\n"+
+		"\b\3\t\3\t\3\n\3\n\3\n\3\n\3\n\5\n\u00a2\n\n\3\13\3\13\3\13\3\13\3\13"+
+		"\3\f\3\f\5\f\u00ab\n\f\3\r\3\r\5\r\u00af\n\r\3\16\3\16\3\16\3\17\3\17"+
+		"\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\5\17\u00c1\n\17"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\5\20\u00d5\n\20\3\21\3\21\3\21\3\21\3\21\5\21\u00dc"+
+		"\n\21\3\22\3\22\3\22\3\22\3\22\5\22\u00e3\n\22\3\23\3\23\3\23\3\23\3\23"+
+		"\3\23\3\23\3\23\3\23\5\23\u00ee\n\23\3\24\3\24\3\24\3\24\3\24\5\24\u00f5"+
+		"\n\24\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u00fd\n\25\3\26\3\26\3\26\3\26"+
+		"\3\27\3\27\3\27\3\27\3\27\3\27\5\27\u0109\n\27\3\30\3\30\3\30\3\30\3\30"+
+		"\5\30\u0110\n\30\3\31\3\31\3\31\3\31\3\31\5\31\u0117\n\31\3\32\3\32\3"+
+		"\32\3\32\3\32\3\32\3\32\3\32\5\32\u0121\n\32\3\33\3\33\3\33\3\33\3\33"+
+		"\3\33\3\33\3\33\3\33\5\33\u012c\n\33\3\34\3\34\3\34\3\34\3\34\3\34\3\34"+
+		"\3\34\3\34\3\34\3\34\5\34\u0139\n\34\3\35\3\35\3\35\3\35\3\35\3\35\3\36"+
+		"\3\36\3\36\3\36\3\37\3\37\5\37\u0147\n\37\3 \3 \3 \3 \3 \3 \3 \3 \5 \u0151"+
+		"\n \3!\3!\3!\3!\3!\5!\u0158\n!\3\"\3\"\3\"\3\"\3\"\5\"\u015f\n\"\3#\3"+
+		"#\3$\3$\3$\3$\3$\5$\u0168\n$\3%\3%\3%\3%\3%\5%\u016f\n%\3&\3&\3&\3&\3"+
+		"&\3&\3\'\3\'\3\'\3\'\3(\3(\3(\3(\3(\3(\3(\3(\3(\5(\u0184\n(\3)\3)\3)\3"+
+		")\3)\3)\3)\5)\u018d\n)\3*\3*\3*\3*\3*\5*\u0194\n*\3+\3+\5+\u0198\n+\3"+
+		",\3,\3,\3,\3-\3-\3-\3-\3-\3-\3-\3-\3-\3-\3-\3-\3-\3-\5-\u01ac\n-\3.\3"+
+		".\3.\3.\3.\3.\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3/\3"+
+		"/\5/\u01c7\n/\3\60\3\60\3\60\3\60\3\60\2\2\61\2\4\6\b\n\f\16\20\22\24"+
+		"\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\^\2\t\3\2\3\5"+
+		"\3\2/\64\3\289\3\2:<\3\2\27\30\3\2\31\34\3\2\36!\2\u01cf\2`\3\2\2\2\4"+
+		"i\3\2\2\2\6u\3\2\2\2\b~\3\2\2\2\n\u0084\3\2\2\2\f\u0086\3\2\2\2\16\u0098"+
+		"\3\2\2\2\20\u009a\3\2\2\2\22\u00a1\3\2\2\2\24\u00a3\3\2\2\2\26\u00aa\3"+
+		"\2\2\2\30\u00ae\3\2\2\2\32\u00b0\3\2\2\2\34\u00c0\3\2\2\2\36\u00d4\3\2"+
+		"\2\2 \u00db\3\2\2\2\"\u00e2\3\2\2\2$\u00ed\3\2\2\2&\u00f4\3\2\2\2(\u00fc"+
+		"\3\2\2\2*\u00fe\3\2\2\2,\u0108\3\2\2\2.\u010f\3\2\2\2\60\u0116\3\2\2\2"+
+		"\62\u0120\3\2\2\2\64\u012b\3\2\2\2\66\u0138\3\2\2\28\u013a\3\2\2\2:\u0140"+
+		"\3\2\2\2<\u0146\3\2\2\2>\u0150\3\2\2\2@\u0157\3\2\2\2B\u015e\3\2\2\2D"+
+		"\u0160\3\2\2\2F\u0167\3\2\2\2H\u016e\3\2\2\2J\u0170\3\2\2\2L\u0176\3\2"+
+		"\2\2N\u0183\3\2\2\2P\u018c\3\2\2\2R\u0193\3\2\2\2T\u0197\3\2\2\2V\u0199"+
+		"\3\2\2\2X\u01ab\3\2\2\2Z\u01ad\3\2\2\2\\\u01c6\3\2\2\2^\u01c8\3\2\2\2"+
+		"`a\5\n\6\2ab\5\6\4\2bc\5\\/\2cd\5\b\5\2d\3\3\2\2\2ef\7\"\2\2fg\7+\2\2"+
+		"gj\5\4\3\2hj\7\"\2\2ie\3\2\2\2ih\3\2\2\2j\5\3\2\2\2kl\7\17\2\2lm\7\'\2"+
+		"\2mn\5\4\3\2no\7(\2\2op\7\21\2\2pq\7\25\2\2qr\7*\2\2rs\5\6\4\2sv\3\2\2"+
+		"\2tv\3\2\2\2uk\3\2\2\2ut\3\2\2\2v\7\3\2\2\2wx\7\20\2\2xy\7\'\2\2yz\5\4"+
+		"\3\2z{\7(\2\2{|\7*\2\2|\177\3\2\2\2}\177\3\2\2\2~w\3\2\2\2~}\3\2\2\2\177"+
+		"\t\3\2\2\2\u0080\u0081\5\f\7\2\u0081\u0082\5\n\6\2\u0082\u0085\3\2\2\2"+
+		"\u0083\u0085\3\2\2\2\u0084\u0080\3\2\2\2\u0084\u0083\3\2\2\2\u0085\13"+
+		"\3\2\2\2\u0086\u0087\5\20\t\2\u0087\u0088\7\"\2\2\u0088\u0089\7%\2\2\u0089"+
+		"\u008a\5\16\b\2\u008a\u008b\7&\2\2\u008b\u008c\5^\60\2\u008c\u008d\7\16"+
+		"\2\2\u008d\u008e\5R*\2\u008e\u008f\7*\2\2\u008f\r\3\2\2\2\u0090\u0091"+
+		"\5\20\t\2\u0091\u0092\7\"\2\2\u0092\u0093\7+\2\2\u0093\u0094\5\16\b\2"+
+		"\u0094\u0099\3\2\2\2\u0095\u0096\5\20\t\2\u0096\u0097\7\"\2\2\u0097\u0099"+
+		"\3\2\2\2\u0098\u0090\3\2\2\2\u0098\u0095\3\2\2\2\u0099\17\3\2\2\2\u009a"+
+		"\u009b\t\2\2\2\u009b\21\3\2\2\2\u009c\u009d\5R*\2\u009d\u009e\7+\2\2\u009e"+
+		"\u009f\5\22\n\2\u009f\u00a2\3\2\2\2\u00a0\u00a2\5R*\2\u00a1\u009c\3\2"+
+		"\2\2\u00a1\u00a0\3\2\2\2\u00a2\23\3\2\2\2\u00a3\u00a4\7\"\2\2\u00a4\u00a5"+
+		"\7%\2\2\u00a5\u00a6\5\22\n\2\u00a6\u00a7\7&\2\2\u00a7\25\3\2\2\2\u00a8"+
+		"\u00ab\5\24\13\2\u00a9\u00ab\7\"\2\2\u00aa\u00a8\3\2\2\2\u00aa\u00a9\3"+
+		"\2\2\2\u00ab\27\3\2\2\2\u00ac\u00af\5\32\16\2\u00ad\u00af\5\36\20\2\u00ae"+
+		"\u00ac\3\2\2\2\u00ae\u00ad\3\2\2\2\u00af\31\3\2\2\2\u00b0\u00b1\5\20\t"+
+		"\2\u00b1\u00b2\5\34\17\2\u00b2\33\3\2\2\2\u00b3\u00b4\7\"\2\2\u00b4\u00b5"+
+		"\7.\2\2\u00b5\u00b6\5R*\2\u00b6\u00b7\7+\2\2\u00b7\u00b8\5\34\17\2\u00b8"+
+		"\u00c1\3\2\2\2\u00b9\u00ba\7\"\2\2\u00ba\u00bb\7.\2\2\u00bb\u00c1\5R*"+
+		"\2\u00bc\u00bd\7\"\2\2\u00bd\u00be\7+\2\2\u00be\u00c1\5\34\17\2\u00bf"+
+		"\u00c1\7\"\2\2\u00c0\u00b3\3\2\2\2\u00c0\u00b9\3\2\2\2\u00c0\u00bc\3\2"+
+		"\2\2\u00c0\u00bf\3\2\2\2\u00c1\35\3\2\2\2\u00c2\u00c3\7\6\2\2\u00c3\u00c4"+
+		"\7\"\2\2\u00c4\u00c5\7#\2\2\u00c5\u00c6\5.\30\2\u00c6\u00c7\7+\2\2\u00c7"+
+		"\u00c8\5.\30\2\u00c8\u00c9\7$\2\2\u00c9\u00ca\7.\2\2\u00ca\u00cb\5N(\2"+
+		"\u00cb\u00d5\3\2\2\2\u00cc\u00cd\7\6\2\2\u00cd\u00ce\7\"\2\2\u00ce\u00cf"+
+		"\7#\2\2\u00cf\u00d0\5.\30\2\u00d0\u00d1\7+\2\2\u00d1\u00d2\5.\30\2\u00d2"+
+		"\u00d3\7$\2\2\u00d3\u00d5\3\2\2\2\u00d4\u00c2\3\2\2\2\u00d4\u00cc\3\2"+
+		"\2\2\u00d5\37\3\2\2\2\u00d6\u00d7\5\"\22\2\u00d7\u00d8\7\66\2\2\u00d8"+
+		"\u00d9\5 \21\2\u00d9\u00dc\3\2\2\2\u00da\u00dc\5\"\22\2\u00db\u00d6\3"+
+		"\2\2\2\u00db\u00da\3\2\2\2\u00dc!\3\2\2\2\u00dd\u00de\5$\23\2\u00de\u00df"+
+		"\7\65\2\2\u00df\u00e0\5\"\22\2\u00e0\u00e3\3\2\2\2\u00e1\u00e3\5$\23\2"+
+		"\u00e2\u00dd\3\2\2\2\u00e2\u00e1\3\2\2\2\u00e3#\3\2\2\2\u00e4\u00ee\5"+
+		"*\26\2\u00e5\u00e6\7\67\2\2\u00e6\u00ee\5 \21\2\u00e7\u00e8\7%\2\2\u00e8"+
+		"\u00e9\5 \21\2\u00e9\u00ea\7&\2\2\u00ea\u00ee\3\2\2\2\u00eb\u00ee\5\26"+
+		"\f\2\u00ec\u00ee\7\24\2\2\u00ed\u00e4\3\2\2\2\u00ed\u00e5\3\2\2\2\u00ed"+
+		"\u00e7\3\2\2\2\u00ed\u00eb\3\2\2\2\u00ed\u00ec\3\2\2\2\u00ee%\3\2\2\2"+
+		"\u00ef\u00f0\5(\25\2\u00f0\u00f1\7=\2\2\u00f1\u00f2\5&\24\2\u00f2\u00f5"+
+		"\3\2\2\2\u00f3\u00f5\5(\25\2\u00f4\u00ef\3\2\2\2\u00f4\u00f3\3\2\2\2\u00f5"+
+		"\'\3\2\2\2\u00f6\u00f7\7%\2\2\u00f7\u00f8\5&\24\2\u00f8\u00f9\7&\2\2\u00f9"+
+		"\u00fd\3\2\2\2\u00fa\u00fd\5\26\f\2\u00fb\u00fd\7\25\2\2\u00fc\u00f6\3"+
+		"\2\2\2\u00fc\u00fa\3\2\2\2\u00fc\u00fb\3\2\2\2\u00fd)\3\2\2\2\u00fe\u00ff"+
+		"\5,\27\2\u00ff\u0100\t\3\2\2\u0100\u0101\5,\27\2\u0101+\3\2\2\2\u0102"+
+		"\u0103\7%\2\2\u0103\u0104\5 \21\2\u0104\u0105\7&\2\2\u0105\u0109\3\2\2"+
+		"\2\u0106\u0109\5.\30\2\u0107\u0109\5&\24\2\u0108\u0102\3\2\2\2\u0108\u0106"+
+		"\3\2\2\2\u0108\u0107\3\2\2\2\u0109-\3\2\2\2\u010a\u010b\5\60\31\2\u010b"+
+		"\u010c\t\4\2\2\u010c\u010d\5.\30\2\u010d\u0110\3\2\2\2\u010e\u0110\5\60"+
+		"\31\2\u010f\u010a\3\2\2\2\u010f\u010e\3\2\2\2\u0110/\3\2\2\2\u0111\u0112"+
+		"\5\62\32\2\u0112\u0113\t\5\2\2\u0113\u0114\5\60\31\2\u0114\u0117\3\2\2"+
+		"\2\u0115\u0117\5\62\32\2\u0116\u0111\3\2\2\2\u0116\u0115\3\2\2\2\u0117"+
+		"\61\3\2\2\2\u0118\u0119\7%\2\2\u0119\u011a\5.\30\2\u011a\u011b\7&\2\2"+
+		"\u011b\u0121\3\2\2\2\u011c\u011d\79\2\2\u011d\u0121\5.\30\2\u011e\u0121"+
+		"\5\26\f\2\u011f\u0121\7\23\2\2\u0120\u0118\3\2\2\2\u0120\u011c\3\2\2\2"+
+		"\u0120\u011e\3\2\2\2\u0120\u011f\3\2\2\2\u0121\63\3\2\2\2\u0122\u0123"+
+		"\7#\2\2\u0123\u0124\t\6\2\2\u0124\u0125\7)\2\2\u0125\u0126\5.\30\2\u0126"+
+		"\u0127\7$\2\2\u0127\u012c\3\2\2\2\u0128\u0129\7#\2\2\u0129\u012a\t\6\2"+
+		"\2\u012a\u012c\7$\2\2\u012b\u0122\3\2\2\2\u012b\u0128\3\2\2\2\u012c\65"+
+		"\3\2\2\2\u012d\u012e\7#\2\2\u012e\u012f\7\35\2\2\u012f\u0130\7)\2\2\u0130"+
+		"\u0131\5.\30\2\u0131\u0132\7+\2\2\u0132\u0133\5.\30\2\u0133\u0134\7$\2"+
+		"\2\u0134\u0139\3\2\2\2\u0135\u0136\7#\2\2\u0136\u0137\7\35\2\2\u0137\u0139"+
+		"\7$\2\2\u0138\u012d\3\2\2\2\u0138\u0135\3\2\2\2\u0139\67\3\2\2\2\u013a"+
+		"\u013b\7#\2\2\u013b\u013c\t\7\2\2\u013c\u013d\7)\2\2\u013d\u013e\5.\30"+
+		"\2\u013e\u013f\7$\2\2\u013f9\3\2\2\2\u0140\u0141\7#\2\2\u0141\u0142\t"+
+		"\b\2\2\u0142\u0143\7$\2\2\u0143;\3\2\2\2\u0144\u0147\58\35\2\u0145\u0147"+
+		"\5:\36\2\u0146\u0144\3\2\2\2\u0146\u0145\3\2\2\2\u0147=\3\2\2\2\u0148"+
+		"\u0149\5<\37\2\u0149\u014a\5@!\2\u014a\u0151\3\2\2\2\u014b\u014c\7%\2"+
+		"\2\u014c\u014d\5@!\2\u014d\u014e\7&\2\2\u014e\u0151\3\2\2\2\u014f\u0151"+
+		"\7\"\2\2\u0150\u0148\3\2\2\2\u0150\u014b\3\2\2\2\u0150\u014f\3\2\2\2\u0151"+
+		"?\3\2\2\2\u0152\u0153\5B\"\2\u0153\u0154\5\64\33\2\u0154\u0155\5@!\2\u0155"+
+		"\u0158\3\2\2\2\u0156\u0158\5B\"\2\u0157\u0152\3\2\2\2\u0157\u0156\3\2"+
+		"\2\2\u0158A\3\2\2\2\u0159\u015a\5> \2\u015a\u015b\5\66\34\2\u015b\u015c"+
+		"\5B\"\2\u015c\u015f\3\2\2\2\u015d\u015f\5> \2\u015e\u0159\3\2\2\2\u015e"+
+		"\u015d\3\2\2\2\u015fC\3\2\2\2\u0160\u0161\5@!\2\u0161E\3\2\2\2\u0162\u0163"+
+		"\7#\2\2\u0163\u0164\5H%\2\u0164\u0165\7$\2\2\u0165\u0168\3\2\2\2\u0166"+
+		"\u0168\3\2\2\2\u0167\u0162\3\2\2\2\u0167\u0166\3\2\2\2\u0168G\3\2\2\2"+
+		"\u0169\u016a\5J&\2\u016a\u016b\7+\2\2\u016b\u016c\5H%\2\u016c\u016f\3"+
+		"\2\2\2\u016d\u016f\5J&\2\u016e\u0169\3\2\2\2\u016e\u016d\3\2\2\2\u016f"+
+		"I\3\2\2\2\u0170\u0171\7%\2\2\u0171\u0172\5.\30\2\u0172\u0173\7+\2\2\u0173"+
+		"\u0174\5.\30\2\u0174\u0175\7&\2\2\u0175K\3\2\2\2\u0176\u0177\7\"\2\2\u0177"+
+		"\u0178\5F$\2\u0178\u0179\5N(\2\u0179M\3\2\2\2\u017a\u017b\7\r\2\2\u017b"+
+		"\u017c\7\'\2\2\u017c\u017d\5P)\2\u017d\u017e\7(\2\2\u017e\u0184\3\2\2"+
+		"\2\u017f\u0180\7\'\2\2\u0180\u0181\5P)\2\u0181\u0182\7(\2\2\u0182\u0184"+
+		"\3\2\2\2\u0183\u017a\3\2\2\2\u0183\u017f\3\2\2\2\u0184O\3\2\2\2\u0185"+
+		"\u0186\5\32\16\2\u0186\u0187\7*\2\2\u0187\u0188\5P)\2\u0188\u018d\3\2"+
+		"\2\2\u0189\u018a\5\32\16\2\u018a\u018b\7*\2\2\u018b\u018d\3\2\2\2\u018c"+
+		"\u0185\3\2\2\2\u018c\u0189\3\2\2\2\u018dQ\3\2\2\2\u018e\u0194\5.\30\2"+
+		"\u018f\u0194\5 \21\2\u0190\u0194\5*\26\2\u0191\u0194\5&\24\2\u0192\u0194"+
+		"\5D#\2\u0193\u018e\3\2\2\2\u0193\u018f\3\2\2\2\u0193\u0190\3\2\2\2\u0193"+
+		"\u0191\3\2\2\2\u0193\u0192\3\2\2\2\u0194S\3\2\2\2\u0195\u0198\5V,\2\u0196"+
+		"\u0198\5L\'\2\u0197\u0195\3\2\2\2\u0197\u0196\3\2\2\2\u0198U\3\2\2\2\u0199"+
+		"\u019a\7\"\2\2\u019a\u019b\7.\2\2\u019b\u019c\5R*\2\u019cW\3\2\2\2\u019d"+
+		"\u019e\7\n\2\2\u019e\u019f\7%\2\2\u019f\u01a0\5 \21\2\u01a0\u01a1\7&\2"+
+		"\2\u01a1\u01a2\5^\60\2\u01a2\u01a3\7\b\2\2\u01a3\u01a4\5^\60\2\u01a4\u01ac"+
+		"\3\2\2\2\u01a5\u01a6\7\n\2\2\u01a6\u01a7\7%\2\2\u01a7\u01a8\5 \21\2\u01a8"+
+		"\u01a9\7&\2\2\u01a9\u01aa\5^\60\2\u01aa\u01ac\3\2\2\2\u01ab\u019d\3\2"+
+		"\2\2\u01ab\u01a5\3\2\2\2\u01acY\3\2\2\2\u01ad\u01ae\7\13\2\2\u01ae\u01af"+
+		"\7%\2\2\u01af\u01b0\5 \21\2\u01b0\u01b1\7&\2\2\u01b1\u01b2\5^\60\2\u01b2"+
+		"[\3\2\2\2\u01b3\u01b4\5\30\r\2\u01b4\u01b5\7*\2\2\u01b5\u01b6\5\\/\2\u01b6"+
+		"\u01c7\3\2\2\2\u01b7\u01b8\5R*\2\u01b8\u01b9\7*\2\2\u01b9\u01ba\5\\/\2"+
+		"\u01ba\u01c7\3\2\2\2\u01bb\u01bc\5T+\2\u01bc\u01bd\7*\2\2\u01bd\u01be"+
+		"\5\\/\2\u01be\u01c7\3\2\2\2\u01bf\u01c0\5X-\2\u01c0\u01c1\5\\/\2\u01c1"+
+		"\u01c7\3\2\2\2\u01c2\u01c3\5Z.\2\u01c3\u01c4\5\\/\2\u01c4\u01c7\3\2\2"+
+		"\2\u01c5\u01c7\3\2\2\2\u01c6\u01b3\3\2\2\2\u01c6\u01b7\3\2\2\2\u01c6\u01bb"+
+		"\3\2\2\2\u01c6\u01bf\3\2\2\2\u01c6\u01c2\3\2\2\2\u01c6\u01c5\3\2\2\2\u01c7"+
+		"]\3\2\2\2\u01c8\u01c9\7\'\2\2\u01c9\u01ca\5\\/\2\u01ca\u01cb\7(\2\2\u01cb"+
+		"_\3\2\2\2#iu~\u0084\u0098\u00a1\u00aa\u00ae\u00c0\u00d4\u00db\u00e2\u00ed"+
+		"\u00f4\u00fc\u0108\u010f\u0116\u0120\u012b\u0138\u0146\u0150\u0157\u015e"+
+		"\u0167\u016e\u0183\u018c\u0193\u0197\u01ab\u01c6";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

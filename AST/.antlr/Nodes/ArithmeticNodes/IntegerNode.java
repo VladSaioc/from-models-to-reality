@@ -2,7 +2,7 @@ package Nodes.ArithmeticNodes;
 
 import Nodes.AbstractNode;
 
-public class IntegerNode extends AbstractNode implements ArithmeticNode {
+public class IntegerNode extends AbstractNode implements IArithmeticNode {
   private int value;
 
   public IntegerNode(int value) {

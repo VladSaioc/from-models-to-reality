@@ -63,18 +63,6 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRAccessor(MapsParser.RAccessorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRAccessor(MapsParser.RAccessorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctions(MapsParser.FunctionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -94,18 +82,6 @@ public class MapsBaseListener implements MapsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionDef(MapsParser.FunctionDefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionStatement(MapsParser.FunctionStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionStatement(MapsParser.FunctionStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -154,6 +130,18 @@ public class MapsBaseListener implements MapsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionCall(MapsParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRAccessor(MapsParser.RAccessorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRAccessor(MapsParser.RAccessorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -531,25 +519,13 @@ public class MapsBaseListener implements MapsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx) { }
+	@Override public void enterRegularAssignment(MapsParser.RegularAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMapAssignment(MapsParser.MapAssignmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMapAssignment(MapsParser.MapAssignmentContext ctx) { }
+	@Override public void exitRegularAssignment(MapsParser.RegularAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

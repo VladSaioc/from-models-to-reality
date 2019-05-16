@@ -47,16 +47,6 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitExports(MapsParser.ExportsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#rAccessor}.
-	 * @param ctx the parse tree
-	 */
-	void enterRAccessor(MapsParser.RAccessorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#rAccessor}.
-	 * @param ctx the parse tree
-	 */
-	void exitRAccessor(MapsParser.RAccessorContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MapsParser#functions}.
 	 * @param ctx the parse tree
 	 */
@@ -76,16 +66,6 @@ public interface MapsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionDef(MapsParser.FunctionDefContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#functionStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionStatement(MapsParser.FunctionStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#functionStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionStatement(MapsParser.FunctionStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#functionDefParams}.
 	 * @param ctx the parse tree
@@ -126,6 +106,16 @@ public interface MapsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionCall(MapsParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MapsParser#rAccessor}.
+	 * @param ctx the parse tree
+	 */
+	void enterRAccessor(MapsParser.RAccessorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MapsParser#rAccessor}.
+	 * @param ctx the parse tree
+	 */
+	void exitRAccessor(MapsParser.RAccessorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#declaration}.
 	 * @param ctx the parse tree
@@ -437,25 +427,15 @@ public interface MapsListener extends ParseTreeListener {
 	 */
 	void exitAssignment(MapsParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MapsParser#primitiveAssignment}.
+	 * Enter a parse tree produced by {@link MapsParser#regularAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx);
+	void enterRegularAssignment(MapsParser.RegularAssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MapsParser#primitiveAssignment}.
+	 * Exit a parse tree produced by {@link MapsParser#regularAssignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MapsParser#mapAssignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterMapAssignment(MapsParser.MapAssignmentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MapsParser#mapAssignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitMapAssignment(MapsParser.MapAssignmentContext ctx);
+	void exitRegularAssignment(MapsParser.RegularAssignmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MapsParser#ifStatement}.
 	 * @param ctx the parse tree

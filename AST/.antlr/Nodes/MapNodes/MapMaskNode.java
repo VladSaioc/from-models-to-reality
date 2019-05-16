@@ -3,7 +3,7 @@ package Nodes.MapNodes;
 import Nodes.AbstractNode;
 import Nodes.ExpressionNodes.BinaryExpressionNode;;
 
-public class MapMaskNode extends BinaryExpressionNode {
+public class MapMaskNode extends BinaryExpressionNode implements IMapBinaryExpression {
   private AbstractNode x;
   private AbstractNode y;
 

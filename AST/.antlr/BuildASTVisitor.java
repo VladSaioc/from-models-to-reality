@@ -10,7 +10,6 @@ import Nodes.FunctionNodes.*;
 import Nodes.MapNodes.*;
 import Nodes.ImpexNodes.*;
 import Nodes.StringNodes.*;
-import Nodes.TypeNodes.*;
 
 public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitProgram(MapsParser.ProgramContext ctx) {    
@@ -42,30 +41,13 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     );
   }
 
-  public AbstractNode visitFunctionStatement(MapsParser.FunctionStatementContext ctx) {
-    return ctx.primitiveAssignment() != null
-    ? visitPrimitiveAssignment(ctx.primitiveAssignment())
-      .makeSiblings(visitFunctionStatement(ctx.functionStatement()))
-    : ctx.primitiveDeclaration() != null
-    ? visitPrimitiveDeclaration(ctx.primitiveDeclaration())
-      .makeSiblings(visitFunctionStatement(ctx.functionStatement()))
-    : ctx.expression() != null
-    ? visitExpression(ctx.expression())
-      .makeSiblings(visitFunctionStatement(ctx.functionStatement()))
-    : null;
-  }
-
   public AbstractNode visitFunctionDef(MapsParser.FunctionDefContext ctx) {
     return new FunctionDefNode(
       ctx.name.getText(),
       ctx.primitiveType().getText(), 
       visitFunctionDefParams(ctx.functionDefParams()),
-      new FunctionBodyNode(
-        visitFunctionStatement(ctx.functionStatement())
-      ),
-      new FunctionReturnNode(
-        visitExpression(ctx.expression())
-      )
+      visitBlock(ctx.block()),
+      visitExpression(ctx.expression())
     );
   }
 
@@ -171,11 +153,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   }
 
   public AbstractNode visitMapPropsChain(MapsParser.MapPropsChainContext ctx) {      
-    return new MapPropsAssignPropNode(
-      ctx.primitiveType().getText(),
-      ctx.name.getText(),
-      visitExpression(ctx.expression()) 
-    ).makeSiblings(
+    return visitPrimitiveDeclaration(ctx.primitiveDeclaration()) 
+    .makeSiblings(
       ctx.mapPropsChain() != null 
       ? visitMapPropsChain(ctx.mapPropsChain())
       : null
@@ -458,18 +437,16 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitAssignment(MapsParser.AssignmentContext ctx) {      
     if(ctx.mapPropsAssignment() != null) {
       return visitMapPropsAssignment(ctx.mapPropsAssignment());
-    } if(ctx.mapAssignment() != null) {
-      return visitMapAssignment(ctx.mapAssignment());
-    } if (ctx.primitiveAssignment() != null) {
-      return visitPrimitiveAssignment(ctx.primitiveAssignment());
+    } if (ctx.regularAssignment() != null) {
+      return visitRegularAssignment(ctx.regularAssignment());
     }
     throw new Error("Unrecognized assignment: " + ctx.getText());
   }
 
-  public AbstractNode visitMapAssignment(MapsParser.MapAssignmentContext ctx) {
-    return new MapAssignNode(
-      ctx.name.getText(),
-      visitMapExpression(ctx.mapExpression())
+  public AbstractNode visitRegularAssignment(MapsParser.RegularAssignmentContext ctx) {      
+    return new AssignNode(
+      ctx.name.getText(), 
+      visitExpression(ctx.expression())
     );
   }
 
@@ -490,14 +467,10 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
       return visitComparisonExpression(ctx.comparisonExpression());
     } if(ctx.stringExpression() != null) {
       return visitStringExpression(ctx.stringExpression());
-    } throw new Error("Unrecognized expression: " + ctx.getText());
-  }
-
-  public AbstractNode visitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx) {      
-    return new AssignNode(
-      ctx.name.getText(), 
-      visitExpression(ctx.expression())
-    );
+    } if(ctx.mapExpression() != null) {
+      return visitMapExpression(ctx.mapExpression());
+    } 
+    throw new Error("Unrecognized expression: " + ctx.getText());
   }
 
   public AbstractNode visitStatement(MapsParser.StatementContext ctx) {
@@ -508,11 +481,6 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
       );
     } if (ctx.expression() != null) {
       return visitExpression(ctx.expression())
-      .makeSiblings(
-        visitStatement(ctx.statement())
-      );
-    } if(ctx.mapExpression() != null) {
-      return visitMapExpression(ctx.mapExpression())
       .makeSiblings(
         visitStatement(ctx.statement())
       );

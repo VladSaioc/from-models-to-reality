@@ -34,12 +34,6 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExports(MapsParser.ExportsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#rAccessor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRAccessor(MapsParser.RAccessorContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MapsParser#functions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -51,12 +45,6 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionDef(MapsParser.FunctionDefContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#functionStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionStatement(MapsParser.FunctionStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#functionDefParams}.
 	 * @param ctx the parse tree
@@ -81,6 +69,12 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionCall(MapsParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MapsParser#rAccessor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRAccessor(MapsParser.RAccessorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#declaration}.
 	 * @param ctx the parse tree
@@ -268,17 +262,11 @@ public interface MapsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(MapsParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MapsParser#primitiveAssignment}.
+	 * Visit a parse tree produced by {@link MapsParser#regularAssignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrimitiveAssignment(MapsParser.PrimitiveAssignmentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MapsParser#mapAssignment}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMapAssignment(MapsParser.MapAssignmentContext ctx);
+	T visitRegularAssignment(MapsParser.RegularAssignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MapsParser#ifStatement}.
 	 * @param ctx the parse tree

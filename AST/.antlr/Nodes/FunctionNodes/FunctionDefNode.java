@@ -1,7 +1,6 @@
 package Nodes.FunctionNodes;
 
 import Nodes.AbstractNode;
-import Nodes.TypeNodes.TypeNode;
 
 public class FunctionDefNode extends AbstractNode {
   private AbstractNode params;

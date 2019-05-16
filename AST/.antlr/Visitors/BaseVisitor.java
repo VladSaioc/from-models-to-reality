@@ -13,7 +13,6 @@ import Nodes.FunctionNodes.*;
 import Nodes.ImpexNodes.*;
 import Nodes.MapNodes.*;
 import Nodes.StringNodes.*;
-import Nodes.TypeNodes.*;
 
 public abstract class BaseVisitor<T> {
   public Void visitChildren(AbstractNode n) {
@@ -23,6 +22,16 @@ public abstract class BaseVisitor<T> {
         visit(child);
         child = child.rightSib;
       }
+    }
+    return null;
+  }
+
+  public <N extends AbstractNode> Void visitTypedSiblings(N n) {
+    String baseType = n.getClass().getName();
+    AbstractNode sib = n;
+    while (n.getClass().getName().equals(baseType) && n != null) {
+      visit(sib);
+      sib = sib.rightSib;
     }
     return null;
   }
