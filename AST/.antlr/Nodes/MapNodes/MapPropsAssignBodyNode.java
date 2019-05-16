@@ -6,6 +6,7 @@ public class MapPropsAssignBodyNode extends AbstractNode {
   private AbstractNode props;
 
   public MapPropsAssignBodyNode(AbstractNode props) {
+    super();
     this.props = props;
     this.adoptChildren(props);
   }

@@ -4,7 +4,9 @@ import Nodes.AbstractNode;
 import Nodes.ExpressionNodes.UnaryExpressionNode;
 
 public class MapUnaryOperationNode extends UnaryExpressionNode {
-  public MapUnaryOperationNode() {}
+  public MapUnaryOperationNode() {
+    super();
+  }
 
   public AbstractNode setInner(AbstractNode inner) {
     this.inner = inner;

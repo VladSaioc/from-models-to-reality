@@ -6,6 +6,7 @@ public class FunctionReturnNode extends AbstractNode {
   private AbstractNode expression;
 
   public FunctionReturnNode(AbstractNode expression) {
+    super();
     this.expression = expression;
     this.adoptChildren(expression);
   }

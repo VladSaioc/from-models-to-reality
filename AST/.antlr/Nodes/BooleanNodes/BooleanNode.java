@@ -1,5 +1,5 @@
 package Nodes.BooleanNodes;
 
-import Nodes.AbstractNode;
+import Nodes.IAbstractNode;
 
-public abstract class BooleanNode extends AbstractNode {}
+public interface BooleanNode extends IAbstractNode {}

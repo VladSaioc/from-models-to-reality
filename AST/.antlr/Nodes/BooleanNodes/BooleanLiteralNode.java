@@ -1,18 +1,16 @@
 package Nodes.BooleanNodes;
 
-public class BooleanLiteralNode extends BooleanNode {
+import Nodes.AbstractNode;
+
+public class BooleanLiteralNode extends AbstractNode implements BooleanNode {
   private boolean value;
 
   public BooleanLiteralNode(Boolean value) {
+    super();
     this.value = value;
   }
 
   public Boolean getValue() {
     return this.value;
-  }
-
-  public BooleanLiteralNode setValue(boolean value) {
-    this.value = value;
-    return this;
   }
 }

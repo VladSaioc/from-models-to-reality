@@ -1,7 +1,16 @@
 package Nodes.AccessorNodes;
 
-public class IdentifierNode extends AccessorNode<String> {
+import Nodes.AbstractNode;
+
+public class IdentifierNode extends AbstractNode {
+  private String value;
+
   public IdentifierNode(String value) {
-    super(value);
+    super();
+    this.value = value;
+  }
+
+  public String getValue() {
+    return this.value;
   }
 }

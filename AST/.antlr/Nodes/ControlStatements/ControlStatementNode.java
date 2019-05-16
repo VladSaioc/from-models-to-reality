@@ -6,6 +6,7 @@ public class ControlStatementNode extends AbstractNode {
   private AbstractNode predicate;
 
   public ControlStatementNode(AbstractNode predicate) {
+    super();
     this.predicate = predicate;
     this.adoptChildren(predicate);
   }

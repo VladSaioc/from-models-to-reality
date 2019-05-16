@@ -1,6 +1,7 @@
 import Nodes.AbstractNode;
 
 import Visitors.*;
+import Visitors.Evaluators.Evaluator;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.Interval;
@@ -23,6 +24,8 @@ public class TestAst {
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         MapsParser parser = new MapsParser(tokenStream);
         AbstractNode ast = new BuildASTVisitor().visitProgram(parser.program());
+        Evaluator ev = new Evaluator();
+        ev.visit(ast);
         //new BuildSymbolTable().visit(ast);
       }
       catch(IOException error) {

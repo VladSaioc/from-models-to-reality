@@ -4,12 +4,8 @@ import Nodes.AbstractNode;
 import Nodes.ExpressionNodes.BinaryExpressionNode;;
 
 public class MapMaskNode extends BinaryExpressionNode {
-  private AbstractNode x = null;
-  private AbstractNode y = null;
-
-  public MapMaskNode(AbstractNode left, AbstractNode right) {
-    super(left, right);
-  }
+  private AbstractNode x;
+  private AbstractNode y;
 
   public MapMaskNode(AbstractNode left, AbstractNode right, AbstractNode cornerX, AbstractNode cornerY) {
     super(left, right);

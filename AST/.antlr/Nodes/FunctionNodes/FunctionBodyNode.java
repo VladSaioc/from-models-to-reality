@@ -6,9 +6,9 @@ public class FunctionBodyNode extends AbstractNode {
   private AbstractNode statements;
   private AbstractNode returnStatement;
 
-  public FunctionBodyNode(AbstractNode statements, AbstractNode returnStatement) {
+  public FunctionBodyNode(AbstractNode statements) {
+    super();
     this.statements = statements;
-    this.returnStatement = returnStatement;
     this.adoptChildren(statements)
     .adoptChildren(returnStatement);
   }
@@ -16,8 +16,4 @@ public class FunctionBodyNode extends AbstractNode {
   public AbstractNode getStatements() {
     return this.statements;
   }
-
-  public AbstractNode getReturnStatement() {
-    return this.returnStatement;
-  }  
 }

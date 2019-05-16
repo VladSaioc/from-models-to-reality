@@ -7,6 +7,7 @@ public class FunctionCallNode extends AbstractNode {
   private String name;
 
   public FunctionCallNode(String name, AbstractNode params) {
+    super();
     this.name = name;
     this.params = params;
     this.adoptChildren(params);

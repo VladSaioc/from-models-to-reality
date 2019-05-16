@@ -1,7 +1,6 @@
 package Nodes.FunctionNodes;
 
 import Nodes.AbstractNode;
-import Nodes.TypeNodes.FunctionTypeNode;
 import Nodes.TypeNodes.TypeNode;
 
 public class FunctionDefNode extends AbstractNode {
@@ -12,6 +11,7 @@ public class FunctionDefNode extends AbstractNode {
   private AbstractNode returnExp;
 
   public FunctionDefNode(String name, String type, AbstractNode params, AbstractNode body, AbstractNode returnExp) {
+    super();
     this.params = params;
     this.name = name;
     this.type = type;

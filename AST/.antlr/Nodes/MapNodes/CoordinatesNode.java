@@ -7,6 +7,7 @@ public class CoordinatesNode extends AbstractNode {
   private AbstractNode y;
 
   public CoordinatesNode(AbstractNode x, AbstractNode y) {
+    super();
     this.x = x;
     this.y = y;
     this.adoptChildren(x)

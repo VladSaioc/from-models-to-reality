@@ -9,6 +9,7 @@ public class MapDeclarationNode extends AbstractNode {
   private AbstractNode record = null;
 
   public MapDeclarationNode(String identifier, AbstractNode sizeX, AbstractNode sizeY, AbstractNode record) {
+    super();
     this.identifier = identifier;
     this.sizeX = sizeX;
     this.sizeY = sizeY;

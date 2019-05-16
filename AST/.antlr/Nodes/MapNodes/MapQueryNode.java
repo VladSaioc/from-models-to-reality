@@ -6,6 +6,7 @@ public class MapQueryNode extends AbstractNode {
   private AbstractNode coordinates;
 
   public MapQueryNode(AbstractNode coordinates) {
+    super();
     this.coordinates = coordinates;
     this.adoptChildren(coordinates);
   }
