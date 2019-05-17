@@ -29,7 +29,7 @@ public abstract class BaseVisitor<T> {
   public <N extends AbstractNode> Void visitTypedSiblings(N n) {
     String baseType = n.getClass().getName();
     AbstractNode sib = n;
-    while (n.getClass().getName().equals(baseType) && n != null) {
+    while (sib != null && sib.getClass().getName().equals(baseType)) {
       visit(sib);
       sib = sib.rightSib;
     }

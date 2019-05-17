@@ -1,8 +1,12 @@
 package Visitors;
 
+import Helpers.Types;
 import Nodes.AbstractNode;
 import Nodes.AccessorNodes.IdentifierNode;
 import Nodes.AssignNodes.AssignNode;
+import Nodes.BlockStatements.BlockNode;
+import Nodes.ControlStatements.IfNode;
+import Nodes.ControlStatements.WhileNode;
 import Nodes.FunctionNodes.FunctionDefNode;
 import Nodes.FunctionNodes.FunctionParamNode;
 import Nodes.MapNodes.CoordinatesNode;
@@ -22,6 +26,9 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     if(n instanceof CoordinatesNode) return visit((CoordinatesNode) n);
     if(n instanceof FunctionDefNode) return visit((FunctionDefNode) n);
     if(n instanceof FunctionParamNode) return visit((FunctionParamNode) n);
+    if(n instanceof IfNode) return visit((IfNode) n);
+    if(n instanceof WhileNode) return visit((WhileNode) n);
+    if(n instanceof BlockNode) return visit((BlockNode) n);
     return null;
   }
 
@@ -36,8 +43,8 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     TypeVisitor typeVisitor = new TypeVisitor();
     String xType = typeVisitor.visit(n.getSizeX());
     String yType = typeVisitor.visit(n.getSizeY());
-    if(!xType.equals("int") || !yType.equals("int")) throw new Error("Invalid size type for map: " + n.getIdentifier());
-    SymbolTable.enterSymbol(n.getIdentifier(), "map");
+    if(!xType.equals(Types.INT) || !yType.equals(Types.INT)) throw new Error("Invalid size type for map: " + n.getIdentifier());
+    SymbolTable.enterSymbol(n.getIdentifier(), Types.MAP);
     return null;
   }
 
@@ -59,32 +66,31 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     TypeVisitor typeVisitor = new TypeVisitor();
     String xType = typeVisitor.visit(n.getX());
     String yType = typeVisitor.visit(n.getY());
-    if(!xType.equals("int") || !yType.equals("int")) throw new Error("Invalid type for coordinate node: ");
+    if(!xType.equals(Types.INT) || !yType.equals(Types.INT)) throw new Error("Invalid type for coordinate node: ");
     return null;
   }
 
   public Void visit(MapQueryNode n) {
     TypeVisitor typeVisitor = new TypeVisitor();
-    AbstractNode coords = n.getCoordinates();
-    while (coords != null) {
-      typeVisitor.visit(coords);
-      coords = coords.rightSib;
-    }
+    typeVisitor.visitChildren(n.getCoordinates());
     return null;
   }
 
   public Void visit(MapPropsAssignNode n) {
-    if(!SymbolTable.retrieveSymbol(n.getName()).getType().equals("map")) throw new Error("Assigning map props to non-map variable " + n.getName());
+    if(!SymbolTable.retrieveSymbol(n.getName()).getType().equals(Types.MAP)) throw new Error("Assigning map props to non-map variable " + n.getName());
     visit(n.getQuery());
     return null;
   }
 
   public Void visit(FunctionDefNode n) {
     SymbolTable.enterSymbol(n.getName(), n.getType());
-    String returnType = new TypeVisitor().visit(n.getReturnExp());
-    if(!returnType.equals(n.getType())) throw new Error("Function " + n.getName() + " return expression does not match return type");
+    SymbolTable.openScope();
+    TypeVisitor typeVisitor = new TypeVisitor();
     visitTypedSiblings(n.getParams());
     visit(n.getBody());
+    String returnType = typeVisitor.visit(n.getReturnExp());
+    if(!returnType.equals(n.getType())) throw new Error("Function " + n.getName() + " return expression does not match return type: " + n.getType() + ". Expression type is " + returnType);
+    SymbolTable.closeScope();
     return null;
   }
 
@@ -93,7 +99,20 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     return null;
   }
 
-  public Void visit() {
-
+  public Void visit(IfNode n) {
+    String predicateType = new TypeVisitor().visit(n.getPredicate());
+    if(!predicateType.equals(Types.BOOL)) throw new Error("Predicate in if statement is not of type boolean. Found " + predicateType + " instead.");
+    visit(n.getThenBlock());
+    visit(n.getElseBlock());
+    return null;
   }
+
+  public Void visit(WhileNode n) {
+    String predicateType = new TypeVisitor().visit(n.getPredicate());
+    if(!predicateType.equals(Types.BOOL)) throw new Error("Predicate in if statement is not of type boolean. Found " + predicateType + " instead.");
+    visit(n.getBlock());
+    return null;
+  }
+
+  public Void
 }
