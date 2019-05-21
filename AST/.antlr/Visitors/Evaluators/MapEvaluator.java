@@ -9,7 +9,6 @@ import SymbolTable.Attr.MapAttr;
 import SymbolTable.SymbolTable;
 import SymbolTable.Symbols.MapSymbol;
 import Visitors.BaseVisitor;
-
 import java.util.HashMap;
 
 public class MapEvaluator extends BaseVisitor<MapAttr> {
@@ -31,16 +30,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
   }
 
   public MapAttr visit(IdentifierNode n) {
-    return ((MapSymbol) SymbolTable.getSymbol(n.getValue())).attr;
-  }
-
-  public MapAttr visit(MapJoinXNode n) {
-    ArithmeticEvaluator arithmeticEvaluator = new ArithmeticEvaluator();
-    Integer displacement = arithmeticEvaluator.visit(n.getDisplacement());
-    if(displacement == null) displacement = 0;
-    MapAttr m1 = new MapAttr(visit(n.getLeft()));
-    MapAttr m2 = new MapAttr(visit(n.getRight()));
-   return null;
+    MapAttr mapAttr = ((MapSymbol) SymbolTable.getSymbol(n.getValue())).attr;
+    return new MapAttr(mapAttr);
   }
 
   public MapAttr visit(MapRotateCcwNode n) {
@@ -129,5 +120,112 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
       inner.getSizeX(),
       newCells
     );
+  }
+
+  public MapAttr visit(MapJoinXNode n) {
+    MapAttr m1 = visit(n.getLeft());
+    MapAttr m2 = visit(n.getRight());
+    Integer d = new ArithmeticEvaluator().visit(n.getDisplacement());
+    if(d == null) d = 0;
+    Integer x1 = m1.getSizeX(), y1 = m1.getSizeY();
+    Integer x2 = m2.getSizeX(), y2 = m2.getSizeY();
+    HashMap<String, CellAttr> cells1 = m1.getCellsCopy();
+    HashMap<String, CellAttr> cells2 = m2.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+
+    Integer x = x1 + x2;
+    Integer y = Math.abs(Math.min(0, d)) + Math.max(y1, y2 + d);
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        String coords = new Coords(i, j).getHash();
+        if(i < x1) {
+          if(j >= Math.abs(Math.min(0, d)) && j < Math.abs(Math.min(0, d)) + y1) {
+            String oldCoords = new Coords(i, j - Math.abs(Math.min(0, d))).getHash();
+            newCells.put(coords, cells1.get(oldCoords));
+          }
+          else newCells.put(coords, new CellAttr());
+        } else {
+          if(j >= Math.max(0, d) && j < Math.max(0, d) + y2) {
+            String oldCoords = new Coords(i - x1, j - Math.max(0, d)).getHash();
+            newCells.put(coords, cells2.get(oldCoords));
+          }
+          else newCells.put(coords, new CellAttr());
+        }
+      }
+    }
+
+    return new MapAttr(x, y, newCells);
+  }
+
+  public MapAttr visit(MapJoinYNode n) {
+    MapAttr m1 = visit(n.getLeft());
+    MapAttr m2 = visit(n.getRight());
+    Integer d = new ArithmeticEvaluator().visit(n.getDisplacement());
+    if(d == null) d = 0;
+    Integer x1 = m1.getSizeX(), y1 = m1.getSizeY();
+    Integer x2 = m2.getSizeX(), y2 = m2.getSizeY();
+    HashMap<String, CellAttr> cells1 = m1.getCellsCopy();
+    HashMap<String, CellAttr> cells2 = m2.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+
+    Integer x = Math.abs(Math.min(0, d)) + Math.max(x1, x2 + d);
+    Integer y = y1 + y2;
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        String coords = new Coords(i, j).getHash();
+        if(j < y1) {
+          if(i >= Math.abs(Math.min(0, d)) && i < Math.abs(Math.min(0, d)) + x1) {
+            String oldCoords = new Coords(i - Math.abs(Math.min(0, d)), j).getHash();
+            newCells.put(coords, cells1.get(oldCoords));
+          }
+          else newCells.put(coords, new CellAttr());
+        } else {
+          if(i >= Math.max(0, d) && i < Math.max(0, d) + x2) {
+            String oldCoords = new Coords(i -  Math.max(0, d), j - y1).getHash();
+            newCells.put(coords, cells2.get(oldCoords));
+          }
+          else newCells.put(coords, new CellAttr());
+        }
+      }
+    }
+
+    return new MapAttr(x, y, newCells);
+  }
+
+  public MapAttr visit(MapMaskNode n) {
+    MapAttr m1 = visit(n.getLeft());
+    MapAttr m2 = visit(n.getRight());
+    ArithmeticEvaluator arithmeticEvaluator = new ArithmeticEvaluator();
+    Integer dx = arithmeticEvaluator.visit(n.getX());
+    Integer dy = arithmeticEvaluator.visit(n.getY());
+    if(dx == null) dx = 0;
+    if(dy == null) dy = 0;
+    Integer x1 = m1.getSizeX(), y1 = m1.getSizeY();
+    Integer x2 = m2.getSizeX(), y2 = m2.getSizeY();
+    HashMap<String, CellAttr> cells1 = m1.getCellsCopy();
+    HashMap<String, CellAttr> cells2 = m2.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+
+    int x = Math.abs(Math.min(0, dx)) + Math.max(x1, x2 + dx);
+    int y = Math.abs(Math.min(0, dy)) + Math.max(y1, y2 + dx);
+
+    for(int i = 0; i < x; i++) {
+      for(int j = 0; j < y; j++) {
+        String coords = new Coords(i, j).getHash();
+        if(i >= Math.max(0, dx) && i < Math.max(0, dx) + x2
+          && j >= Math.max(0, dy) && j < Math.max(0, dy) + y2) {
+          String oldCoords = new Coords(i -  Math.max(0, dx), j - Math.max(0, dy)).getHash();
+          newCells.put(coords, cells2.get(oldCoords));
+        } else if (i >= Math.abs(Math.min(0, dx)) && i < Math.abs(Math.min(0, dx)) + x1
+          && j >= Math.max(0, dy) && j < Math.max(0, dy) + y2) {
+          String oldCoords = new Coords(i - Math.abs(Math.min(0, dx)), j - Math.abs(Math.min(0, dy))).getHash();
+          newCells.put(coords, cells1.get(oldCoords));
+        } else {
+          newCells.put(coords, new CellAttr());
+        }
+      }
+    }
+
+    return new MapAttr(x, y, newCells);
   }
 }
