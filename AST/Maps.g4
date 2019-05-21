@@ -47,10 +47,10 @@ mapDeclaration : MAP var=IDENTIFIER MLPAREN arithmeticExpression COMMA arithmeti
 	| MAP var=IDENTIFIER MLPAREN arithmeticExpression COMMA arithmeticExpression MRPAREN
   ;
 
-boolExpression : boolTerm OR boolExpression // ast done
+boolExpression : boolExpression OR boolTerm // ast done
 	| boolTerm
 	;
-boolTerm : boolFactor AND boolTerm // ast done
+boolTerm : boolTerm AND boolFactor // ast done
   | boolFactor
   ;
 boolFactor : comparisonExpression	 // ast done
@@ -60,7 +60,7 @@ boolFactor : comparisonExpression	 // ast done
   | value=BOOL_LITERAL					
   ;
 
-stringExpression : stringTerm CONCAT stringExpression // ast done
+stringExpression : stringExpression CONCAT stringTerm // ast done
 	| stringTerm
 	;
 stringTerm : LPAREN stringExpression RPAREN // ast done
@@ -77,10 +77,10 @@ comparisonTerm : LPAREN boolExpression RPAREN
   | stringExpression									
   ;
 
-arithmeticExpression : arithmeticTerm op=(ADD | SUB) arithmeticExpression // ast done
+arithmeticExpression : arithmeticExpression op=(ADD | SUB)  arithmeticTerm // ast done
   | arithmeticTerm
   ;
-arithmeticTerm : arithmeticFactor op=(MUL | DIV | MOD) arithmeticTerm // ast done
+arithmeticTerm : arithmeticTerm op=(MUL | DIV | MOD) arithmeticFactor // ast done
 	| arithmeticFactor
 	;
 arithmeticFactor : LPAREN arithmeticExpression RPAREN // ast done
@@ -104,10 +104,10 @@ unaryMapOperation : unaryMapOperator joinExpression
 	| LPAREN joinExpression RPAREN
 	| name=IDENTIFIER
 	;
-joinExpression : maskExpression joinOperator joinExpression // ast done
+joinExpression : joinExpression joinOperator maskExpression // ast done
 	| maskExpression
 	;
-maskExpression : unaryMapOperation maskOperator maskExpression // ast done
+maskExpression : maskExpression maskOperator unaryMapOperation // ast done
 	| unaryMapOperation
 	;
 mapExpression : joinExpression ; // ast done
@@ -163,13 +163,10 @@ BOOLEAN:	'boolean' ;
 STRING:		'string' ;
 INT:			'int' ;
 MAP:			'map' ;
-DELETE:		'delete' ;
 
 ELSE:			'else' ;
-FOR:			'for' ;
 IF:				'if' ;
 WHILE:		'while' ;
-BREAK:		'break' ;
 EXTEND:		'extend';
 
 RETURN:		'return' ;
@@ -181,7 +178,6 @@ WS: 			[ \t\r\n]+ -> skip ;
 INT_LITERAL: 	[0-9]+ ;
 BOOL_LITERAL:	'true' | 'false' ;
 STRING_LITERAL:	 '"' [ !a-zA-Z0-9/.]* '"' ;
-NULL:			'null' ;
 
 JOIN_X:		'joinX' ;
 JOIN_Y: 		'joinY' ;

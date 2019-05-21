@@ -97,7 +97,7 @@ public class TypeVisitor extends BaseVisitor<String> {
     String leftType = visit(n.getLeft());
     String rightType = visit(n.getRight());
     String displacementType = visit(n.getDisplacement());
-    if (!displacementType.equals(Types.INT)) throw new Error("Invalid displacement type in join expression.\n Requires integer, found " + displacementType + " instead.");
+    if (displacementType != null && !displacementType.equals(Types.INT)) throw new Error("Invalid displacement type in join expression.\n Requires integer, found " + displacementType + " instead.");
     if (!leftType.equals(Types.MAP)) throw new Error("Invalid type in join expression. Requires map, found " + leftType + " instead.");
     if (!rightType.equals(Types.MAP)) throw new Error("Invalid type in join expression. Requires map, found " + rightType + " instead.");
     return Types.MAP;
@@ -108,8 +108,8 @@ public class TypeVisitor extends BaseVisitor<String> {
     String rightType = visit(n.getRight());
     String xType = visit(n.getX());
     String yType = visit(n.getY());
-    if(!xType.equals(Types.INT)) throw new Error("Invalid X position in mask expression.\n Requires integer, found " + xType + " instead.");
-    if(!yType.equals(Types.INT)) throw new Error("Invalid Y position in mask expression.\n Requires integer, found " + yType + " instead.");
+    if(xType != null && !xType.equals(Types.INT)) throw new Error("Invalid X position in mask expression.\n Requires integer, found " + xType + " instead.");
+    if(yType != null && !yType.equals(Types.INT)) throw new Error("Invalid Y position in mask expression.\n Requires integer, found " + yType + " instead.");
     if (!leftType.equals(Types.MAP)) throw new Error("Invalid type in mask expression.\n Requires map, found " + leftType + " instead.");
     if (!rightType.equals(Types.MAP)) throw new Error("Invalid type in mask expression.\n Requires map, found " + rightType + " instead.");
     return Types.MAP;

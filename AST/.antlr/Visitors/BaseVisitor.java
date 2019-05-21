@@ -26,16 +26,6 @@ public abstract class BaseVisitor<T> {
     return null;
   }
 
-  public <N extends AbstractNode> Void visitTypedSiblings(N n) {
-    String baseType = n.getClass().getName();
-    AbstractNode sib = n;
-    while (sib != null && sib.getClass().getName().equals(baseType)) {
-      visit(sib);
-      sib = sib.rightSib;
-    }
-    return null;
-  }
-
   public abstract T dispatch(AbstractNode n);
 
   public T visit(AbstractNode n) {

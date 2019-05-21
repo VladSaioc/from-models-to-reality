@@ -68,7 +68,7 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     String xType = typeVisitor.visit(n.getSizeX());
     String yType = typeVisitor.visit(n.getSizeY());
     if(!xType.equals(Types.INT) || !yType.equals(Types.INT)) throw new Error("Invalid size type for map: " + n.getIdentifier());
-    SymbolTable.enterMapSymbol(n.getIdentifier());
+    SymbolTable.enterMapSymbol(n.getIdentifier()).init = true;
     return null;
   }
 

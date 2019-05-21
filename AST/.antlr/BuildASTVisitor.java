@@ -164,8 +164,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitBoolExpression(MapsParser.BoolExpressionContext ctx) {      
     return ctx.boolExpression() != null
     ? new BooleanOrNode(
-        visitBoolTerm(ctx.boolTerm()),
-        visitBoolExpression(ctx.boolExpression())
+        visitBoolExpression(ctx.boolExpression()),
+        visitBoolTerm(ctx.boolTerm())
       )
     : visitBoolTerm(ctx.boolTerm());
   }
@@ -173,8 +173,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitBoolTerm(MapsParser.BoolTermContext ctx) {      
     return ctx.boolTerm() != null
     ? new BooleanAndNode(
-        visitBoolFactor(ctx.boolFactor()),
-        visitBoolTerm(ctx.boolTerm())
+        visitBoolTerm(ctx.boolTerm()),
+        visitBoolFactor(ctx.boolFactor())
       )
     : visitBoolFactor(ctx.boolFactor());
   }
@@ -256,8 +256,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitStringExpression(MapsParser.StringExpressionContext ctx) {      
     return ctx.stringExpression() != null
     ? new StringConcatNode(
-        visitStringTerm(ctx.stringTerm()),
-        visitStringExpression(ctx.stringExpression())
+        visitStringExpression(ctx.stringExpression()),
+        visitStringTerm(ctx.stringTerm())
       )
     : visitStringTerm(ctx.stringTerm());
   }
@@ -276,14 +276,14 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     }
     if (ctx.op.getType() == MapsLexer.ADD) {
       return new ArithmeticAddNode(
-        visitArithmeticTerm(ctx.arithmeticTerm()),
-        visitArithmeticExpression(ctx.arithmeticExpression())
+        visitArithmeticExpression(ctx.arithmeticExpression()),
+        visitArithmeticTerm(ctx.arithmeticTerm())
       );
     }
     if (ctx.op.getType() == MapsLexer.SUB) {
       return new ArithmeticSubNode(
-        visitArithmeticTerm(ctx.arithmeticTerm()),
-        visitArithmeticExpression(ctx.arithmeticExpression())
+        visitArithmeticExpression(ctx.arithmeticExpression()),
+        visitArithmeticTerm(ctx.arithmeticTerm())
       );
     }
     throw new Error("Unrecognized arithmetic expression operator: " + ctx.op.getText());
@@ -295,20 +295,20 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     }
     if (ctx.op.getType() == MapsLexer.MUL) {
       return new ArithmeticMultNode(
-        visitArithmeticFactor(ctx.arithmeticFactor()),
-        visitArithmeticTerm(ctx.arithmeticTerm())
+        visitArithmeticTerm(ctx.arithmeticTerm()),
+        visitArithmeticFactor(ctx.arithmeticFactor())
       );
     }
     if (ctx.op.getType() == MapsLexer.MOD) {
       return new ArithmeticModNode(
-        visitArithmeticFactor(ctx.arithmeticFactor()),
-        visitArithmeticTerm(ctx.arithmeticTerm())
+        visitArithmeticTerm(ctx.arithmeticTerm()),
+        visitArithmeticFactor(ctx.arithmeticFactor())
       );
     }
     if (ctx.op.getType() == MapsLexer.DIV) {
       return new ArithmeticDivNode(
-        visitArithmeticFactor(ctx.arithmeticFactor()),
-        visitArithmeticTerm(ctx.arithmeticTerm())
+        visitArithmeticTerm(ctx.arithmeticTerm()),
+        visitArithmeticFactor(ctx.arithmeticFactor())
       );
     }
     throw new Error("Unrecognized operator: " + ctx.op.getText());
@@ -325,8 +325,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     switch (ctx.joinOperator().op.getType()) {
       case MapsLexer.JOIN_X:
         return new MapJoinXNode(
-          visitMaskExpression(ctx.maskExpression()),
           visitJoinExpression(ctx.joinExpression()),
+          visitMaskExpression(ctx.maskExpression()),
           ctx.joinOperator().arithmeticExpression() == null
           ? null
           : visitArithmeticExpression(
@@ -335,8 +335,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
         );
       case MapsLexer.JOIN_Y:
         return new MapJoinYNode(
-          visitMaskExpression(ctx.maskExpression()),
           visitJoinExpression(ctx.joinExpression()),
+          visitMaskExpression(ctx.maskExpression()),
           ctx.joinOperator().arithmeticExpression() == null
           ? null
           : visitArithmeticExpression(
@@ -353,8 +353,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
       return visitUnaryMapOperation(ctx.unaryMapOperation());
     }
     return new MapMaskNode(
-      visitUnaryMapOperation(ctx.unaryMapOperation()),
       visitMaskExpression(ctx.maskExpression()),
+      visitUnaryMapOperation(ctx.unaryMapOperation()),
       ctx.maskOperator().arithmeticExpression(0) == null
         ? null
         : visitArithmeticExpression(ctx.maskOperator().arithmeticExpression(0)),

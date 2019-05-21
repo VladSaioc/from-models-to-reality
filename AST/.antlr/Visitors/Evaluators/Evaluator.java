@@ -79,11 +79,10 @@ public class Evaluator extends BaseVisitor<Void> {
     Integer sizeY = arithmeticEvaluator.visit(n.getSizeY());
     HashMap<String, CellAttr> cells = new HashMap<>();
     CellAttr cellAttr = new CellEvaluator().visit(n.getRecord());
-    if(cellAttr != null) {
-      for(int x = 0; x < sizeX; x++) {
-        for(int y = 0; y < sizeY; y++) {
-          cells.put(new Coords(x, y).getHash(), cellAttr);
-        }
+    if(cellAttr == null) cellAttr = new CellAttr();
+    for(int x = 0; x < sizeX; x++) {
+      for(int y = 0; y < sizeY; y++) {
+        cells.put(new Coords(x, y).getHash(), cellAttr);
       }
     }
     SymbolTable.enterMapSymbol(n.getIdentifier())
@@ -193,7 +192,7 @@ public class Evaluator extends BaseVisitor<Void> {
 
   public Void visit(IMapExpressionNode n) {
     MapEvaluator mapEvaluator = new MapEvaluator();
-    mapEvaluator.visit((AbstractNode) n);
+    mapEvaluator.visit((AbstractNode) n).print();
     return null;
   }
 
@@ -203,6 +202,7 @@ public class Evaluator extends BaseVisitor<Void> {
     if(symbol.type.equals(Types.INT)) System.out.println(new ArithmeticEvaluator().visit((AbstractNode) n));
     if(symbol.type.equals(Types.STRING)) System.out.println(new StringEvaluator().visit((AbstractNode) n));
     if(symbol.type.equals(Types.FUNCTION)) System.out.println("function " + n.getValue());
+    if(symbol.type.equals(Types.MAP)) new MapEvaluator().visit(n).print();
     return null;
   }
 

@@ -82,8 +82,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     MapAttr inner = visit(n.getInner());
     HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
     HashMap<String, CellAttr> newCells = new HashMap<>();
-    Integer sizeX = inner.getSizeX() - 1;
-    Integer sizeY = inner.getSizeY() - 1;
+    int sizeX = inner.getSizeX() - 1;
+    int sizeY = inner.getSizeY() - 1;
 
     for(int x = 0; x <= sizeX; x++) {
       for(int y = 0; y <= sizeY; y++) {
@@ -94,8 +94,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     }
 
     return new MapAttr(
-      inner.getSizeY(),
       inner.getSizeX(),
+      inner.getSizeY(),
       newCells
     );
   }
@@ -104,8 +104,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     MapAttr inner = visit(n.getInner());
     HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
     HashMap<String, CellAttr> newCells = new HashMap<>();
-    Integer sizeX = inner.getSizeX() - 1;
-    Integer sizeY = inner.getSizeY() - 1;
+    int sizeX = inner.getSizeX() - 1;
+    int sizeY = inner.getSizeY() - 1;
 
     for(int x = 0; x <= sizeX; x++) {
       for(int y = 0; y <= sizeY; y++) {
@@ -116,8 +116,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     }
 
     return new MapAttr(
-      inner.getSizeY(),
       inner.getSizeX(),
+      inner.getSizeY(),
       newCells
     );
   }
@@ -133,8 +133,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     HashMap<String, CellAttr> cells2 = m2.getCellsCopy();
     HashMap<String, CellAttr> newCells = new HashMap<>();
 
-    Integer x = x1 + x2;
-    Integer y = Math.abs(Math.min(0, d)) + Math.max(y1, y2 + d);
+    int x = x1 + x2;
+    int y = Math.abs(Math.min(0, d)) + Math.max(y1, y2 + d);
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
         String coords = new Coords(i, j).getHash();
@@ -168,8 +168,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     HashMap<String, CellAttr> cells2 = m2.getCellsCopy();
     HashMap<String, CellAttr> newCells = new HashMap<>();
 
-    Integer x = Math.abs(Math.min(0, d)) + Math.max(x1, x2 + d);
-    Integer y = y1 + y2;
+    int x = Math.abs(Math.min(0, d)) + Math.max(x1, x2 + d);
+    int y = y1 + y2;
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
         String coords = new Coords(i, j).getHash();

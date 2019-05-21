@@ -79,4 +79,15 @@ public class CellAttr {
     });
     return this;
   }
+
+  public void print(String coords) {
+    String toPrint = coords + " props: { ";
+    for (String propName : propNames) {
+      if(this.intProps.containsKey(propName)) toPrint += "int: " + propName + " = " + this.intProps.get(propName) + "; ";
+      if(this.boolProps.containsKey(propName)) toPrint += "bool: " + propName + " = " + this.boolProps.get(propName) + "; ";
+      if(this.stringProps.containsKey(propName)) toPrint += "string: " + propName + " = " + this.stringProps.get(propName) + "; ";
+    }
+    toPrint += "}";
+    System.out.println(toPrint);
+  }
 }

@@ -28,10 +28,6 @@ public class MapAttr {
     return this.sizeY;
   }
 
-  public HashMap<String, CellAttr> getCells() {
-    return this.cells;
-  }
-
   public HashMap<String, CellAttr> getCellsCopy() {
     HashMap<String, CellAttr> cells = new HashMap<>();
     for(int x = 0; x < sizeX; x++) {
@@ -63,5 +59,15 @@ public class MapAttr {
 
   public void setCell(Coords pair, CellAttr record) {
     this.cells.put(pair.getHash(), record);
+  }
+
+  public void print() {
+    System.out.println("Map of size: " + this.sizeX + " " + this.sizeY);
+    for(int i = 0; i < sizeX; i++) {
+      for(int j = 0; j < sizeY; j++) {
+        String coords = new Coords(i, j).getHash();
+        this.cells.get(coords).print(coords);
+      }
+    }
   }
 }
