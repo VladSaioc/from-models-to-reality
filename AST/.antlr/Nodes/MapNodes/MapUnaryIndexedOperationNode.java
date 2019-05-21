@@ -7,6 +7,7 @@ public class MapUnaryIndexedOperationNode extends MapUnaryOperationNode {
 
   public MapUnaryIndexedOperationNode(AbstractNode index) {
     super();
+    this.index = index;
     this.adoptChildren(index);
   }
 

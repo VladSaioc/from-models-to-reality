@@ -217,7 +217,7 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
           String oldCoords = new Coords(i -  Math.max(0, dx), j - Math.max(0, dy)).getHash();
           newCells.put(coords, cells2.get(oldCoords));
         } else if (i >= Math.abs(Math.min(0, dx)) && i < Math.abs(Math.min(0, dx)) + x1
-          && j >= Math.max(0, dy) && j < Math.max(0, dy) + y2) {
+          && j >= Math.abs(Math.min(0, dy)) && j < Math.abs(Math.min(0, dy)) + y1) {
           String oldCoords = new Coords(i - Math.abs(Math.min(0, dx)), j - Math.abs(Math.min(0, dy))).getHash();
           newCells.put(coords, cells1.get(oldCoords));
         } else {
@@ -227,5 +227,95 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     }
 
     return new MapAttr(x, y, newCells);
+  }
+
+  public MapAttr visit(MapDropXNode n) {
+    MapAttr inner = visit(n.getInner());
+    HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+    Integer sizeX = inner.getSizeX();
+    Integer sizeY = inner.getSizeY();
+    Integer d = new ArithmeticEvaluator().visit(n.getIndex());
+    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a row out of bounds");
+
+    for(int i = 0; i < sizeX; i++) {
+      if(i == d) continue;
+      for(int j = 0; j < sizeY; j++) {
+        String coords = new Coords(i > d ? i - 1 : i, j).getHash();
+        newCells.put(coords, oldCells.get(new Coords(i, j).getHash()));
+      }
+    }
+
+    return new MapAttr(sizeX - 1, sizeY, newCells);
+  }
+
+  public MapAttr visit(MapDropYNode n) {
+    MapAttr inner = visit(n.getInner());
+    HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+    Integer sizeX = inner.getSizeX();
+    Integer sizeY = inner.getSizeY();
+    Integer d = new ArithmeticEvaluator().visit(n.getIndex());
+    if(d < 0 || d >= sizeY) throw new Error("Attempting to drop a column out of bounds");
+
+    for(int j = 0; j < sizeY; j++) {
+      if(j == d) continue;
+      for(int i = 0; i < sizeX; i++) {
+        String coords = new Coords(i, j > d ? j - 1 : j).getHash();
+        newCells.put(coords, oldCells.get(new Coords(i, j).getHash()));
+      }
+    }
+
+    return new MapAttr(sizeX, sizeY - 1, newCells);
+  }
+
+  public MapAttr visit(MapInsertXNode n) {
+    MapAttr inner = visit(n.getInner());
+    HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+    Integer sizeX = inner.getSizeX();
+    Integer sizeY = inner.getSizeY();
+    Integer d = new ArithmeticEvaluator().visit(n.getIndex());
+    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a row out of bounds");
+
+    for(int i = 0; i < sizeX; i++) {
+      if(i == d) {
+        for(int j = 0; j < sizeY; j++) {
+          String coords = new Coords(i, j).getHash();
+          newCells.put(coords, new CellAttr());
+        }
+      }
+      for(int j = 0; j < sizeY; j++) {
+        String coords = new Coords(i >= d ? i + 1 : i, j).getHash();
+        newCells.put(coords, oldCells.get(new Coords(i, j).getHash()));
+      }
+    }
+
+    return new MapAttr(sizeX + 1, sizeY, newCells);
+  }
+
+  public MapAttr visit(MapInsertYNode n) {
+    MapAttr inner = visit(n.getInner());
+    HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
+    HashMap<String, CellAttr> newCells = new HashMap<>();
+    Integer sizeX = inner.getSizeX();
+    Integer sizeY = inner.getSizeY();
+    Integer d = new ArithmeticEvaluator().visit(n.getIndex());
+    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a row out of bounds");
+
+    for(int j = 0; j < sizeY; j++) {
+      if(j == d) {
+        for(int i = 0; i < sizeX; i++) {
+          String coords = new Coords(i, j).getHash();
+          newCells.put(coords, new CellAttr());
+        }
+      }
+      for(int i = 0; i < sizeX; i++) {
+        String coords = new Coords(i, j >= d ? j + 1 : j).getHash();
+        newCells.put(coords, oldCells.get(new Coords(i, j).getHash()));
+      }
+    }
+
+    return new MapAttr(sizeX, sizeY + 1, newCells);
   }
 }
