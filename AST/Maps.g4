@@ -69,9 +69,12 @@ stringTerm : LPAREN stringExpression RPAREN // ast done
 	;
 
 comparisonExpression :  comparisonTerm op=(GT | LT | LTE | GTE | EQ | NEQ) comparisonTerm ; // ast done
-comparisonTerm : LPAREN boolExpression RPAREN		
+comparisonTerm : LPAREN boolExpression RPAREN
+	| BOOL_LITERAL
+	| rAccessor
+	| neg=NEG comparisonTerm
   | arithmeticExpression										
-  | stringExpression												
+  | stringExpression									
   ;
 
 arithmeticExpression : arithmeticTerm op=(ADD | SUB) arithmeticExpression // ast done
@@ -177,7 +180,7 @@ FROM:			'from'   ;
 WS: 			[ \t\r\n]+ -> skip ;
 INT_LITERAL: 	[0-9]+ ;
 BOOL_LITERAL:	'true' | 'false' ;
-STRING_LITERAL:	 '"' [ !a-zA-Z0-9/.]+ '"' ;
+STRING_LITERAL:	 '"' [ !a-zA-Z0-9/.]* '"' ;
 NULL:			'null' ;
 
 JOIN_X:		'joinX' ;

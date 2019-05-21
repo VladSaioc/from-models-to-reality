@@ -2,5 +2,5 @@ package Nodes.StringNodes;
 
 import Nodes.IAbstractNode;
 
-public interface StringNode extends IAbstractNode {
+public interface IStringNode extends IAbstractNode {
 }

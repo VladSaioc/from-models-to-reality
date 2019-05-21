@@ -45,8 +45,8 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     return new FunctionDefNode(
       ctx.name.getText(),
       ctx.primitiveType().getText(), 
-      visitFunctionDefParams(ctx.functionDefParams()),
-      visitBlock(ctx.block()),
+      new FunctionParamsNode(visitFunctionDefParams(ctx.functionDefParams())),
+      new FunctionBodyNode(visitStatement(ctx.block().statement())),
       visitExpression(ctx.expression())
     );
   }
@@ -229,7 +229,12 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     }
   }
 
-  public AbstractNode visitComparisonTerm(MapsParser.ComparisonTermContext ctx) {      
+  public AbstractNode visitComparisonTerm(MapsParser.ComparisonTermContext ctx) {
+    if(ctx.neg != null) return new BooleanNegateNode(
+        visitComparisonTerm(ctx.comparisonTerm())
+      );
+    if(ctx.rAccessor() != null) return visitRAccessor(ctx.rAccessor());
+    if(ctx.BOOL_LITERAL() != null) return new BooleanLiteralNode(Boolean.parseBoolean(ctx.BOOL_LITERAL().getText()));
     if(ctx.arithmeticExpression() != null) return visitArithmeticExpression(ctx.arithmeticExpression());
     if(ctx.stringExpression() != null) return visitStringExpression(ctx.stringExpression());
     if(ctx.boolExpression() != null) return visitBoolExpression(ctx.boolExpression());
@@ -476,6 +481,11 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitStatement(MapsParser.StatementContext ctx) {
     if(ctx.declaration() != null) {
       return visitDeclaration(ctx.declaration())
+      .makeSiblings(
+        visitStatement(ctx.statement())
+      );
+    } if(ctx.assignment() != null) {
+      return visitAssignment(ctx.assignment())
       .makeSiblings(
         visitStatement(ctx.statement())
       );

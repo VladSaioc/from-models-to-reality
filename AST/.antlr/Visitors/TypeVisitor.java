@@ -5,12 +5,17 @@ import Nodes.*;
 import Nodes.BooleanNodes.*;
 import Nodes.ComparisonNodes.*;
 import Nodes.AccessorNodes.*;
+import Nodes.FunctionNodes.FunctionParamNode;
+import Nodes.FunctionNodes.FunctionParamsNode;
 import Nodes.StringNodes.StringConcatNode;
 import Nodes.StringNodes.StringLiteralNode;
 import Nodes.MapNodes.*;
 import Nodes.ArithmeticNodes.*;
 import SymbolTable.*;
+import SymbolTable.Symbols.FunctionSymbol;
 import SymbolTable.Symbols.Symbol;
+
+import java.util.ArrayList;
 
 public class TypeVisitor extends BaseVisitor<String> {
   public String dispatch(AbstractNode n) {
@@ -30,18 +35,24 @@ public class TypeVisitor extends BaseVisitor<String> {
     if(n instanceof MapMaskNode) return visit((MapMaskNode) n);
     if(n instanceof MapUnaryIndexedOperationNode) return visit((MapUnaryIndexedOperationNode) n);
     if(n instanceof MapUnaryOperationNode) return visit((MapUnaryOperationNode) n);
+    if(n instanceof FunctionParamsNode) return visit((FunctionParamsNode) n);
+    if(n instanceof FunctionParamNode) return visit((FunctionParamNode) n);
+    visitChildren(n);
     return null;
   }
 
   public String visit(IdentifierNode n) {
-    return SymbolTable.retrieveSymbol(n.getValue()).getType();
+    Symbol symbol = SymbolTable.getSymbol(n.getValue());
+    if(symbol.type.equals(Types.FUNCTION)) throw new Error("Attempting to invoke function " + symbol.name + " as a non-functional variable.");
+    if(!symbol.init) throw new Error("Attempting to use uninitialized variable " + n.getValue() + ".");
+    return SymbolTable.getSymbol(n.getValue()).type;
   }
 
   public String visit(IArithmeticBinaryExpressionNode n) {
     String leftType = visit(n.getLeft());
     String rightType = visit(n.getRight());
-    if (!leftType.equals(Types.INT)) throw new Error("Invalid type in arithmetic expression. Requires integer. Found " + leftType + " instead.");
-    if (!rightType.equals(Types.INT)) throw new Error("Invalid type in arithmetic expression. Requires integer. Found " + rightType + " instead.");
+    if (!leftType.equals(Types.INT)) throw new Error("Invalid type in arithmetic expression.\n Requires integer, found " + leftType + " instead.");
+    if (!rightType.equals(Types.INT)) throw new Error("Invalid type in arithmetic expression.\n Requires integer, found " + rightType + " instead.");
     return Types.INT;
   }
 
@@ -68,14 +79,16 @@ public class TypeVisitor extends BaseVisitor<String> {
   public String visit(IComparisonOrdNode n) {
     String leftType = visit(n.getLeft());
     String rightType = visit(n.getRight());
-    if (!leftType.equals(Types.INT)) throw new Error("Invalid type in ordinal comparison operator. Requires integer. Found " + leftType + " instead.");
-    if (!rightType.equals(Types.INT)) throw new Error("Invalid type in ordinal comparison operator. Requires integer. Found " + rightType + " instead.");
+    if (!leftType.equals(Types.INT)) throw new Error("Invalid type in ordinal comparison operator.\n Requires integer, found " + leftType + " instead.");
+    if (!rightType.equals(Types.INT)) throw new Error("Invalid type in ordinal comparison operator.\n Requires integer, found " + rightType + " instead.");
     return Types.BOOL;
   }
 
   public String visit(IComparisonNode n) {
     String leftType = visit(n.getLeft());
     String rightType = visit(n.getRight());
+    if (! (leftType.equals(Types.BOOL) || leftType.equals(Types.STRING) || leftType.equals(Types.INT))) throw new Error("Comparison expression can only hold primitive types. Found " + leftType);
+    if (! (rightType.equals(Types.BOOL) || rightType.equals(Types.STRING) || rightType.equals(Types.INT))) throw new Error("Comparison expression can only hold primitive types. Found " + rightType);
     if (!leftType.equals(rightType)) throw new Error("Mismatched types in comparison expression. Found " + leftType + " and " + rightType + " instead.");
     return Types.BOOL;
   }
@@ -84,9 +97,9 @@ public class TypeVisitor extends BaseVisitor<String> {
     String leftType = visit(n.getLeft());
     String rightType = visit(n.getRight());
     String displacementType = visit(n.getDisplacement());
-    if (!displacementType.equals(Types.INT)) throw new Error("Invalid displacement type in join expression. Requires integer. Found " + displacementType + " instead.");
-    if (!leftType.equals(Types.MAP)) throw new Error("Invalid type in join expression. Requires map. Found " + leftType + " instead.");
-    if (!rightType.equals(Types.MAP)) throw new Error("Invalid type in join expression. Requires map. Found " + rightType + " instead.");
+    if (!displacementType.equals(Types.INT)) throw new Error("Invalid displacement type in join expression.\n Requires integer, found " + displacementType + " instead.");
+    if (!leftType.equals(Types.MAP)) throw new Error("Invalid type in join expression. Requires map, found " + leftType + " instead.");
+    if (!rightType.equals(Types.MAP)) throw new Error("Invalid type in join expression. Requires map, found " + rightType + " instead.");
     return Types.MAP;
   }
 
@@ -95,10 +108,10 @@ public class TypeVisitor extends BaseVisitor<String> {
     String rightType = visit(n.getRight());
     String xType = visit(n.getX());
     String yType = visit(n.getY());
-    if(!xType.equals(Types.INT)) throw new Error("Invalid X position in mask expression. Requires integer. Found " + xType + " instead.");
-    if(!yType.equals(Types.INT)) throw new Error("Invalid Y position in mask expression. Requires integer. Found " + yType + " instead.");
-    if (!leftType.equals(Types.MAP)) throw new Error("Invalid type in mask expression. Requires map. Found " + leftType + " instead.");
-    if (!rightType.equals(Types.MAP)) throw new Error("Invalid type in mask expression. Requires map. Found " + rightType + " instead.");
+    if(!xType.equals(Types.INT)) throw new Error("Invalid X position in mask expression.\n Requires integer, found " + xType + " instead.");
+    if(!yType.equals(Types.INT)) throw new Error("Invalid Y position in mask expression.\n Requires integer, found " + yType + " instead.");
+    if (!leftType.equals(Types.MAP)) throw new Error("Invalid type in mask expression.\n Requires map, found " + leftType + " instead.");
+    if (!rightType.equals(Types.MAP)) throw new Error("Invalid type in mask expression.\n Requires map, found " + rightType + " instead.");
     return Types.MAP;
   }
 
@@ -119,22 +132,39 @@ public class TypeVisitor extends BaseVisitor<String> {
   public String visit(StringConcatNode n) {
     String leftType = visit(n.getLeft());
     String rightType = visit(n.getRight());
-    if(!leftType.equals(Types.STRING) || !rightType.equals(Types.STRING)) throw new Error("Invalid type in string expression");
+    if(!leftType.equals(Types.STRING) || !rightType.equals(Types.STRING)) throw new Error("Invalid types in string expression: " + leftType + ", " + rightType);
     return Types.STRING;
   }
 
   public String visit(FunctionCallNode n) {
-    Symbol symbol = SymbolTable.retrieveSymbol(n.getName());
-    String returnType = symbol.getType();
-    String[] paramTypes = symbol.getParamTypes();
+    FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
+    String returnType = symbol.attr.getReturnType();
+    ArrayList<String> paramTypes = symbol.attr.getParamTypes();
     AbstractNode param = n.getParams();
     int i = 0;
-    while (param != null) {
+    while (param != null && i < paramTypes.size()) {
       String exprType = visit(param);
-      if(!paramTypes[i].equals(exprType) throw new Error("Parameter type mismatch in function " + n.getName() + ". Requires " + paramTypes[i] + ", got " + exprType + " instead.");
+      if(!paramTypes.get(i).equals(exprType)) throw new Error("Parameter " + (i + 1) + " type mismatch in function " + n.getName() + ".\n Requires " + paramTypes.get(i) + ", found " + exprType + " instead.");
       i++;
       param = param.rightSib;
     }
+    if(param != null) throw new Error("Function " + n.getName() + " called with too many parameters.");
+    if(i < paramTypes.size())throw new Error("Function " + n.getName() + " called with too few parameters.");
     return returnType;
+  }
+
+  public String visit(FunctionParamsNode n) {
+    AbstractNode param = n.getParams();
+    String paramTypes = visit(param);
+    param = param.rightSib;
+    while(param != null) {
+      paramTypes += ", " + visit(param);
+      param = param.rightSib;
+    }
+    return paramTypes;
+  }
+
+  public String visit(FunctionParamNode n) {
+    return n.getType();
   }
 }

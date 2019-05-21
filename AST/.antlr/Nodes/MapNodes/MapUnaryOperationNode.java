@@ -3,7 +3,7 @@ package Nodes.MapNodes;
 import Nodes.AbstractNode;
 import Nodes.ExpressionNodes.UnaryExpressionNode;
 
-public class MapUnaryOperationNode extends UnaryExpressionNode {
+public class MapUnaryOperationNode extends UnaryExpressionNode implements IMapExpressionNode {
   public MapUnaryOperationNode() {
     super();
   }

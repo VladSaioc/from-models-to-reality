@@ -1,19 +1,10 @@
 package Nodes.FunctionNodes;
 
 import Nodes.AbstractNode;
+import Nodes.BlockStatements.BlockNode;
 
-public class FunctionBodyNode extends AbstractNode {
-  private AbstractNode statements;
-  private AbstractNode returnStatement;
-
+public class FunctionBodyNode extends BlockNode {
   public FunctionBodyNode(AbstractNode statements) {
-    super();
-    this.statements = statements;
-    this.adoptChildren(statements)
-    .adoptChildren(returnStatement);
-  }
-
-  public AbstractNode getStatements() {
-    return this.statements;
+    super(statements);
   }
 }

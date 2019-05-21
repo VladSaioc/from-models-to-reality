@@ -1,8 +1,7 @@
 package Nodes.ExpressionNodes;
 
 import Nodes.AbstractNode;
-import Nodes.IAbstractNode;
 
-public interface IUnaryExpressionNode extends IAbstractNode {
+public interface IUnaryExpressionNode extends IExpressionNode {
   AbstractNode getInner();
 }

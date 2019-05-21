@@ -2,7 +2,7 @@ package Nodes.MapNodes;
 
 import Nodes.AbstractNode;
 
-public class MapDeclarationNode extends AbstractNode {
+public class  MapDeclarationNode extends AbstractNode {
   private AbstractNode sizeX;
   private AbstractNode sizeY;
   private String identifier;
