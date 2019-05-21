@@ -13,6 +13,8 @@ import Nodes.FunctionNodes.FunctionBodyNode;
 import Nodes.FunctionNodes.FunctionDefNode;
 import Nodes.FunctionNodes.FunctionParamNode;
 import Nodes.FunctionNodes.FunctionParamsNode;
+import Nodes.ImpexNodes.ExportNode;
+import Nodes.ImpexNodes.ImportNode;
 import Nodes.MapNodes.CoordinatesNode;
 import Nodes.MapNodes.MapDeclarationNode;
 import Nodes.MapNodes.MapPropsAssignNode;
@@ -30,6 +32,8 @@ import java.util.Arrays;
 public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   public Void dispatch(AbstractNode n) {
     if(n instanceof ProgramNode) return visit((ProgramNode) n);
+    if(n instanceof ImportNode) return visit((ImportNode) n);
+    if(n instanceof ExportNode) return visit((ExportNode) n);
     if(n instanceof AssignNode) return visit((AssignNode) n);
     if(n instanceof PrimitiveDeclarationNode) return visit((PrimitiveDeclarationNode) n);
     if(n instanceof MapDeclarationNode) return visit((MapDeclarationNode) n);
@@ -52,6 +56,26 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     SymbolTable.openScope();
     visitChildren(n);
     SymbolTable.closeScope();
+    return null;
+  }
+
+  public Void visit(ImportNode n) {
+    AbstractNode vars = n.getVars();
+    while(vars != null) {
+      SymbolTable.enterMapSymbol(((IdentifierNode) vars).getValue()).init = true;
+      vars = vars.rightSib;
+    }
+    return null;
+  }
+
+  public Void visit(ExportNode n) {
+    AbstractNode vars = n.getVars();
+    while(vars != null) {
+      String varName = ((IdentifierNode) vars).getValue();
+      Symbol symbol = SymbolTable.getSymbol(varName);
+      if(!symbol.type.equals(Types.MAP)) throw new Error("Can't export non-map variable " + varName);
+      vars = vars.rightSib;
+    }
     return null;
   }
 

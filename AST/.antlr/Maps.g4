@@ -177,7 +177,7 @@ FROM:			'from'   ;
 WS: 			[ \t\r\n]+ -> skip ;
 INT_LITERAL: 	[0-9]+ ;
 BOOL_LITERAL:	'true' | 'false' ;
-STRING_LITERAL:	 '"' [ !a-zA-Z0-9/.]* '"' ;
+STRING_LITERAL:	 '"' [ !a-zA-Z0-9/\\.]* '"' ;
 
 JOIN_X:		'joinX' ;
 JOIN_Y: 		'joinY' ;

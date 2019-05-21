@@ -1,12 +1,13 @@
+import ANTLR.BuildASTVisitor;
+import ANTLR.MapsLexer;
+import ANTLR.MapsParser;
 import Nodes.AbstractNode;
 
 import Visitors.*;
-import Visitors.Evaluators.Evaluator;
+import Visitors.Evaluators.*;
 import org.antlr.v4.runtime.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class TestAst {
   public static void main(String[] args) {
@@ -17,14 +18,18 @@ public class TestAst {
       try{
         String exprText = br.readLine();
         CharStream inputStream = CharStreams.fromString(exprText);
+//        File file = new File(exprText);
+//
+//        Scanner sc = new Scanner(file);
+//
+//        while (sc.hasNextLine())
+//          System.out.print(sc.nextLine());
         MapsLexer lexer = new MapsLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         MapsParser parser = new MapsParser(tokenStream);
         AbstractNode ast = new BuildASTVisitor().visitProgram(parser.program());
-//        new DeclarationManagerVisitor().visit(ast);
+        new DeclarationManagerVisitor().visit(ast);
         new Evaluator().visit(ast);
-//        ev.visit(ast);
-        //new BuildSymbolTable().visit(ast);
       }
       catch(IOException error) {
 

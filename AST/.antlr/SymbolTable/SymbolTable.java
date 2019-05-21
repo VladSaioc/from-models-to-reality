@@ -1,15 +1,13 @@
 package SymbolTable;
 
 import Helpers.Types;
-import SymbolTable.Attr.FunctionAttr;
-import SymbolTable.Attr.MapAttr;
 import SymbolTable.Symbols.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 public class SymbolTable {
+  public static HashMap<String, MapSymbol> exports = new HashMap<>();
   public static int depth = -1;
   public static HashMap<String, Symbol> hashMap = new HashMap<>();
   public static Stack<Symbol> scopeDisplay = new Stack<>();
@@ -17,6 +15,14 @@ public class SymbolTable {
   public static void openScope() {
     depth += 1;
     scopeDisplay.push(null);
+  }
+
+  public static void addExport(MapSymbol symbol) {
+    exports.put(symbol.name, symbol);
+  }
+
+  public static MapSymbol getExport(String name) {
+    return exports.remove(name);
   }
 
   public static void add(Symbol symbol) {

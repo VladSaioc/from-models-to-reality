@@ -44,8 +44,8 @@ public class TypeVisitor extends BaseVisitor<String> {
   public String visit(IdentifierNode n) {
     Symbol symbol = SymbolTable.getSymbol(n.getValue());
     if(symbol.type.equals(Types.FUNCTION)) throw new Error("Attempting to invoke function " + symbol.name + " as a non-functional variable.");
-    if(!symbol.init) throw new Error("Attempting to use uninitialized variable " + n.getValue() + ".");
-    return SymbolTable.getSymbol(n.getValue()).type;
+    if(!symbol.init) throw new Error("Attempting to use uninitialized variable " + symbol.name + ".");
+    return symbol.type;
   }
 
   public String visit(IArithmeticBinaryExpressionNode n) {

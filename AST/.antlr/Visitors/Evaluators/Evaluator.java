@@ -1,5 +1,6 @@
 package Visitors.Evaluators;
 
+import Helpers.FileManager;
 import Helpers.Types;
 import Nodes.*;
 import Nodes.AccessorNodes.FunctionCallNode;
@@ -14,6 +15,8 @@ import Nodes.ControlStatements.WhileNode;
 import Nodes.FunctionNodes.FunctionBodyNode;
 import Nodes.FunctionNodes.FunctionDefNode;
 import Nodes.FunctionNodes.FunctionParamsNode;
+import Nodes.ImpexNodes.ExportNode;
+import Nodes.ImpexNodes.ImportNode;
 import Nodes.MapNodes.IMapExpressionNode;
 import Nodes.MapNodes.MapDeclarationNode;
 import Nodes.MapNodes.MapPropsAssignNode;
@@ -34,6 +37,8 @@ public class Evaluator extends BaseVisitor<Void> {
     if(n instanceof AssignNode) return visit((AssignNode) n);
     if(n instanceof MapPropsAssignNode) return visit((MapPropsAssignNode) n);
     if(n instanceof ProgramNode) return visit((ProgramNode) n);
+    if(n instanceof ImportNode) return visit((ImportNode) n);
+    if(n instanceof ExportNode) return visit((ExportNode) n);
     if(n instanceof IArithmeticNode) return visit((IArithmeticNode) n);
     if(n instanceof IBooleanNode) return visit((IBooleanNode) n);
     if(n instanceof IStringNode) return visit((IStringNode) n);
@@ -56,6 +61,30 @@ public class Evaluator extends BaseVisitor<Void> {
     SymbolTable.openScope();
     visitChildren(n);
     SymbolTable.closeScope();
+    return null;
+  }
+
+  public Void visit(ImportNode n) {
+    FileManager.parseFile(n.getPath());
+    AbstractNode vars = n.getVars();
+    while(vars != null) {
+      String varName = ((IdentifierNode) vars).getValue();
+      MapSymbol symbol = SymbolTable.getExport(varName);
+      if(symbol == null) throw new Error("Imported map " + varName + " does not exist");
+      SymbolTable.enterMapSymbol(varName).setAttr(new MapAttr(symbol.attr));
+      SymbolTable.getSymbol(varName).init = true;
+      vars = vars.rightSib;
+    }
+    return null;
+  }
+
+  public Void visit(ExportNode n) {
+    AbstractNode vars = n.getVars();
+    while(vars != null) {
+      String varName = ((IdentifierNode) vars).getValue();
+      SymbolTable.addExport((MapSymbol) SymbolTable.getSymbol(varName));
+      vars = vars.rightSib;
+    }
     return null;
   }
 
@@ -209,11 +238,11 @@ public class Evaluator extends BaseVisitor<Void> {
   public Void visit(FunctionCallNode n) {
     FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
     if (symbol.attr.getReturnType().equals(Types.BOOL)) {
-      new BooleanEvaluator().visit(n);
+      System.out.println(new BooleanEvaluator().visit(n));
     } else if(symbol.attr.getReturnType().equals(Types.STRING)) {
-      new StringEvaluator().visit(n);
+      System.out.println(new StringEvaluator().visit(n));
     } else if(symbol.attr.getReturnType().equals(Types.INT)) {
-      new ArithmeticEvaluator().visit(n);
+      System.out.println(new ArithmeticEvaluator().visit(n));
     }
     return null;
   }

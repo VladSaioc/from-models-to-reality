@@ -38,8 +38,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     MapAttr inner = visit(n.getInner());
     HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
     HashMap<String, CellAttr> newCells = new HashMap<>();
-    Integer sizeX = inner.getSizeX() - 1;
-    Integer sizeY = inner.getSizeY() - 1;
+    int sizeX = inner.getSizeX() - 1;
+    int sizeY = inner.getSizeY() - 1;
 
     for(int x = 0; x <= sizeX; x++) {
       for(int y = 0; y <= sizeY; y++) {
@@ -60,8 +60,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     MapAttr inner = visit(n.getInner());
     HashMap<String, CellAttr> oldCells = inner.getCellsCopy();
     HashMap<String, CellAttr> newCells = new HashMap<>();
-    Integer sizeX = inner.getSizeX() - 1;
-    Integer sizeY = inner.getSizeY() - 1;
+    int sizeX = inner.getSizeX() - 1;
+    int sizeY = inner.getSizeY() - 1;
 
     for(int x = 0; x <= sizeX; x++) {
       for(int y = 0; y <= sizeY; y++) {

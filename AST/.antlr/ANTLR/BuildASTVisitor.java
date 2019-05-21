@@ -1,3 +1,5 @@
+package ANTLR;
+
 import Nodes.*;
 import Nodes.AccessorNodes.*;
 import Nodes.ArithmeticNodes.*;
@@ -55,7 +57,10 @@ public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
     return ctx.impexVarChain() == null
       ? null 
       : new ImportNode(
-          ctx.path.getText(),
+          ctx.path.getText().substring(
+            1,
+            ctx.path.getText().length() - 1
+          ),
           visitImpexVarChain(ctx.impexVarChain())
         ).makeSiblings(
           visitImports(ctx.imports())
