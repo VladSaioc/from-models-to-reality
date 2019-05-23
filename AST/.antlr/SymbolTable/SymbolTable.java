@@ -3,10 +3,12 @@ package SymbolTable;
 import Helpers.Types;
 import SymbolTable.Symbols.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 public class SymbolTable {
+  public static ArrayList<String> importedNames = new ArrayList<>();
   public static HashMap<String, MapSymbol> exports = new HashMap<>();
   public static int depth = -1;
   public static HashMap<String, Symbol> hashMap = new HashMap<>();
@@ -17,12 +19,20 @@ public class SymbolTable {
     scopeDisplay.push(null);
   }
 
+  public static void addImportedName(String name) {
+    importedNames.add(name);
+  }
+
   public static void addExport(MapSymbol symbol) {
     exports.put(symbol.name, symbol);
   }
 
   public static MapSymbol getExport(String name) {
     return exports.remove(name);
+  }
+
+  public static void clearImportedNames() {
+    importedNames.clear();
   }
 
   public static void add(Symbol symbol) {

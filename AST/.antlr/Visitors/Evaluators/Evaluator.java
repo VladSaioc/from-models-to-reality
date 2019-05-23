@@ -17,6 +17,7 @@ import Nodes.FunctionNodes.FunctionDefNode;
 import Nodes.FunctionNodes.FunctionParamsNode;
 import Nodes.ImpexNodes.ExportNode;
 import Nodes.ImpexNodes.ImportNode;
+import Nodes.ImpexNodes.ImportsNode;
 import Nodes.MapNodes.IMapExpressionNode;
 import Nodes.MapNodes.MapDeclarationNode;
 import Nodes.MapNodes.MapPropsAssignNode;
@@ -37,6 +38,7 @@ public class Evaluator extends BaseVisitor<Void> {
     if(n instanceof AssignNode) return visit((AssignNode) n);
     if(n instanceof MapPropsAssignNode) return visit((MapPropsAssignNode) n);
     if(n instanceof ProgramNode) return visit((ProgramNode) n);
+    if(n instanceof ImportsNode) return visit((ImportsNode) n);
     if(n instanceof ImportNode) return visit((ImportNode) n);
     if(n instanceof ExportNode) return visit((ExportNode) n);
     if(n instanceof IArithmeticNode) return visit((IArithmeticNode) n);
@@ -64,15 +66,24 @@ public class Evaluator extends BaseVisitor<Void> {
     return null;
   }
 
+  public Void visit(ImportsNode n) {
+    visitChildren(n);
+    for (String imported : SymbolTable.importedNames) {
+      MapSymbol symbol = SymbolTable.getExport(imported);
+      if(symbol == null) throw new Error("Imported map " + imported + " does not exist");
+      SymbolTable.enterMapSymbol(imported).value = new MapAttr(symbol.value);
+      SymbolTable.getSymbol(imported).init = true;
+    }
+    SymbolTable.clearImportedNames();
+    return null;
+  }
+
   public Void visit(ImportNode n) {
     FileManager.parseFile(n.getPath());
     AbstractNode vars = n.getVars();
     while(vars != null) {
       String varName = ((IdentifierNode) vars).getValue();
-      MapSymbol symbol = SymbolTable.getExport(varName);
-      if(symbol == null) throw new Error("Imported map " + varName + " does not exist");
-      SymbolTable.enterMapSymbol(varName).value = new MapAttr(symbol.value);
-      SymbolTable.getSymbol(varName).init = true;
+      SymbolTable.addImportedName(varName);
       vars = vars.rightSib;
     }
     return null;

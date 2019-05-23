@@ -1,6 +1,5 @@
 package SymbolTable.Attr;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapAttr {
@@ -37,20 +36,6 @@ public class MapAttr {
       }
     }
     return cells;
-  }
-
-  public CellAttr getCell(int x, int y) {
-    if (x >= this.sizeX) throw new Error("Attempted to fetch cell outside of map bounds.\n Map horizontal size: " + this.sizeX + "; attempted to get " + x);
-    if (y >= this.sizeY) throw new Error("Attempted to fetch cell outside of map bounds.\n Map vertical size: " + this.sizeY + "; attempted to get " + y);
-    return this.cells.get(new Coords(x, y).getHash());
-  }
-
-  public CellAttr getCell(Coords pair) {
-    Integer x = pair.getX();
-    Integer y = pair.getY();
-    if (x >= this.sizeX) throw new Error("Attempted to fetch cell outside of map bounds.\n Map horizontal size: " + this.sizeX + "; attempted to get " + x);
-    if (y >= this.sizeY) throw new Error("Attempted to fetch cell outside of map bounds.\n Map vertical size: " + this.sizeY + "; attempted to get " + y);
-    return this.cells.get(pair.getHash());
   }
 
   public void setCell(int x, int y, CellAttr record) {
