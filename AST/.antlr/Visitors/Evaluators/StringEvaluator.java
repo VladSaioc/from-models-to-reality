@@ -34,7 +34,7 @@ public class StringEvaluator extends BaseVisitor<String> {
     FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
     Evaluator evaluator = new Evaluator();
     SymbolTable.openScope();
-    FunctionParamNode param = (FunctionParamNode) symbol.attr.getParams();
+    FunctionParamNode param = (FunctionParamNode) symbol.value.getParams();
     AbstractNode expr = n.getParams();
     while(param != null && expr != null) {
       String paramType = param.getType();
@@ -51,8 +51,8 @@ public class StringEvaluator extends BaseVisitor<String> {
       param = (FunctionParamNode) param.rightSib;
       expr = expr.rightSib;
     }
-    evaluator.visit(symbol.attr.getBody());
-    String result = visit(symbol.attr.getReturnExp());
+    evaluator.visit(symbol.value.getBody());
+    String result = visit(symbol.value.getReturnExp());
     SymbolTable.closeScope();
     return result;
   }

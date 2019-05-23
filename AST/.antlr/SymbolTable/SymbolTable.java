@@ -95,7 +95,7 @@ public class SymbolTable {
     newsym.var = oldsym;
   }
 
-  public static PrimitiveSymbol enterSymbol(String name, String type) {
+  public static Symbol enterSymbol(String name, String type) {
     checkDuplicate(name);
     if (type.equals(Types.STRING)) {
       StringSymbol symbol = new StringSymbol(name, type, depth);
@@ -121,19 +121,15 @@ public class SymbolTable {
     return symbol;
   }
 
-  public static <T> void setSymbolValue(String name, T value) {
-    ((PrimitiveSymbol) retrieveSymbol(name)).value = value;
-  }
-
-  public static <T> void setSymbolAttr(String name, T attr) {
-    ((ComplexSymbol) retrieveSymbol(name)).attr = attr;
-  }
-
   public static MapSymbol enterMapSymbol(String name) {
     checkDuplicate(name);
     MapSymbol symbol = new MapSymbol(name, Types.MAP, depth);
     postInstantiate(symbol);
     return symbol;
+  }
+
+  public static <T> void setSymbolValue(String name, T value) {
+    retrieveSymbol(name).value = value;
   }
 
   public static Boolean declaredLocally(String name) {

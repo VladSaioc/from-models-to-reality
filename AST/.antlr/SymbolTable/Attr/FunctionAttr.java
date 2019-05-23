@@ -40,19 +40,4 @@ public class FunctionAttr {
   public AbstractNode getReturnExp() {
     return this.returnExpRef;
   }
-
-  public FunctionAttr setParams(AbstractNode ref ) {
-    this.paramRef = ref;
-    return this;
-  }
-
-  public FunctionAttr setReturnExp(AbstractNode ref) {
-    this.returnExpRef = ref;
-    return this;
-  }
-
-  public FunctionAttr setBody(AbstractNode ref) {
-    this.bodyRef = ref;
-    return this;
-  }
 }

@@ -53,7 +53,7 @@ public class ArithmeticEvaluator extends BaseVisitor<Integer> {
     FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
     Evaluator evaluator = new Evaluator();
     SymbolTable.openScope();
-    FunctionParamNode param = (FunctionParamNode) symbol.attr.getParams();
+    FunctionParamNode param = (FunctionParamNode) symbol.value.getParams();
     AbstractNode expr = n.getParams();
     while(param != null && expr != null) {
       String paramType = param.getType();
@@ -70,8 +70,8 @@ public class ArithmeticEvaluator extends BaseVisitor<Integer> {
       param = (FunctionParamNode) param.rightSib;
       expr = expr.rightSib;
     }
-    evaluator.visit(symbol.attr.getBody());
-    Integer result = visit(symbol.attr.getReturnExp());
+    evaluator.visit(symbol.value.getBody());
+    Integer result = visit(symbol.value.getReturnExp());
     SymbolTable.closeScope();
     return result;
   }

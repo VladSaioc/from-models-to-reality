@@ -49,7 +49,7 @@ public class BooleanEvaluator extends BaseVisitor<Boolean> {
     FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
     Evaluator evaluator = new Evaluator();
     SymbolTable.openScope();
-    FunctionParamNode param = (FunctionParamNode) symbol.attr.getParams();
+    FunctionParamNode param = (FunctionParamNode) symbol.value.getParams();
     AbstractNode expr = n.getParams();
     while(param != null && expr != null) {
       String paramType = param.getType();
@@ -66,8 +66,8 @@ public class BooleanEvaluator extends BaseVisitor<Boolean> {
       param = (FunctionParamNode) param.rightSib;
       expr = expr.rightSib;
     }
-    evaluator.visit(symbol.attr.getBody());
-    Boolean result = visit(symbol.attr.getReturnExp());
+    evaluator.visit(symbol.value.getBody());
+    Boolean result = visit(symbol.value.getReturnExp());
     SymbolTable.closeScope();
     return result;
   }

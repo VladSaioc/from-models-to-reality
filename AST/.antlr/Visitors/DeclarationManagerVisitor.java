@@ -23,7 +23,6 @@ import Nodes.PrimitiveDeclarationNode;
 import Nodes.ProgramNode;
 import SymbolTable.Attr.FunctionAttr;
 import SymbolTable.SymbolTable;
-import SymbolTable.Symbols.PrimitiveSymbol;
 import SymbolTable.Symbols.Symbol;
 
 import java.util.ArrayList;
@@ -138,7 +137,7 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     SymbolTable.enterFunctionSymbol(n.getName());
     TypeVisitor typeVisitor = new TypeVisitor();
     ArrayList<String> paramTypes = new ArrayList<>(Arrays.asList(typeVisitor.visit(n.getParams()).split(", ")));;
-    SymbolTable.setSymbolAttr(
+    SymbolTable.setSymbolValue(
       n.getName(),
       new FunctionAttr(n.getType(), paramTypes)
     );

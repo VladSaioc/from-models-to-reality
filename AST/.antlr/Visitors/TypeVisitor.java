@@ -138,8 +138,8 @@ public class TypeVisitor extends BaseVisitor<String> {
 
   public String visit(FunctionCallNode n) {
     FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
-    String returnType = symbol.attr.getReturnType();
-    ArrayList<String> paramTypes = symbol.attr.getParamTypes();
+    String returnType = symbol.value.getReturnType();
+    ArrayList<String> paramTypes = symbol.value.getParamTypes();
     AbstractNode param = n.getParams();
     int i = 0;
     while (param != null && i < paramTypes.size()) {
