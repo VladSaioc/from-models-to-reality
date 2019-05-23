@@ -1,6 +1,7 @@
 package SymbolTable;
 
 import Helpers.Types;
+import Nodes.AbstractNode;
 import SymbolTable.Symbols.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 public class SymbolTable {
-  public static ArrayList<String> importedNames = new ArrayList<>();
+  public static HashMap<AbstractNode, ArrayList<String>> importedNames = new HashMap<>();
   public static HashMap<String, MapSymbol> exports = new HashMap<>();
   public static int depth = -1;
   public static HashMap<String, Symbol> hashMap = new HashMap<>();
@@ -19,8 +20,13 @@ public class SymbolTable {
     scopeDisplay.push(null);
   }
 
-  public static void addImportedName(String name) {
-    importedNames.add(name);
+  public static void addImportedName(AbstractNode imports, String name) {
+    ArrayList<String> names = importedNames.get(imports);
+    if(names == null) {
+      names = new ArrayList<>();
+      importedNames.put(imports, names);
+    }
+    names.add(name);
   }
 
   public static void addExport(MapSymbol symbol) {
@@ -31,8 +37,8 @@ public class SymbolTable {
     return exports.remove(name);
   }
 
-  public static void clearImportedNames() {
-    importedNames.clear();
+  public static void clearImportedNames(AbstractNode n) {
+    importedNames.get(n).clear();
   }
 
   public static void add(Symbol symbol) {

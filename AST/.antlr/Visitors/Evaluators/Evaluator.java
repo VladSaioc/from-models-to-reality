@@ -68,13 +68,16 @@ public class Evaluator extends BaseVisitor<Void> {
 
   public Void visit(ImportsNode n) {
     visitChildren(n);
-    for (String imported : SymbolTable.importedNames) {
-      MapSymbol symbol = SymbolTable.getExport(imported);
-      if(symbol == null) throw new Error("Imported map " + imported + " does not exist");
-      SymbolTable.enterMapSymbol(imported).value = new MapAttr(symbol.value);
-      SymbolTable.getSymbol(imported).init = true;
+    ArrayList<String> imports = SymbolTable.importedNames.get(n);
+    if(imports != null) {
+      for (String imported : imports) {
+        MapSymbol symbol = SymbolTable.getExport(imported);
+        if (symbol == null) throw new Error("Imported map " + imported + " does not exist");
+        SymbolTable.enterMapSymbol(imported).value = new MapAttr(symbol.value);
+        SymbolTable.getSymbol(imported).init = true;
+      }
+      SymbolTable.clearImportedNames(n);
     }
-    SymbolTable.clearImportedNames();
     return null;
   }
 
@@ -83,7 +86,7 @@ public class Evaluator extends BaseVisitor<Void> {
     AbstractNode vars = n.getVars();
     while(vars != null) {
       String varName = ((IdentifierNode) vars).getValue();
-      SymbolTable.addImportedName(varName);
+      SymbolTable.addImportedName(n.parent, varName);
       vars = vars.rightSib;
     }
     return null;

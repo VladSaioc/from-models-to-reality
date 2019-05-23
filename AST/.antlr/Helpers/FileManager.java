@@ -11,7 +11,6 @@ import java.util.Scanner;
 public final class FileManager {
   public static final void parseFile(String path) {
     try {
-      System.out.println(System.getProperty("user.dir"));
       File file = new File(path);
       Scanner sc = new Scanner(file);
       String input = "";

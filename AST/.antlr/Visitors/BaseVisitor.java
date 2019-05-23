@@ -1,18 +1,6 @@
 package Visitors;
 
 import Nodes.*;
-import Nodes.AccessorNodes.*;
-import Nodes.ArithmeticNodes.*;
-import Nodes.AssignNodes.*;
-import Nodes.BlockStatements.*;
-import Nodes.BooleanNodes.*;
-import Nodes.ControlStatements.*;
-import Nodes.ComparisonNodes.*;
-import Nodes.ExpressionNodes.*;
-import Nodes.FunctionNodes.*;
-import Nodes.ImpexNodes.*;
-import Nodes.MapNodes.*;
-import Nodes.StringNodes.*;
 
 public abstract class BaseVisitor<T> {
   public Void visitChildren(AbstractNode n) {
