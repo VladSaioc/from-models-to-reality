@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 public class DDMaps {
   public static void main(String[] args) {
     if(args.length > 0) {
-      FileManager.parseFile(args[0]);
+      FileManager.parseFile(args[0], true, true);
     } else {
       while(true) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

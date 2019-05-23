@@ -12,10 +12,6 @@ public abstract class AbstractNode implements IAbstractNode {
     this.leftmostSib = this;
   }
 
-  public static AbstractNode makeNode(AbstractNode n) {
-    return null;
-  }
-
   public AbstractNode makeSiblings(AbstractNode y) {
     if(y != null) {
       AbstractNode xsibs = this;
@@ -44,23 +40,6 @@ public abstract class AbstractNode implements IAbstractNode {
           ysibs.parent = this;
           ysibs = ysibs.rightSib;
         }
-      }
-    }
-    return this;
-  }
-
-  public AbstractNode adoptChildrenToLeft(AbstractNode y) {
-    if (y != null) {
-      if (this.leftmostChild != null) {
-        y.makeSiblings(this.leftmostChild);
-        this.leftmostChild = y;
-      } else {
-        AbstractNode ysibs = y.leftmostSib;
-        while (ysibs != null) {
-          ysibs.parent = this;
-          ysibs = ysibs.rightSib;
-        }
-        this.leftmostChild = ysibs;
       }
     }
     return this;

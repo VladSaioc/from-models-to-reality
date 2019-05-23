@@ -10,8 +10,4 @@ public class BlockNode extends AbstractNode {
     this.statements = statements;
     this.adoptChildren(statements);
   }
-
-  public AbstractNode getStatements() {
-    return this.statements;
-  }
 }

@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public final class FileManager {
-  public static final void parseFile(String path) {
+  public static final void parseFile(String path, boolean typeCheck, boolean evaluate) {
     try {
       File file = new File(path);
       Scanner sc = new Scanner(file);
@@ -20,8 +20,8 @@ public final class FileManager {
       CommonTokenStream tokenStream = new CommonTokenStream(lexer);
       MapsParser parser = new MapsParser(tokenStream);
       AbstractNode ast = new BuildASTVisitor().visitProgram(parser.program());
-      new DeclarationManagerVisitor().visit(ast);
-      new Evaluator().visit(ast);
+      if(typeCheck) new DeclarationManagerVisitor().visit(ast);
+      if(evaluate) new Evaluator().visit(ast);
     } catch(FileNotFoundException error) {
       System.out.println("Could not find file " + path);
     }

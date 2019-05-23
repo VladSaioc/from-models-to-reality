@@ -36,21 +36,6 @@ public class CellAttr {
     if(prop instanceof String) stringProps.put(name, (String) prop);
   }
 
-  public void clearProps() {
-    propNames.clear();
-    intProps.clear();
-    stringProps.clear();
-    boolProps.clear();
-  }
-
-  public Object getProp(String name) {
-    if(!propNames.contains(name)) throw new Error("Attempted to retrieve property " + name + " which does not exist in this cell");
-    if(intProps.get(name) != null) return intProps.get(name);
-    if(boolProps.get(name) != null) return boolProps.get(name);
-    if(stringProps.get(name) != null) return stringProps.get(name);
-    return null;
-  }
-
   public HashMap<String, Integer> getIntProps() {
     return this.intProps;
   }
@@ -61,10 +46,6 @@ public class CellAttr {
 
   public HashMap<String, String> getStringProps() {
     return this.stringProps;
-  }
-
-  public ArrayList<String> getPropNames() {
-    return this.propNames;
   }
 
   public CellAttr mergeProps(CellAttr cell) {

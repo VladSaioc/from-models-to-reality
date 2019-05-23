@@ -17,11 +17,11 @@ import Nodes.FunctionNodes.FunctionDefNode;
 import Nodes.FunctionNodes.FunctionParamsNode;
 import Nodes.ImpexNodes.ExportNode;
 import Nodes.ImpexNodes.ImportNode;
-import Nodes.ImpexNodes.ImportsNode;
 import Nodes.MapNodes.IMapExpressionNode;
 import Nodes.MapNodes.MapDeclarationNode;
 import Nodes.MapNodes.MapPropsAssignNode;
 import Nodes.StringNodes.IStringNode;
+import SymbolTable.SymbolTableInstance;
 import SymbolTable.Attr.CellAttr;
 import SymbolTable.Attr.Coords;
 import SymbolTable.Attr.FunctionAttr;
@@ -38,7 +38,6 @@ public class Evaluator extends BaseVisitor<Void> {
     if(n instanceof AssignNode) return visit((AssignNode) n);
     if(n instanceof MapPropsAssignNode) return visit((MapPropsAssignNode) n);
     if(n instanceof ProgramNode) return visit((ProgramNode) n);
-    if(n instanceof ImportsNode) return visit((ImportsNode) n);
     if(n instanceof ImportNode) return visit((ImportNode) n);
     if(n instanceof ExportNode) return visit((ExportNode) n);
     if(n instanceof IArithmeticNode) return visit((IArithmeticNode) n);
@@ -60,55 +59,46 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(ProgramNode n) {
-    SymbolTable.openScope();
+    SymbolTable.push();
     visitChildren(n);
-    SymbolTable.closeScope();
-    return null;
-  }
-
-  public Void visit(ImportsNode n) {
-    visitChildren(n);
-    ArrayList<String> imports = SymbolTable.importedNames.get(n);
-    if(imports != null) {
-      for (String imported : imports) {
-        MapSymbol symbol = SymbolTable.getExport(imported);
-        if (symbol == null) throw new Error("Imported map " + imported + " does not exist");
-        SymbolTable.enterMapSymbol(imported).value = new MapAttr(symbol.value);
-        SymbolTable.getSymbol(imported).init = true;
-      }
-      SymbolTable.clearImportedNames(n);
-    }
+    SymbolTable.pop();
     return null;
   }
 
   public Void visit(ImportNode n) {
-    FileManager.parseFile(n.getPath());
+    SymbolTableInstance st = SymbolTable.peek();
+    FileManager.parseFile(n.getPath(), false, true);
     AbstractNode vars = n.getVars();
     while(vars != null) {
       String varName = ((IdentifierNode) vars).getValue();
-      SymbolTable.addImportedName(n.parent, varName);
+      MapSymbol symbol = SymbolTable.getExport(varName);
+      if (symbol == null) throw new Error("Imported map " + varName + " does not exist");
+      st.enterSymbol(varName, Types.MAP);
+      st.setSymbolValue(varName, new MapAttr(symbol.value)).init = true;
       vars = vars.rightSib;
     }
     return null;
   }
 
   public Void visit(ExportNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     AbstractNode vars = n.getVars();
     while(vars != null) {
       String varName = ((IdentifierNode) vars).getValue();
-      SymbolTable.addExport((MapSymbol) SymbolTable.getSymbol(varName));
+      SymbolTable.addExport((MapSymbol) st.getSymbol(varName));
       vars = vars.rightSib;
     }
     return null;
   }
 
   public Void visit(PrimitiveDeclarationNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     String type = n.getType();
     AbstractNode declaration = n.getDeclarations();
     while(declaration != null) {
-      if(declaration instanceof IdentifierNode) SymbolTable.enterSymbol(((IdentifierNode) declaration).getValue(), type);
+      if(declaration instanceof IdentifierNode) st.enterSymbol(((IdentifierNode) declaration).getValue(), type);
       if(declaration instanceof AssignNode) {
-        SymbolTable.enterSymbol(((AssignNode) declaration).getIdentifier(), type);
+        st.enterSymbol(((AssignNode) declaration).getIdentifier(), type);
         visit(declaration);
       }
       declaration = declaration.rightSib;
@@ -117,6 +107,7 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(MapDeclarationNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     ArithmeticEvaluator arithmeticEvaluator = new ArithmeticEvaluator();
     Integer sizeX = arithmeticEvaluator.visit(n.getSizeX());
     Integer sizeY = arithmeticEvaluator.visit(n.getSizeY());
@@ -128,7 +119,7 @@ public class Evaluator extends BaseVisitor<Void> {
         cells.put(new Coords(x, y).getHash(), cellAttr);
       }
     }
-    SymbolTable.enterMapSymbol(n.getIdentifier()).value = new MapAttr(
+    st.enterSymbol(n.getIdentifier(), Types.MAP).value = new MapAttr(
       arithmeticEvaluator.visit(n.getSizeX()),
       arithmeticEvaluator.visit(n.getSizeY()),
       cells
@@ -137,8 +128,9 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(FunctionDefNode n) {
-    SymbolTable.enterFunctionSymbol(n.getName());
-    SymbolTable.setSymbolValue(
+    SymbolTableInstance st = SymbolTable.peek();
+    st.enterSymbol(n.getName(), Types.FUNCTION);
+    st.setSymbolValue(
       n.getName(),
       new FunctionAttr(
         n.getType(),
@@ -156,9 +148,10 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(BlockNode n) {
-    SymbolTable.openScope();
+    SymbolTableInstance st = SymbolTable.peek();
+    st.openScope();
     visitChildren(n);
-    SymbolTable.closeScope();
+    st.closeScope();
     return null;
   }
 
@@ -180,18 +173,20 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(AssignNode n) {
-    Symbol symbol = SymbolTable.getSymbol(n.getIdentifier());
-    if(symbol.type.equals(Types.STRING)) SymbolTable.setSymbolValue(symbol.name, new StringEvaluator().visit(n.getExpression()));
-    else if(symbol.type.equals(Types.BOOL)) SymbolTable.setSymbolValue(symbol.name, new BooleanEvaluator().visit(n.getExpression()));
-    else if(symbol.type.equals(Types.INT)) SymbolTable.setSymbolValue(symbol.name, new ArithmeticEvaluator().visit(n.getExpression()));
-    else if(symbol.type.equals(Types.MAP)) SymbolTable.setSymbolValue(symbol.name, new MapEvaluator().visit(n.getExpression()));
+    SymbolTableInstance st = SymbolTable.peek();
+    Symbol symbol = st.getSymbol(n.getIdentifier());
+    if(symbol.type.equals(Types.STRING)) st.setSymbolValue(symbol.name, new StringEvaluator().visit(n.getExpression()));
+    else if(symbol.type.equals(Types.BOOL)) st.setSymbolValue(symbol.name, new BooleanEvaluator().visit(n.getExpression()));
+    else if(symbol.type.equals(Types.INT)) st.setSymbolValue(symbol.name, new ArithmeticEvaluator().visit(n.getExpression()));
+    else if(symbol.type.equals(Types.MAP)) st.setSymbolValue(symbol.name, new MapEvaluator().visit(n.getExpression()));
     return null;
   }
 
   public Void visit(MapPropsAssignNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     ArrayList<Coords> coordinates = new CoordinatesEvaluator().visit(n.getQuery());
     CellAttr cellProps = new CellEvaluator().visit(n.getPropBody());
-    MapAttr mapAttr = (MapAttr) SymbolTable.getSymbol(n.getName()).value;
+    MapAttr mapAttr = (MapAttr) st.getSymbol(n.getName()).value;
     if(coordinates == null) {
       for (int x = 0; x < mapAttr.getSizeX(); x++) {
         for(int y = 0; y < mapAttr.getSizeY(); y++) {
@@ -204,7 +199,7 @@ public class Evaluator extends BaseVisitor<Void> {
         mapAttr.setCell(coord, cellProps);
       });
     }
-    SymbolTable.getSymbol(n.getName()).value = mapAttr;
+    st.getSymbol(n.getName()).value = mapAttr;
     return null;
   }
 
@@ -239,7 +234,8 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(IdentifierNode n) {
-    Symbol symbol = SymbolTable.getSymbol(n.getValue());
+    SymbolTableInstance st = SymbolTable.peek();
+    Symbol symbol = st.getSymbol(n.getValue());
     if(symbol.type.equals(Types.BOOL)) System.out.println(new BooleanEvaluator().visit((AbstractNode) n));
     if(symbol.type.equals(Types.INT)) System.out.println(new ArithmeticEvaluator().visit((AbstractNode) n));
     if(symbol.type.equals(Types.STRING)) System.out.println(new StringEvaluator().visit((AbstractNode) n));
@@ -249,7 +245,8 @@ public class Evaluator extends BaseVisitor<Void> {
   }
 
   public Void visit(FunctionCallNode n) {
-    FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
+    SymbolTableInstance st = SymbolTable.peek();
+    FunctionSymbol symbol = (FunctionSymbol) st.getSymbol(n.getName());
     if (symbol.value.getReturnType().equals(Types.BOOL)) {
       System.out.println(new BooleanEvaluator().visit(n));
     } else if(symbol.value.getReturnType().equals(Types.STRING)) {

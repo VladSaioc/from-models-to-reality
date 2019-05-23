@@ -12,8 +12,8 @@ public abstract class BinaryExpressionNode extends AbstractNode implements IBina
     super();
     this.left = left;
     this.right = right;
-    this.adoptChildren(this.left)
-    .adoptChildren(this.right);
+    this.adoptChildren(left)
+    .adoptChildren(right);
   }
 
   public AbstractNode getLeft() {

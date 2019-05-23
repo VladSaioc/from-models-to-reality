@@ -11,6 +11,7 @@ import Nodes.BooleanNodes.BooleanOrNode;
 import Nodes.ComparisonNodes.IComparisonNode;
 import Nodes.FunctionNodes.FunctionParamNode;
 import SymbolTable.SymbolTable;
+import SymbolTable.SymbolTableInstance;
 import SymbolTable.Symbols.BooleanSymbol;
 import SymbolTable.Symbols.FunctionSymbol;
 import Visitors.BaseVisitor;
@@ -41,34 +42,33 @@ public class BooleanEvaluator extends BaseVisitor<Boolean> {
   }
 
   public Boolean visit(IdentifierNode n) {
-    BooleanSymbol symbol = (BooleanSymbol) SymbolTable.getSymbol(n.getValue());
+    SymbolTableInstance st = SymbolTable.peek();
+    BooleanSymbol symbol = (BooleanSymbol) st.getSymbol(n.getValue());
     return symbol.value;
   }
 
   public Boolean visit(FunctionCallNode n) {
-    FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
+    SymbolTableInstance outerSt = SymbolTable.peek();
+    FunctionSymbol symbol = (FunctionSymbol) outerSt.getSymbol(n.getName());
     Evaluator evaluator = new Evaluator();
-    SymbolTable.openScope();
+    SymbolTableInstance innerSt = SymbolTable.push();
     FunctionParamNode param = (FunctionParamNode) symbol.value.getParams();
     AbstractNode expr = n.getParams();
     while(param != null && expr != null) {
       String paramType = param.getType();
       if(paramType.equals(Types.BOOL)) {
-        Boolean value = visit(expr);
-        SymbolTable.enterSymbol(param.getName(), paramType).value = value;
+        innerSt.enterSymbol(param.getName(), paramType).value = visit(expr);
       } else if(paramType.equals(Types.STRING)) {
-        String value = new StringEvaluator().visit(expr);
-        SymbolTable.enterSymbol(param.getName(), paramType).value = value;
+        innerSt.enterSymbol(param.getName(), paramType).value = new StringEvaluator().visit(expr);
       } else if(paramType.equals(Types.INT)) {
-        Integer value = new ArithmeticEvaluator().visit(expr);
-        SymbolTable.enterSymbol(param.getName(), paramType).value = value;
+        innerSt.enterSymbol(param.getName(), paramType).value = new ArithmeticEvaluator().visit(expr);
       } else throw new Error("Unrecognized parameter type " + paramType + " for parameter " + param.getName() + " in function " + n.getName());
       param = (FunctionParamNode) param.rightSib;
       expr = expr.rightSib;
     }
     evaluator.visit(symbol.value.getBody());
     Boolean result = visit(symbol.value.getReturnExp());
-    SymbolTable.closeScope();
+    SymbolTable.pop();
     return result;
   }
 }

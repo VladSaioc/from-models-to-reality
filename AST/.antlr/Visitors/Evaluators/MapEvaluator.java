@@ -7,6 +7,7 @@ import SymbolTable.Attr.CellAttr;
 import SymbolTable.Attr.Coords;
 import SymbolTable.Attr.MapAttr;
 import SymbolTable.SymbolTable;
+import SymbolTable.SymbolTableInstance;
 import Visitors.BaseVisitor;
 import java.util.HashMap;
 
@@ -29,7 +30,8 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
   }
 
   public MapAttr visit(IdentifierNode n) {
-    MapAttr mapAttr = (MapAttr) SymbolTable.getSymbol(n.getValue()).value;
+    SymbolTableInstance st = SymbolTable.peek();
+    MapAttr mapAttr = (MapAttr) st.getSymbol(n.getValue()).value;
     return new MapAttr(mapAttr);
   }
 

@@ -1,5 +1,6 @@
 package Visitors;
 
+import Helpers.FileManager;
 import Helpers.Types;
 import Nodes.AbstractNode;
 import Nodes.AccessorNodes.FunctionCallNode;
@@ -23,6 +24,7 @@ import Nodes.PrimitiveDeclarationNode;
 import Nodes.ProgramNode;
 import SymbolTable.Attr.FunctionAttr;
 import SymbolTable.SymbolTable;
+import SymbolTable.SymbolTableInstance;
 import SymbolTable.Symbols.Symbol;
 
 import java.util.ArrayList;
@@ -52,26 +54,29 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   }
 
   public Void visit(ProgramNode n) {
-    SymbolTable.openScope();
+    SymbolTable.push();
     visitChildren(n);
-    SymbolTable.closeScope();
+    SymbolTable.pop();
     return null;
   }
 
   public Void visit(ImportNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
+    FileManager.parseFile(n.getPath(), true, false);
     AbstractNode vars = n.getVars();
     while(vars != null) {
-      SymbolTable.enterMapSymbol(((IdentifierNode) vars).getValue()).init = true;
+      st.enterSymbol(((IdentifierNode) vars).getValue(), Types.MAP).init = true;
       vars = vars.rightSib;
     }
     return null;
   }
 
   public Void visit(ExportNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     AbstractNode vars = n.getVars();
     while(vars != null) {
       String varName = ((IdentifierNode) vars).getValue();
-      Symbol symbol = SymbolTable.getSymbol(varName);
+      Symbol symbol = st.getSymbol(varName);
       if(!symbol.type.equals(Types.MAP)) throw new Error("Can't export non-map variable " + varName);
       vars = vars.rightSib;
     }
@@ -79,7 +84,8 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   }
 
   public Void visit(AssignNode n) {
-    Symbol symbol = SymbolTable.getSymbol(n.getIdentifier());
+    SymbolTableInstance st = SymbolTable.peek();
+    Symbol symbol = st.getSymbol(n.getIdentifier());
     String expType = new TypeVisitor().visit(n.getExpression());
     symbol.init = true;
     if (symbol.type.equals(expType)) return null;
@@ -87,11 +93,12 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   }
 
   public Void visit(MapDeclarationNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     TypeVisitor typeVisitor = new TypeVisitor();
     String xType = typeVisitor.visit(n.getSizeX());
     String yType = typeVisitor.visit(n.getSizeY());
     if(!xType.equals(Types.INT) || !yType.equals(Types.INT)) throw new Error("Invalid size type for map: " + n.getIdentifier());
-    SymbolTable.enterMapSymbol(n.getIdentifier()).init = true;
+    st.enterSymbol(n.getIdentifier(), Types.MAP).init = true;
     return null;
   }
 
@@ -101,12 +108,13 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   }
 
   public Void visit(PrimitiveDeclarationNode n) {
+    SymbolTableInstance st = SymbolTable.peek();
     String type = n.getType();
     AbstractNode declaration = n.getDeclarations();
     while(declaration != null) {
-      if(declaration instanceof IdentifierNode) SymbolTable.enterSymbol(((IdentifierNode) declaration).getValue(), type);
+      if(declaration instanceof IdentifierNode) st.enterSymbol(((IdentifierNode) declaration).getValue(), type);
       if(declaration instanceof AssignNode) {
-        SymbolTable.enterSymbol(((AssignNode) declaration).getIdentifier(), type);
+        st.enterSymbol(((AssignNode) declaration).getIdentifier(), type);
         visit(declaration);
       }
       declaration = declaration.rightSib;
@@ -128,30 +136,33 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   }
 
   public Void visit(MapPropsAssignNode n) {
-    if(!SymbolTable.getSymbol(n.getName()).type.equals(Types.MAP)) throw new Error("Assigning map props to non-map variable " + n.getName() + ". Found ");
+    SymbolTableInstance st = SymbolTable.peek();
+    if(!st.getSymbol(n.getName()).type.equals(Types.MAP)) throw new Error("Assigning map props to non-map variable " + n.getName() + ". Found ");
     visit(n.getQuery());
     return null;
   }
 
   public Void visit(FunctionDefNode n) {
-    SymbolTable.enterFunctionSymbol(n.getName());
+    SymbolTableInstance outerSt = SymbolTable.peek();
+    outerSt.enterSymbol(n.getName(), Types.FUNCTION);
     TypeVisitor typeVisitor = new TypeVisitor();
     ArrayList<String> paramTypes = new ArrayList<>(Arrays.asList(typeVisitor.visit(n.getParams()).split(", ")));;
-    SymbolTable.setSymbolValue(
+    outerSt.setSymbolValue(
       n.getName(),
       new FunctionAttr(n.getType(), paramTypes)
     );
-    SymbolTable.openScope();
+    SymbolTable.push();
     visit(n.getParams());
     visit(n.getBody());
     String returnType = typeVisitor.visit(n.getReturnExp());
     if(!returnType.equals(n.getType())) throw new Error("Function " + n.getName() + " return expression does not match return type: " + n.getType() + ". Expression type is " + returnType);
-    SymbolTable.closeScope();
+    SymbolTable.pop();
     return null;
   }
 
   public Void visit(FunctionParamNode n) {
-    SymbolTable.enterSymbol(n.getName(), n.getType()).init = true;
+    SymbolTableInstance st = SymbolTable.peek();
+    st.enterSymbol(n.getName(), n.getType()).init = true;
     return null;
   }
 
@@ -171,9 +182,10 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
   }
 
   public Void visit(BlockNode n) {
-    SymbolTable.openScope();
+    SymbolTableInstance st = SymbolTable.peek();
+    st.openScope();
     visitChildren(n);
-    SymbolTable.closeScope();
+    st.closeScope();
     return null;
   }
 

@@ -8,6 +8,7 @@ import Nodes.ArithmeticNodes.*;
 import Nodes.FunctionNodes.FunctionParamNode;
 import Nodes.FunctionNodes.FunctionParamsNode;
 import SymbolTable.SymbolTable;
+import SymbolTable.SymbolTableInstance;
 import SymbolTable.Symbols.FunctionSymbol;
 import SymbolTable.Symbols.IntegerSymbol;
 import Visitors.BaseVisitor;
@@ -45,34 +46,33 @@ public class ArithmeticEvaluator extends BaseVisitor<Integer> {
   public Integer visit(ArithmeticNegateNode n) { return -visit(n.getInner()); }
 
   public Integer visit(IdentifierNode n) {
-    IntegerSymbol symbol = (IntegerSymbol) SymbolTable.getSymbol(n.getValue());
+    SymbolTableInstance st = SymbolTable.peek();
+    IntegerSymbol symbol = (IntegerSymbol) st.getSymbol(n.getValue());
     return symbol.value;
   }
 
   public Integer visit(FunctionCallNode n) {
-    FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
+    SymbolTableInstance outerSt = SymbolTable.peek();
+    FunctionSymbol symbol = (FunctionSymbol) outerSt.getSymbol(n.getName());
     Evaluator evaluator = new Evaluator();
-    SymbolTable.openScope();
+    SymbolTableInstance innerSt = SymbolTable.push();
     FunctionParamNode param = (FunctionParamNode) symbol.value.getParams();
     AbstractNode expr = n.getParams();
     while(param != null && expr != null) {
       String paramType = param.getType();
-      if(paramType.equals(Types.BOOL)) {
-        Boolean value = new BooleanEvaluator().visit(expr);
-        SymbolTable.enterSymbol(param.getName(), paramType).value = value;
+      if (paramType.equals(Types.BOOL)) {
+        innerSt.enterSymbol(param.getName(), paramType).value = new BooleanEvaluator().visit(expr);
       } else if(paramType.equals(Types.STRING)) {
-        String value = new StringEvaluator().visit(expr);
-        SymbolTable.enterSymbol(param.getName(), paramType).value = value;
+        innerSt.enterSymbol(param.getName(), paramType).value = new StringEvaluator().visit(expr);
       } else if(paramType.equals(Types.INT)) {
-        Integer value = visit(expr);
-        SymbolTable.enterSymbol(param.getName(), paramType).value = value;
+        innerSt.enterSymbol(param.getName(), paramType).value = visit(expr);
       } else throw new Error("Unrecognized parameter type " + paramType + " for parameter " + param.getName() + " in function " + n.getName());
       param = (FunctionParamNode) param.rightSib;
       expr = expr.rightSib;
     }
     evaluator.visit(symbol.value.getBody());
     Integer result = visit(symbol.value.getReturnExp());
-    SymbolTable.closeScope();
+    SymbolTable.pop();
     return result;
   }
 }

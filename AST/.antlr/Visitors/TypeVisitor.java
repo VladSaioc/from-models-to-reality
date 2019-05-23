@@ -42,7 +42,8 @@ public class TypeVisitor extends BaseVisitor<String> {
   }
 
   public String visit(IdentifierNode n) {
-    Symbol symbol = SymbolTable.getSymbol(n.getValue());
+    SymbolTableInstance st = SymbolTable.peek();
+    Symbol symbol = st.getSymbol(n.getValue());
     if(symbol.type.equals(Types.FUNCTION)) throw new Error("Attempting to invoke function " + symbol.name + " as a non-functional variable.");
     if(!symbol.init) throw new Error("Attempting to use uninitialized variable " + symbol.name + ".");
     return symbol.type;
@@ -137,7 +138,8 @@ public class TypeVisitor extends BaseVisitor<String> {
   }
 
   public String visit(FunctionCallNode n) {
-    FunctionSymbol symbol = (FunctionSymbol) SymbolTable.getSymbol(n.getName());
+    SymbolTableInstance st = SymbolTable.peek();
+    FunctionSymbol symbol = (FunctionSymbol) st.getSymbol(n.getName());
     String returnType = symbol.value.getReturnType();
     ArrayList<String> paramTypes = symbol.value.getParamTypes();
     AbstractNode param = n.getParams();
@@ -158,7 +160,7 @@ public class TypeVisitor extends BaseVisitor<String> {
     String paramTypes = visit(param);
     param = param.rightSib;
     while(param != null) {
-      paramTypes += ", " + visit(param);
+      paramTypes = paramTypes.concat(", " + visit(param));
       param = param.rightSib;
     }
     return paramTypes;
