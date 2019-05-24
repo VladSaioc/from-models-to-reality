@@ -5,7 +5,7 @@ import ANTLR.MapsLexer;
 import ANTLR.MapsParser;
 import Helpers.FileManager;
 import Nodes.AbstractNode;
-import Visitors.DeclarationManagerVisitor;
+import Visitors.TypeChecker.DeclarationManagerVisitor;
 import Visitors.Evaluators.Evaluator;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;

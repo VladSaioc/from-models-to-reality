@@ -1,7 +1,7 @@
 package Helpers;
 
 import Nodes.AbstractNode;
-import Visitors.DeclarationManagerVisitor;
+import Visitors.TypeChecker.DeclarationManagerVisitor;
 import Visitors.Evaluators.Evaluator;
 import org.antlr.v4.runtime.*;
 import ANTLR.*;

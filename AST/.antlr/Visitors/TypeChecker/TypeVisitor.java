@@ -1,4 +1,4 @@
-package Visitors;
+package Visitors.TypeChecker;
 
 import Helpers.Types;
 import Nodes.*;
@@ -14,6 +14,7 @@ import Nodes.ArithmeticNodes.*;
 import SymbolTable.*;
 import SymbolTable.Symbols.FunctionSymbol;
 import SymbolTable.Symbols.Symbol;
+import Visitors.BaseVisitor;
 
 import java.util.ArrayList;
 

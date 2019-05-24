@@ -1,4 +1,4 @@
-package Visitors;
+package Visitors.TypeChecker;
 
 import Helpers.FileManager;
 import Helpers.Types;
@@ -13,7 +13,6 @@ import Nodes.ExpressionNodes.IExpressionNode;
 import Nodes.FunctionNodes.FunctionBodyNode;
 import Nodes.FunctionNodes.FunctionDefNode;
 import Nodes.FunctionNodes.FunctionParamNode;
-import Nodes.FunctionNodes.FunctionParamsNode;
 import Nodes.ImpexNodes.ExportNode;
 import Nodes.ImpexNodes.ImportNode;
 import Nodes.MapNodes.CoordinatesNode;
@@ -26,6 +25,7 @@ import SymbolTable.Attr.FunctionAttr;
 import SymbolTable.SymbolTable;
 import SymbolTable.SymbolTableInstance;
 import SymbolTable.Symbols.Symbol;
+import Visitors.BaseVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

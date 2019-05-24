@@ -3,8 +3,8 @@ import ANTLR.MapsLexer;
 import ANTLR.MapsParser;
 import Nodes.AbstractNode;
 
-import Visitors.*;
 import Visitors.Evaluators.*;
+import Visitors.TypeChecker.DeclarationManagerVisitor;
 import org.antlr.v4.runtime.*;
 
 import java.io.*;

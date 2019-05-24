@@ -4,7 +4,7 @@ import Helpers.Types;
 import Nodes.AbstractNode;
 import Nodes.ComparisonNodes.*;
 import Visitors.BaseVisitor;
-import Visitors.TypeVisitor;
+import Visitors.TypeChecker.TypeVisitor;
 
 public class ComparisonEvaluator extends BaseVisitor<Boolean> {
   public Boolean dispatch(AbstractNode n) {
