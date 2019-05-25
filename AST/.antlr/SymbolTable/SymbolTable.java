@@ -22,6 +22,10 @@ public class SymbolTable {
     return symbolTables.peek();
   }
 
+  public static int depth() {
+    return symbolTables.size();
+  }
+
   public static void addExport(MapSymbol symbol) {
     exports.put(symbol.name, symbol);
   }

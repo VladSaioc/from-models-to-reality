@@ -4,7 +4,6 @@ import Helpers.Types;
 import Nodes.AbstractNode;
 import Nodes.ComparisonNodes.*;
 import Visitors.BaseVisitor;
-import Visitors.TypeChecker.TypeVisitor;
 
 public class ComparisonEvaluator extends BaseVisitor<Boolean> {
   public Boolean dispatch(AbstractNode n) {
@@ -47,44 +46,40 @@ public class ComparisonEvaluator extends BaseVisitor<Boolean> {
   }
 
   public Boolean visit(ComparisonEqNode n) {
-    TypeVisitor typeVisitor = new TypeVisitor();
-    String leftType = typeVisitor.visit(n.getLeft());
-    if(leftType.equals(Types.STRING)) {
+    if(n.getLeft().type.equals(Types.STRING)) {
       StringEvaluator evaluator = new StringEvaluator();
       String left = evaluator.visit(n.getLeft());
       String right = evaluator.visit(n.getRight());
       return left.equals(right);
-    } else if(leftType.equals(Types.BOOL)) {
+    } else if(n.getLeft().type.equals(Types.BOOL)) {
       BooleanEvaluator evaluator = new BooleanEvaluator();
       Boolean left = evaluator.visit(n.getLeft());
       Boolean right = evaluator.visit(n.getRight());
       return left.equals(right);
-    } else if(leftType.equals(Types.INT)) {
+    } else if(n.getLeft().type.equals(Types.INT)) {
       ArithmeticEvaluator evaluator = new ArithmeticEvaluator();
       Integer left = evaluator.visit(n.getLeft());
       Integer right = evaluator.visit(n.getRight());
       return left.equals(right);
-    } else throw new Error("Evaluator. Unrecognized type in comparison expression: " + leftType);
+    } else throw new Error("Evaluator. Unrecognized type in comparison expression: " + n.getLeft().type);
   }
 
   public Boolean visit(ComparisonNeqNode n) {
-    TypeVisitor typeVisitor = new TypeVisitor();
-    String leftType = typeVisitor.visit(n.getLeft());
-    if(leftType.equals(Types.STRING)) {
+    if(n.getLeft().type.equals(Types.STRING)) {
       StringEvaluator evaluator = new StringEvaluator();
       String left = evaluator.visit(n.getLeft());
       String right = evaluator.visit(n.getRight());
       return !left.equals(right);
-    } else if(leftType.equals(Types.BOOL)) {
+    } else if(n.getLeft().type.equals(Types.BOOL)) {
       BooleanEvaluator evaluator = new BooleanEvaluator();
       Boolean left = evaluator.visit(n.getLeft());
       Boolean right = evaluator.visit(n.getRight());
       return !left.equals(right);
-    } else if(leftType.equals(Types.INT)) {
+    } else if(n.getLeft().type.equals(Types.INT)) {
       ArithmeticEvaluator evaluator = new ArithmeticEvaluator();
       Integer left = evaluator.visit(n.getLeft());
       Integer right = evaluator.visit(n.getRight());
       return !left.equals(right);
-    } else throw new Error("Evaluator. Unrecognized type in comparison expression: " + leftType);
+    } else throw new Error("Evaluator. Unrecognized type in comparison expression: " + n.getLeft().type);
   }
 }

@@ -1,12 +1,13 @@
 package Nodes;
 
-import Visitors.*;
+import SymbolTable.Symbols.Symbol;
 
 public abstract class AbstractNode implements IAbstractNode {
   public AbstractNode rightSib;
   public AbstractNode leftmostSib;
   public AbstractNode parent;
   public AbstractNode leftmostChild;
+  public String type = "";
 
   public AbstractNode() {
     this.leftmostSib = this;

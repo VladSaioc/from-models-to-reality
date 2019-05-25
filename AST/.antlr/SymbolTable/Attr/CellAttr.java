@@ -26,7 +26,7 @@ public class CellAttr {
     });
   }
 
-  public <T> void addProp(String name, T prop) {
+  public <T> CellAttr addProp(String name, T prop) {
     intProps.remove(name);
     stringProps.remove(name);
     boolProps.remove(name);
@@ -34,6 +34,7 @@ public class CellAttr {
     if(prop instanceof Integer) intProps.put(name, (Integer) prop);
     if(prop instanceof Boolean) boolProps.put(name, (Boolean) prop);
     if(prop instanceof String) stringProps.put(name, (String) prop);
+    return this;
   }
 
   public HashMap<String, Integer> getIntProps() {

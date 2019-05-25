@@ -22,20 +22,62 @@ public class TypeVisitor extends BaseVisitor<String> {
   public String dispatch(AbstractNode n) {
     if(n instanceof IdentifierNode) return visit((IdentifierNode) n);
     if(n instanceof FunctionCallNode) return visit((FunctionCallNode) n);
-    if(n instanceof IntegerNode) return Types.INT;
-    if(n instanceof ArithmeticNegateNode) return visit((ArithmeticNegateNode) n);
-    if(n instanceof IArithmeticBinaryExpressionNode) return visit((IArithmeticBinaryExpressionNode) n);
-    if(n instanceof IBooleanBinaryExpressionNode) return visit((IBooleanBinaryExpressionNode) n);
-    if(n instanceof BooleanNegateNode) return visit((BooleanNegateNode) n);
-    if(n instanceof BooleanLiteralNode) return Types.BOOL;
-    if(n instanceof IComparisonOrdNode) return visit((IComparisonOrdNode) n);
-    if(n instanceof IComparisonNode) return visit((IComparisonNode) n);
-    if(n instanceof StringLiteralNode) return Types.STRING;
-    if(n instanceof StringConcatNode) return visit((StringConcatNode) n);
-    if(n instanceof MapJoinNode) return visit((MapJoinNode) n);
-    if(n instanceof MapMaskNode) return visit((MapMaskNode) n);
-    if(n instanceof MapUnaryIndexedOperationNode) return visit((MapUnaryIndexedOperationNode) n);
-    if(n instanceof MapUnaryOperationNode) return visit((MapUnaryOperationNode) n);
+    if(n instanceof IntegerNode) {
+      n.type = Types.INT;
+      return Types.INT;
+    }
+    if(n instanceof ArithmeticNegateNode) {
+      n.type = Types.INT;
+      return visit((ArithmeticNegateNode) n);
+    }
+    if(n instanceof IArithmeticBinaryExpressionNode) {
+      n.type = Types.INT;
+      return visit((IArithmeticBinaryExpressionNode) n);
+    }
+    if(n instanceof IBooleanBinaryExpressionNode) {
+      n.type = Types.BOOL;
+      return visit((IBooleanBinaryExpressionNode) n);
+    }
+    if(n instanceof BooleanNegateNode) {
+      n.type = Types.BOOL;
+      return visit((BooleanNegateNode) n);
+    }
+    if(n instanceof BooleanLiteralNode) {
+      n.type = Types.BOOL;
+      return Types.BOOL;
+    }
+    if(n instanceof IComparisonOrdNode) {
+      n.type = Types.BOOL;
+      return visit((IComparisonOrdNode) n);
+    }
+    if(n instanceof IComparisonNode) {
+      n.type = Types.BOOL;
+      return visit((IComparisonNode) n);
+    }
+    if(n instanceof StringLiteralNode) {
+      n.type = Types.STRING;
+      return Types.STRING;
+    }
+    if(n instanceof StringConcatNode) {
+      n.type = Types.STRING;
+      return visit((StringConcatNode) n);
+    }
+    if(n instanceof MapJoinNode) {
+      n.type = Types.MAP;
+      return visit((MapJoinNode) n);
+    }
+    if(n instanceof MapMaskNode) {
+      n.type = Types.MAP;
+      return visit((MapMaskNode) n);
+    }
+    if(n instanceof MapUnaryIndexedOperationNode) {
+      n.type = Types.MAP;
+      return visit((MapUnaryIndexedOperationNode) n);
+    }
+    if(n instanceof MapUnaryOperationNode) {
+      n.type = Types.MAP;
+      return visit((MapUnaryOperationNode) n);
+    }
     if(n instanceof FunctionParamsNode) return visit((FunctionParamsNode) n);
     if(n instanceof FunctionParamNode) return visit((FunctionParamNode) n);
     visitChildren(n);
@@ -47,6 +89,7 @@ public class TypeVisitor extends BaseVisitor<String> {
     Symbol symbol = st.getSymbol(n.getValue());
     if(symbol.type.equals(Types.FUNCTION)) throw new Error("Attempting to invoke function " + symbol.name + " as a non-functional variable.");
     if(!symbol.init) throw new Error("Attempting to use uninitialized variable " + symbol.name + ".");
+    n.type = symbol.type;
     return symbol.type;
   }
 
@@ -153,6 +196,7 @@ public class TypeVisitor extends BaseVisitor<String> {
     }
     if(param != null) throw new Error("Function " + n.getName() + " called with too many parameters.");
     if(i < paramTypes.size())throw new Error("Function " + n.getName() + " called with too few parameters.");
+    n.type = returnType;
     return returnType;
   }
 

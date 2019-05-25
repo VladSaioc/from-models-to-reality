@@ -42,6 +42,8 @@ public class MapAttr {
     this.cells.put(new Coords(x, y).getHash(), record);
   }
 
+  public void setCell(String coords, CellAttr record) { this.cells.put(coords, record); }
+
   public void setCell(Coords pair, CellAttr record) {
     this.cells.put(pair.getHash(), record);
   }

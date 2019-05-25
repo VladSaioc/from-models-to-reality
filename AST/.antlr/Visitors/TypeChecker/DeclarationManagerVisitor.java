@@ -24,6 +24,7 @@ import Nodes.ProgramNode;
 import SymbolTable.Attr.FunctionAttr;
 import SymbolTable.SymbolTable;
 import SymbolTable.SymbolTableInstance;
+import SymbolTable.Symbols.MapSymbol;
 import SymbolTable.Symbols.Symbol;
 import Visitors.BaseVisitor;
 
@@ -62,10 +63,13 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
 
   public Void visit(ImportNode n) {
     SymbolTableInstance st = SymbolTable.peek();
-    FileManager.parseFile(n.getPath(), true, false);
+    FileManager.parseFile(n.getPath(), true, false, false);
     AbstractNode vars = n.getVars();
     while(vars != null) {
-      st.enterSymbol(((IdentifierNode) vars).getValue(), Types.MAP).init = true;
+      String varName = ((IdentifierNode) vars).getValue();
+      MapSymbol symbol = SymbolTable.getExport(varName);
+      if (symbol == null) throw new Error("Imported map " + varName + " does not exist");
+      st.enterSymbol(varName, Types.MAP).init = true;
       vars = vars.rightSib;
     }
     return null;
@@ -78,6 +82,7 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
       String varName = ((IdentifierNode) vars).getValue();
       Symbol symbol = st.getSymbol(varName);
       if(!symbol.type.equals(Types.MAP)) throw new Error("Can't export non-map variable " + varName);
+      SymbolTable.addExport((MapSymbol) symbol);
       vars = vars.rightSib;
     }
     return null;
@@ -88,6 +93,7 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     Symbol symbol = st.getSymbol(n.getIdentifier());
     String expType = new TypeVisitor().visit(n.getExpression());
     symbol.init = true;
+    n.type = symbol.type;
     if (symbol.type.equals(expType)) return null;
     throw new Error("Mismatched type in assignment for variable " + n.getIdentifier() + ". Expected " + symbol.type + ", found " + expType + " instead.");
   }

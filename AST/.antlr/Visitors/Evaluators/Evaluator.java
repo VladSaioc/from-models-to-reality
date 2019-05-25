@@ -67,14 +67,14 @@ public class Evaluator extends BaseVisitor<Void> {
 
   public Void visit(ImportNode n) {
     SymbolTableInstance st = SymbolTable.peek();
-    FileManager.parseFile(n.getPath(), false, true);
+    FileManager.parseFile(n.getPath(), false, true, false);
     AbstractNode vars = n.getVars();
     while(vars != null) {
       String varName = ((IdentifierNode) vars).getValue();
       MapSymbol symbol = SymbolTable.getExport(varName);
       if (symbol == null) throw new Error("Imported map " + varName + " does not exist");
       st.enterSymbol(varName, Types.MAP);
-      st.setSymbolValue(varName, new MapAttr(symbol.value)).init = true;
+      st.setSymbolValue(varName, new MapAttr(symbol.value));
       vars = vars.rightSib;
     }
     return null;
@@ -119,11 +119,7 @@ public class Evaluator extends BaseVisitor<Void> {
         cells.put(new Coords(x, y).getHash(), cellAttr);
       }
     }
-    st.enterSymbol(n.getIdentifier(), Types.MAP).value = new MapAttr(
-      arithmeticEvaluator.visit(n.getSizeX()),
-      arithmeticEvaluator.visit(n.getSizeY()),
-      cells
-    );
+    st.enterSymbol(n.getIdentifier(), Types.MAP).value = new MapAttr(sizeX, sizeY, cells);
     return null;
   }
 

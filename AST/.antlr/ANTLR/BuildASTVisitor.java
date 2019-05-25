@@ -16,8 +16,8 @@ import Nodes.StringNodes.*;
 public class BuildASTVisitor extends MapsBaseVisitor<AbstractNode> {
   public AbstractNode visitProgram(MapsParser.ProgramContext ctx) {    
     return new ProgramNode(
-      visitFunctions(ctx.functions()),
       visitImports(ctx.imports()),
+      visitFunctions(ctx.functions()),
       visitStatement(ctx.statement()),
       visitExports(ctx.exports())
     );

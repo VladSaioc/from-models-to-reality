@@ -1,6 +1,6 @@
 grammar Maps;
 
-program : functions imports statement exports ; // AST Done
+program : imports functions statement exports ; // AST Done
 
 impexVarChain : var=IDENTIFIER COMMA impexVarChain // AST Done
 	| var=IDENTIFIER
@@ -122,9 +122,7 @@ coordinates : LPAREN arithmeticExpression COMMA arithmeticExpression RPAREN ; //
 
 mapPropsAssignment : name=IDENTIFIER mapQuery mapPropsBody ; // ast done
 
-mapPropsBody: extended=EXTEND LCURLY mapPropsChain RCURLY // ast done
-	| LCURLY mapPropsChain RCURLY
-	;
+mapPropsBody : LCURLY mapPropsChain RCURLY ;
 
 mapPropsChain : primitiveDeclaration SEMI mapPropsChain
 	| primitiveDeclaration SEMI
@@ -167,7 +165,6 @@ MAP:			'map' ;
 ELSE:			'else' ;
 IF:				'if' ;
 WHILE:		'while' ;
-EXTEND:		'extend';
 
 RETURN:		'return' ;
 IMPORT:		'import' ;
