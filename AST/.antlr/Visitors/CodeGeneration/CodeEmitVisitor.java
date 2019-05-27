@@ -34,7 +34,6 @@ public class CodeEmitVisitor extends BaseCodeEmitVisitor {
     if(n instanceof ProgramNode) return visit((ProgramNode) n);
     if(n instanceof FunctionDefNode) return visit((FunctionDefNode) n);
     if(n instanceof PrimitiveDeclarationNode) return visit((PrimitiveDeclarationNode) n);
-    if(n instanceof ImportNode) return visit((ImportNode) n);
     if(n instanceof ExportNode) return visit((ExportNode) n);
     if(n instanceof AssignNode) return visit((AssignNode) n);
     if(n instanceof FunctionCallNode) return visit((FunctionCallNode) n);
@@ -354,7 +353,9 @@ public class CodeEmitVisitor extends BaseCodeEmitVisitor {
 
   public Void visit(BlockNode n) {
     CodeGenerator.appendCode("{\n");
+    SymbolTable.peek().openScope();
     visitChildren(n);
+    SymbolTable.peek().closeScope();
     CodeGenerator.appendCode("\n}\n");
     return null;
   }

@@ -312,7 +312,7 @@ class MapOps {
     HashMap<String, CellAttr> newCells = new HashMap<>();
 
     int x = Math.abs(Math.min(0, dx)) + Math.max(x1, x2 + dx);
-    int y = Math.abs(Math.min(0, dy)) + Math.max(y1, y2 + dx);
+    int y = Math.abs(Math.min(0, dy)) + Math.max(y1, y2 + dy);
 
     for(int i = 0; i < x; i++) {
       for(int j = 0; j < y; j++) {
@@ -468,10 +468,22 @@ class _Program2 {
     return _export;
   }
 }
+class _Program4 {
+  public static HashMap<String, MapAttr> _body() {
+    MapAttr $$_d = MapOps.createMap(1,1,new CellAttr().addProp("curr","D"));
+    MapAttr $$_c = MapOps.createMap(1,1,new CellAttr().addProp("curr","C"));
+    HashMap<String, MapAttr> _export = new HashMap<>();
+    _export.put("$$_d", $$_d);
+    _export.put("$$_c", $$_c);
+    return _export;
+  }
+}
 class _Program1 {
   private static HashMap<String, MapAttr> imports_Program2 = _Program2._body();
   private static MapAttr $_a = imports_Program2.get("$_a");
   private static MapAttr $_e = imports_Program2.get("$_e");
+  private static HashMap<String, MapAttr> imports_Program4 = _Program4._body();
+  private static MapAttr $_d = imports_Program4.get("$_d");
   public static Integer $_b(Integer $$_a,Integer $$_b){
     Integer $$_c = ($$_a + $$_b)
       ;
@@ -485,10 +497,21 @@ class _Program1 {
       ;
     System.out.println($_b(30,40));
     System.out.println(($_c * $_f));
+    if (true)
+    {
+      Integer $__a = 40
+        ;
+
+    }
+    else{
+      Integer $__a = 40
+        ;
+
+    }
     MapAttr $_m1 = MapOps.createMap(30,40,new CellAttr().addProp("a", 0).addProp("b",true).addProp("c", "").addProp("d","ABC"));
     MapAttr $_m2 = MapOps.createMap(10,20,null);
     MapOps.joinX($_m1,MapOps.rotateCcw($_m2),$_b(30,40)).print();
-    MapOps.changeMap($_m1,new CellAttr().addProp("eff","Hello my prett\\y"),new ArrayList<>(Arrays.asList(new String []{"5.20", "30.0", "10.7"})));
+    MapOps.changeMap($_m1,new CellAttr().addProp("eff","Hello my prett\\y"),new ArrayList<>(Arrays.asList(new String []{"5.20", "15.0", "10.7"})));
     System.out.println("Map e");
     HashMap<String, MapAttr> _export = new HashMap<>();
     _export.put("$_m1", $_m1);
@@ -496,6 +519,7 @@ class _Program1 {
     return _export;
   }
 }
+
 
 public class TestInput {
   public static void main(String[] args) {

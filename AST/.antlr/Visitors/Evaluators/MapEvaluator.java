@@ -277,7 +277,6 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     Integer sizeX = inner.getSizeX();
     Integer sizeY = inner.getSizeY();
     Integer d = new ArithmeticEvaluator().visit(n.getIndex());
-    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a row out of bounds");
 
     for(int i = 0; i < sizeX; i++) {
       if(i == d) {
@@ -292,7 +291,7 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
       }
     }
 
-    return new MapAttr(sizeX + 1, sizeY, newCells);
+    return new MapAttr(d >= sizeX ? sizeX : sizeX + 1, sizeY, newCells);
   }
 
   public MapAttr visit(MapInsertYNode n) {
@@ -302,7 +301,6 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     Integer sizeX = inner.getSizeX();
     Integer sizeY = inner.getSizeY();
     Integer d = new ArithmeticEvaluator().visit(n.getIndex());
-    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a row out of bounds");
 
     for(int j = 0; j < sizeY; j++) {
       if(j == d) {
@@ -317,6 +315,6 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
       }
     }
 
-    return new MapAttr(sizeX, sizeY + 1, newCells);
+    return new MapAttr(sizeX, d >= sizeY ? sizeY : sizeY + 1, newCells);
   }
 }
