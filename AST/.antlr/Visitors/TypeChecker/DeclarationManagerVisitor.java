@@ -94,8 +94,8 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     String expType = new TypeVisitor().visit(n.getExpression());
     symbol.init = true;
     n.type = symbol.type;
-    if (symbol.type.equals(expType)) return null;
-    throw new Error("Mismatched type in assignment for variable " + n.getIdentifier() + ". Expected " + symbol.type + ", found " + expType + " instead.");
+    if (!symbol.type.equals(expType)) throw new Error("Mismatched type in assignment for variable " + n.getIdentifier() + ". Expected " + symbol.type + ", found " + expType + " instead.");
+    return null;
   }
 
   public Void visit(MapDeclarationNode n) {
@@ -132,7 +132,7 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     TypeVisitor typeVisitor = new TypeVisitor();
     String xType = typeVisitor.visit(n.getX());
     String yType = typeVisitor.visit(n.getY());
-    if(!xType.equals(Types.INT) || !yType.equals(Types.INT)) throw new Error("Invalid type for coordinate node: ");
+    if(!xType.equals(Types.INT) || !yType.equals(Types.INT)) throw new Error("Invalid type for coordinate node.");
     return null;
   }
 
@@ -152,7 +152,7 @@ public class DeclarationManagerVisitor extends BaseVisitor<Void> {
     SymbolTableInstance outerSt = SymbolTable.peek();
     outerSt.enterSymbol(n.getName(), Types.FUNCTION);
     TypeVisitor typeVisitor = new TypeVisitor();
-    ArrayList<String> paramTypes = new ArrayList<>(Arrays.asList(typeVisitor.visit(n.getParams()).split(", ")));;
+    ArrayList<String> paramTypes = new ArrayList<>(Arrays.asList(typeVisitor.visit(n.getParams()).split(", ")));
     outerSt.setSymbolValue(
       n.getName(),
       new FunctionAttr(n.getType(), paramTypes)

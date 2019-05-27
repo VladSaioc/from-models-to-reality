@@ -40,6 +40,7 @@ public class SymbolTableInstance {
     while (hashEntry.hash != null) {
       if (symbol.name.equals(hashEntry.hash.name)) {
         hashEntry.hash = hashEntry.hash.hash;
+        return;
       }
       hashEntry = hashEntry.hash;
     }
@@ -112,7 +113,7 @@ public class SymbolTableInstance {
       this.postInstantiate(symbol);
       return symbol;
     } else {
-      throw new Error("Tried entering non-primitive symbol through the primitive channel");
+      throw new Error("Unrecognized symbol type.");
     }
   }
 

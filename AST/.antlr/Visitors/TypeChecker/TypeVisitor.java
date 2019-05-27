@@ -188,14 +188,12 @@ public class TypeVisitor extends BaseVisitor<String> {
     ArrayList<String> paramTypes = symbol.value.getParamTypes();
     AbstractNode param = n.getParams();
     int i = 0;
-    while (param != null && i < paramTypes.size()) {
+    for(; param != null && i < paramTypes.size(); i++, param = param.rightSib) {
       String exprType = visit(param);
-      if(!paramTypes.get(i).equals(exprType)) throw new Error("Parameter " + (i + 1) + " type mismatch in function " + n.getName() + ".\n Requires " + paramTypes.get(i) + ", found " + exprType + " instead.");
-      i++;
-      param = param.rightSib;
+      if(!paramTypes.get(i).equals(exprType)) throw new Error("Argument " + (i + 1) + " type mismatch in function " + n.getName() + ".\n Requires " + paramTypes.get(i) + ", found " + exprType + " instead.");
     }
-    if(param != null) throw new Error("Function " + n.getName() + " called with too many parameters.");
-    if(i < paramTypes.size())throw new Error("Function " + n.getName() + " called with too few parameters.");
+    if(param != null) throw new Error("Function " + n.getName() + " called with too many arguments.");
+    if(i < paramTypes.size())throw new Error("Function " + n.getName() + " called with too few arguments.");
     n.type = returnType;
     return returnType;
   }

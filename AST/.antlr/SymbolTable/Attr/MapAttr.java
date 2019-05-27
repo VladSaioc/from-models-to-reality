@@ -38,13 +38,22 @@ public class MapAttr {
     return cells;
   }
 
+  private void checkBounds(int x, int y) {
+    if(x < 0 || x >= this.sizeX) throw new Error("Attempting to set a cell out of horizontal bounds: " + x + " should be between 0 and " + (this.sizeX - 1) + "." );
+    if(y < 0 || y >= this.sizeY) throw new Error("Attempting to set a cell out of vertical bounds: " + y + " should be between 0 and " + (this.sizeY - 1) + ".");
+  }
+
   public void setCell(int x, int y, CellAttr record) {
+    this.checkBounds(x, y);
     this.cells.put(new Coords(x, y).getHash(), record);
   }
 
-  public void setCell(String coords, CellAttr record) { this.cells.put(coords, record); }
+  public void setCell(String coords, CellAttr record) {
+    this.cells.put(coords, record);
+  }
 
   public void setCell(Coords pair, CellAttr record) {
+    this.checkBounds(pair.getX(), pair.getY());
     this.cells.put(pair.getHash(), record);
   }
 
