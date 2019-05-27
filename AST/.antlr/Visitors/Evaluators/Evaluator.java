@@ -243,13 +243,9 @@ public class Evaluator extends BaseVisitor<Void> {
   public Void visit(FunctionCallNode n) {
     SymbolTableInstance st = SymbolTable.peek();
     FunctionSymbol symbol = (FunctionSymbol) st.getSymbol(n.getName());
-    if (symbol.value.getReturnType().equals(Types.BOOL)) {
-      System.out.println(new BooleanEvaluator().visit(n));
-    } else if(symbol.value.getReturnType().equals(Types.STRING)) {
-      System.out.println(new StringEvaluator().visit(n));
-    } else if(symbol.value.getReturnType().equals(Types.INT)) {
-      System.out.println(new ArithmeticEvaluator().visit(n));
-    }
+    if (symbol.value.getReturnType().equals(Types.BOOL)) System.out.println(new BooleanEvaluator().visit(n));
+    if (symbol.value.getReturnType().equals(Types.STRING))  System.out.println(new StringEvaluator().visit(n));
+    if (symbol.value.getReturnType().equals(Types.INT)) System.out.println(new ArithmeticEvaluator().visit(n));
     return null;
   }
 }

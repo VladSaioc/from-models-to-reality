@@ -183,7 +183,9 @@ public class TypeVisitor extends BaseVisitor<String> {
 
   public String visit(FunctionCallNode n) {
     SymbolTableInstance st = SymbolTable.peek();
-    FunctionSymbol symbol = (FunctionSymbol) st.getSymbol(n.getName());
+    Symbol sym = st.getSymbol(n.getName());
+    if(!(sym.type.equals(Types.FUNCTION))) throw new Error("Variable " + sym.name + " is not a function.");
+    FunctionSymbol symbol = (FunctionSymbol) sym;
     String returnType = symbol.value.getReturnType();
     ArrayList<String> paramTypes = symbol.value.getParamTypes();
     AbstractNode param = n.getParams();
