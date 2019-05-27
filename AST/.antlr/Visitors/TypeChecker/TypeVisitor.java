@@ -171,7 +171,7 @@ public class TypeVisitor extends BaseVisitor<String> {
     String indexType = visit(n.getIndex());
     if(!indexType.equals(Types.INT)) throw new Error("Invalid index type in map operation");
     if(!innerType.equals(Types.MAP)) throw new Error("Invalid type in map unary operation");
-    return indexType;
+    return innerType;
   }
 
   public String visit(StringConcatNode n) {

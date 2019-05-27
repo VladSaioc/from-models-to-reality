@@ -237,7 +237,7 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     Integer sizeX = inner.getSizeX();
     Integer sizeY = inner.getSizeY();
     Integer d = new ArithmeticEvaluator().visit(n.getIndex());
-    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a row out of bounds");
+    if(d < 0 || d >= sizeX) throw new Error("Attempting to drop a column out of bounds");
 
     for(int i = 0; i < sizeX; i++) {
       if(i == d) continue;
@@ -257,7 +257,7 @@ public class MapEvaluator extends BaseVisitor<MapAttr> {
     Integer sizeX = inner.getSizeX();
     Integer sizeY = inner.getSizeY();
     Integer d = new ArithmeticEvaluator().visit(n.getIndex());
-    if(d < 0 || d >= sizeY) throw new Error("Attempting to drop a column out of bounds");
+    if(d < 0 || d >= sizeY) throw new Error("Attempting to drop a row out of bounds");
 
     for(int j = 0; j < sizeY; j++) {
       if(j == d) continue;
